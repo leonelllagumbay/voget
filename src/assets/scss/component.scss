@@ -1,0 +1,199 @@
+.jqx-icon-arrow-down {
+    background-image: none !important;
+}
+
+.jqx-icon-arrow-down:before {
+    content: "\f123" !important;
+    font-family: "Ionicons" !important;
+    color: #00779b;
+}
+
+.jqx-combobox-arrow-normal {
+    background: white !important;
+    width: 12px !important;
+}
+
+.jqx-combobox-content {
+    width: 182px !important;
+}
+
+.jqx-combobox-state-normal {
+    height: 30px !important;
+}
+
+.jqx-combobox-state-focus, .jqx-combobox-state-normal {
+    border: solid 2px #cccccc !important;
+    border-left: 2px solid #00779b !important;
+    overflow: hidden !important;
+}
+
+.jqx-listbox {
+    border: solid 2px #cccccc !important;
+    border-top: solid 1px #cccccc !important;
+    font-family: Roboto !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
+
+.jqx-listitem-element[role=option] {
+    height: 33px !important;
+}
+
+div[role=option] span.jqx-listitem-state-normal {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.jqx-listitem-state-hover {
+    border: solid 1px #cccccc !important;
+}
+
+.jqx-combobox-input {
+    height: 30px !important;
+    color: #333 !important;
+    float: left !important;
+    background: #ffffff !important;
+    border-right: 1px solid #cccccc !important;
+    font-family: inherit !important;
+    text-align: left !important;
+    font-family: Roboto !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+.company-label-dropdown {
+    height: 21px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #333333;
+    float: left;
+    margin-right: 19px;
+    margin-top: 9px;
+    margin-left: -12px;
+}
+
+#companyComboSelect {
+    margin-top: 3px !important;
+}
+
+.user-change-password {
+    height: 19px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #00779b;
+    min-width: 200px;
+}
+
+.user-change-password span:hover {
+    cursor: pointer;
+}
+
+.user-password-lock {
+    width: 9px;
+    height: 14px;
+    font-family: FontAwesome;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #00779b;
+    margin-right: 5px;
+}
+
+#companyComboSelect .jqx-combobox-content, #businessServicesCombo .jqx-combobox-content {
+    width: 260px !important;
+}
+
+#companyComboSelectOverview .jqx-combobox-content, #businessServicesCombo .jqx-combobox-content {
+    width: 182px !important;
+}
+
+form .new-user-section input {
+    padding-left: 4px;
+}
+
+.jqx-switchbutton {
+    background: #0c769c !important;
+    border: 2px solid #0c769c !important;
+    border-radius: 25px !important;
+    width: 59px !important;
+    height: 20px !important;
+}
+
+.jqx-switchbutton-wrapper {
+    width: 94px !important;
+}
+
+.jqx-switchbutton-label-off {
+    width: 23px !important;
+    height: 20px !important;
+    float: right !important;
+    background: white !important;
+    border-radius: 25px;
+}
+
+.jqx-switchbutton-label-off div.jqx-disableselect {
+    visibility: hidden;
+}
+
+.jqx-switchbutton-label-on {
+    width: 23px !important;
+    height: 20px !important;
+    float: left !important;
+    background: white !important;
+    border-radius: 25px;
+}
+
+.jqx-switchbutton-label-on div.jqx-disableselect {
+    visibility: hidden;
+}
+
+.jqx-switchbutton .jqx-fill-state-normal {
+    background: #0c769c !important;
+    border-color: #0c769c !important;
+}
+
+.jqx-switchbutton-on .jqx-fill-state-normal {
+    background: #ccc !important;
+    border-color: #ccc !important;
+}
+
+.jqx-switchbutton-on {
+    background: #ccc !important;
+    border: 2px solid #ccc !important;
+}
+
+/* .jqx-disableselect {
+    visibility: hidden;
+} */
+
+/* .jqx-fill-state-normal {
+    width: 72px;
+} */
+
+.overflow-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.jqx-listitem-element .jqx-listitem-state-normal {
+	max-width: 1500px !important;
+	width: 100% !important;
+}

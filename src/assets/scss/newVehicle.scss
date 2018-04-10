@@ -1,0 +1,932 @@
+.header-label {
+    width: 100%; /*433px;*/
+    height: 21px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    background: url(assets/images/invalid-name-white.png) no-repeat right;
+  }
+  #completion {
+    border: 1px solid #ccc;
+    border-top: 0;
+  }
+  #vehicle1container,
+  #newVehicleCirculation,
+  #completion {
+    padding: 5px;
+  }
+  hr {
+    border: 1px solid #e8e8e8;
+    margin: 8px 0 15px;
+  }
+  .field-label {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+    float: left;
+  }
+  .Matriculation-No {
+    width: 152px;
+    height: 21px;
+    margin-right: 10px;
+    padding-top: 5px;
+  }
+  input[type="text"].input-textbox,
+  input[type="email"].input-textbox,
+  input[type="number"].input-textbox,
+  input[type="tel"].input-textbox,
+  input[type="password"].input-textbox  {
+    width: 80px;
+    height: 33px;
+    color: #333;
+    float: left;
+    background: #ffffff;
+    border: solid 1px #cccccc;
+    border-left: 2px solid #00779b;
+    font-family: Roboto;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  input[type="text"].input-textbox.green-box,
+  input[type="email"].input-textbox.green-box,
+  input[type="number"].input-textbox.green-box,
+  input[type="tel"].input-textbox.green-box,
+  input[type="password"].input-textbox.green-box {
+    width: 80px;
+    height: 33px;
+    background-color: #fff;
+    color: #333;
+    border: solid 1px #00801a;
+    float: left;
+    border-left: 2px solid #00779b;
+    font-family: Roboto;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .chassis input[type="text"].input-textbox,
+  .chassis input[type="text"].input-textbox.green-box,
+  .chassis input[type="number"].input-textbox,
+  .chassis input[type="number"].input-textbox.green-box,
+  .chassis input[type="tel"].input-textbox,
+  .chassis input[type="tel"].input-textbox.green-box {
+    width: 105px;
+    height: 33px;
+  }
+  .Chassis-No2 {
+    /* width: 175px; */
+    width: 161px;
+    height: 21px;
+    margin-right: 0px;
+    padding-top: 5px;
+  }
+  .chassis input {
+    width: 155px;
+    height: 33px;
+  }
+  /* hide x (IE)*/
+  .chassis input::-ms-clear {
+    display: none;
+  }
+  .matri {
+    overflow: hidden;
+    padding-bottom: 21px;
+  }
+  .chassis {
+    overflow: hidden;
+    padding-bottom: 17px;
+  }
+  .overflow {
+    overflow: hidden;
+  }
+  /* .Line {
+    width: 15px;
+    height: 3px;
+    border: solid 2px #333333;
+    margin: 14px 7px;
+  } */
+  .Line.float-left::before {
+    content: '.';
+    color: #333;
+    font-size: 20px;
+    margin: 0 5px;
+  }
+  .status {
+    overflow: hidden;
+    padding-bottom: 10.5px;
+    border-bottom: solid 1px #cccccc;
+  }
+  .Status {
+    width: 48px;
+    height: 21px;
+    /*margin-right: 154px;*/
+  }
+  .Number-Plate {
+    width: 99px;
+    height: 21px;
+  }
+  .nPlate {
+    overflow: hidden;
+    padding: 14.5px 0 4.5px;
+    border-bottom: solid 1px #cccccc;
+  }
+  .owner {
+    overflow: hidden;
+    padding: 14.5px 0 4.5px;
+    border-bottom: solid 1px #cccccc;
+  }
+  .vehicle {
+    overflow: hidden;
+    padding: 15.5px 0 4.5px;
+    border-bottom: solid 1px #cccccc;
+  }
+  .Chassis-No {
+    width: 161px;
+    padding-top: 5px;
+    /* margin-right: 42px; */
+  }
+  .Chassis-No2 {
+    /* margin-right: -6px; */
+  }
+  .top .matri .Matriculation-No {
+    margin-right: 10px;
+    width: 152x;
+  }
+  .top .chassis .Chassis-No {
+    margin-right: 64px;
+  }
+  .top .overflow .button-generic{
+    margin-right: 9px;
+  }
+  .elect {
+    overflow: hidden;
+    padding: 20.5px 0 4.5px;
+    border-bottom: solid 1px #cccccc;
+  }
+  .Rectangle-5, .Rectangle-5-2, .Rectangle-5-3 {
+    /* width: 100%;
+    background-color: #ffffff;
+    border: 2px solid #f8f8f8;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 13px 16px 19px 13px; */
+    background-color: #f6f6f6;
+    border: 1px solid #ccc;
+    margin: 0 5px 5px 5px;
+    padding: 13px 15px 9px 15px;
+  }
+  .Rectangle-5 {  
+      height: 245px;
+  }
+  .Rectangle-5-2 {  
+      height: 180px;
+      padding: 13px 15px 19px 15px;
+  }
+  .Rectangle-5-3 {  
+      margin: 0;
+      border: 1px solid #007295;
+  }
+  .Rectangle-9 {
+    /* width: 100%; */
+    height: 50px;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+    border: solid 1px #979797;
+    padding: 6px 10px;
+    margin: 25px 0 23px 0;
+  }
+  .container-left, .top, .bottom {
+    background-color: #ffffff;
+  }
+  .container-left {
+  
+  }
+  .container-right {
+    width: 491px;
+    float: left;
+    position: relative;
+  }
+  .top {
+  
+  }
+  .bottom {
+  
+  }
+  .New-Registration-pap {
+    width: 192px;
+    height: 21px;
+    margin-right: 60px;
+  }
+  .Cancel-registration {
+    width: 235px;
+    height: 21px;
+    margin-right: 17px;
+  }
+  .new-reg {
+    padding-bottom: 20px;
+  }
+  .can-reg {
+    padding-bottom: 10px;
+  }
+  .new-reg select, .can-reg select, .new-reg2 {
+    width: 231px;
+    height: 33px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+    background: #fff url(assets/images/invalid-name.png) no-repeat 95% center;
+    margin-bottom: 20px;
+    padding: 2px 8px 2px 8px;
+    border: 2px solid #ccc;
+    border-left: 2px solid #00779B;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  
+  }
+  .Die-nachfolgenden-Un {
+    width: 100%;
+    height: 126px;
+    font-family: Roboto;
+    font-size: 16px;
+    text-align: justify;
+    color: #333333;
+    padding: 15px;
+    margin-bottom: 38px;
+  }
+  .Falldaten-bermittel {
+    width: 280px;
+    height: 42px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: #00779b;
+  }
+  .action-button {
+      /* margin-top: 20px; */
+      width: 100%;
+      display: inline-block;
+  }
+  .action-button button[type="submit"].button-generic {
+      margin-right: 24px;
+  }
+  .sub-btn-default {
+    width: 138px;
+    height: 30px;
+    background-color: #999999;
+  }
+  .draft-btn-default, .goBack-btn-default {
+    font-family: Roboto;
+    width: 215px;
+    height: 30px;
+    background-color: #ffffff;
+    border: solid 1px #00779b;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: #00779b;
+  }
+  .draft-btn {
+    margin-right: 15px;
+  }
+  .Case-Summary, .attachment-label {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #00779b;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 9px;
+  }
+  .attachment-label {
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+  }
+  .plainCar i {
+    font-size: 39.3px;
+    text-align: left;
+    color: #bfbfbf;
+  }
+  .arrowRight {
+      border: 1px solid #000;
+      height: 30px;
+      background: #fff;
+      padding: 3px;
+      margin: 15px auto;
+      width: auto;
+      text-align: center;
+      display: block;
+  }
+  .arrowRight i {
+    /* font-size: 52.4px;
+    text-align: center;
+    color: #000;
+    height: 56px; */
+  }
+  .coloredCar i {
+    width: 26px;
+    height: 33px;
+    font-size: 39.3px;
+    color: #00779b;
+  }
+  .Land-Rover-90LD {
+    font-size: 13px;
+    font-weight: bold;
+    color: #666666;
+  }
+  .Land-Rover-90LD + div {
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    color: #666666;
+  }
+  .Case-Summary + .row {
+    padding: 0;
+    display: block;
+    width: auto;
+  }
+  .Mike-Sample-7777-Via {
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+      line-height: 1em;
+      margin-top: -4px;
+  }
+  .Mike-Sample-7777-Via + div {
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+      line-height: 1em;
+  }
+  .Volkswagen-Touran {
+    font-size: 13px;
+    font-weight: bold;
+    color: #00779b;
+    width: 120px;
+    text-align: center;
+  }
+  .Volkswagen-Touran + div {
+    font-size: 13px;
+    font-weight: bold;
+    color: #00779b;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .VD-123123 {
+    font-size: 17px;
+    font-weight: bold;
+    color: #000;
+  
+  }
+  .Case-Summary + .row.text-center {
+    padding: 0;
+  }
+  .Please-submit, .Please-confirm, .Print {
+      font-size: 14px;
+      text-align: left;
+      color: #333333;
+      padding-left: 10px;
+      width: 273px;
+      vertical-align: text-top;
+      height: 36px;
+      display: table-cell;
+      vertical-align: middle;
+  }
+  .Please-confirm {
+    width: 285px;
+  }
+  .confirmed {
+    margin: 8px 0;
+    opacity: 0.5;
+  }
+  .Print {
+    margin: 8px 0;
+    padding: 3px 30px;
+  }
+  .infoCircle i.fa-info-circle, 
+  .infoCircle i.fa-check-circle {
+    font-size: 22px;
+    text-align: left;
+    color: #007295;
+    padding: 5px 0;
+  }
+  .infoCircle i.fa-check-circle {
+    padding: 0;
+  }
+  button[disabled].submit-btn {
+    width: 147px;
+  }
+  .submit-btn {
+    width: 147px;
+    height: 30px;
+    font-weight: 500;
+    margin-top: 3px;
+    background: #00779b;
+    color: #fff;
+    border: 0;
+  }
+  .submit-btn i:before {
+    margin-right: 5px;
+  }
+  .confirm-btn-default {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: #ffffff;
+    border: 0;
+  }
+  .confirm-btn-disabled, .submit-btn-disabled {
+    background: #999;
+    content: "\f046";
+    border: 0;
+    cursor: default;
+    pointer-events: none;
+  }
+  .print-btn {
+    width: 138px;
+    height: 30px;
+  }
+  .header-default {
+    background-color: #22527b;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .header-complete {
+    background-color: #ffffff;
+    border: solid 1px #22527b;
+    color: #22527b;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .header-deactive {
+    background-color: #999999;
+    color: #fff;
+    padding: 10px;
+    cursor: default;
+    pointer-events: none;
+  }
+  .header-complete .header-label {
+    width: 100%;
+    height: 21px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    background: url(assets/images/invalid-name.png) no-repeat right;
+  }
+  .padding-left-10 {
+    padding-left: 10px;
+  }
+  .opacity-15 {
+    opacity: 0.15;
+  }
+  .opacity-50 {
+    opacity: 0.50;
+  }
+  .inline-block {
+    display: inline-block;
+  }
+  .green {
+    padding-left: 21px;
+    padding-right: 21px;
+    border-radius: 100px;
+    background-color: #d6ffe0;
+    color: #00820e;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;  
+  }
+  .orange {
+    padding-left: 21px;
+    padding-right: 21px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;  
+  }
+  .red {
+    padding-left: 21px;
+    padding-right: 21px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;  
+  }
+  .new-reg-label {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+    height: 31px;
+    line-height: auto;
+    border-right: 2px solid #ccc;
+    width: 188px;
+    display: block;
+    margin: -3px 0;
+    padding-top: 4px;
+  }
+  #BusinessServices {
+      width: 285px !important;
+  }
+  #BusinessServices li {
+      margin-bottom: 5px;
+      margin-top: 5px;
+      padding: 0 10px;
+  }
+  #newRegDropdown, #canRegDropdown, #RtdLocation, #canRegDropdown2, #BusinessServices {
+      position: absolute;
+      background-color: #ffffff;
+      border: solid 1px #d8d8d8;
+      width: 218px;
+      margin-left: -10px;
+      margin-top: 4px;
+  }
+  
+  #newRegDropdown li > span {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+  }
+  .newRegDropdown-style {
+    position: absolute;
+    background-color: #ffffff;
+    border: solid 1px #d8d8d8;
+    width: 218px;
+    margin-left: -10px;
+    margin-top: 4px;
+  }
+  .newRegDropdown-style li > span {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+  }
+  .paperTo-label {
+    width: 46%;
+    margin: 0;
+    /* margin-top: -5px; */
+  }
+  .comment-container #my-input {
+    resize: vertical;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+    border-radius: 0;
+    background-color: #ffffff;
+    border: solid 1px #22527b;
+    min-height: 63px;
+  }
+  #remainingText {
+    font-family: Roboto;
+    font-size: 12px;
+    text-align: left;
+    color: #333333;
+  }
+  .commentBox {
+    width: 231px;
+    margin-left: 10px;
+    padding: 0;
+  }
+  
+  /* New Styles for New Vehicle Change Page HD */
+  .divContainer {
+    width: 1024px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 15px;
+    padding: 0px 0 15px 0;
+  }
+  .divContainer > .position-footer {
+    width: 1024px;
+    margin: 0 auto;
+    left: -25px;
+    float: right;
+    right: 0;
+    /* position: fixed; */
+  }
+  
+  .New-Vehicle-Change {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: bold;
+    color: #22527b;
+    padding: 15px 0;
+  }
+  .div-completion {
+    float: right;
+    left: -20px;
+    margin: 0 0 15px 0;
+  }
+  .col-lg-4 {
+    width: 49%;
+  }
+  .container-left, .top, .bottom {
+    width: 493px;
+  }
+  
+  .div-intoCirculation {
+    float: left;
+    margin-bottom: 10px;
+  }
+  .div-outCirculation {
+    float: left;
+  }
+  input::-moz-placeholder, textarea::-moz-placeholder {
+    font-family: Roboto !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #bec3cf !important;
+    line-height: 25px !important;
+  }
+  input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    font-family: Roboto !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #bec3cf !important;
+    line-height: normal !important;
+  }
+  input::-ms-input-placeholder, textarea::-ms-input-placeholder {
+    font-family: Roboto !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #bec3cf !important;
+    line-height: normal !important;
+  }
+  input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    font-family: Roboto !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    letter-spacing: normal !important;
+    text-align: center !important;
+    color: #bec3cf !important;
+    line-height: normal !important;
+  }
+  .chassis input[type="text"]::-webkit-input-placeholder,
+  .chassis input[type="tel"]::-webkit-input-placeholder {
+      font-size: 12px !important;
+  }
+  textarea::-moz-placeholder {
+    text-align: left !important;
+  }
+  textarea:-ms-input-placeholder {
+    text-align: left !important;
+  }
+  textarea::-webkit-input-placeholder {
+    text-align: left !important;
+  }
+  textarea::-ms-input-placeholder {
+    text-align: left !important;
+  }
+  .readOnly {
+    pointer-events: none;
+  }
+  /* UIX Improvements */
+  .section1, .section2 {
+      padding: 16px 16px 32px 17px;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+  }
+  .new-user-section {
+    margin-top: 10px;
+    padding: 26px 26px 0 27px;
+    border: 1px solid #ccc;
+    background: white;
+  }
+    .border-bottom {
+      border-bottom: 1px solid #ccc;
+    }
+    .border-left {
+      border-left: 1px solid #ccc;
+    }
+    .border-right {
+      border-right: 1px solid #ccc;
+    }
+    .chassis-default {
+      background: url(assets/images/chassis.svg) no-repeat center;
+      width: 18px;
+      height: 18px;
+      margin: 5px 6px 0 0;
+    }
+    .completion2 {
+      padding: 19px 0 0 12px;
+    }
+    .content-icon-blue.fa-map-marker {
+      font-size: 18px;
+      margin: 6px 12px 5px 0;
+    }
+    .content-icon-blue.fa-file-text-o,
+    .content-icon-blue.fa-file-text,
+    .content-icon-blue.fa-comment {
+        font-size: 18px;
+        margin: 6px 7px 5px 0;
+    }
+    .rtd-label {
+        width: 40%;
+        margin: 0;
+    }
+    .newPaper-label {
+          width: 43%;
+    }
+    .cancelPaper-label {
+          width: 44%;
+    }
+    .comment-label {
+        width: 43%;
+    }
+    .submit-section {
+        margin: 0 0 16px 0;
+    }
+    .fa-window-close {
+        position: absolute;
+        color: #d50000;
+        font-size: 18px;
+        right: 44px;
+        top: 7px;
+    }
+    .fa-check-square {
+        position: absolute;
+        color: #008000;
+        font-size: 18px;
+        right: 48px;
+        top: 7px;
+    }
+    .icon-flag {
+        background: url(assets/images/coat-of-arms-of-switzerland.png) no-repeat center;
+        background-size: contain;
+        width: 18px;
+        height: 18px;
+        margin: 5px 5px 0 0;
+        float: left;
+    }
+  
+  @media(min-width: 1280px) {
+    .divContainer {
+      width: 1140px;
+      padding: 0px 0 15px 0;
+    }
+    .divContainer > .position-footer {
+      width: 1140px;
+      position: relative;
+      bottom: 0;
+      left: -15px;
+    }
+    .container-left, .top, .bottom {
+      width: 540px;
+    }
+    .col-lg-4 {
+      width: 50%;
+    }
+    .div-completion {
+      float: right;
+      left: 0;
+    }
+    input[type="text"].input-textbox,
+    input[type="email"].input-textbox,
+    input[type="number"].input-textbox,
+    input[type="tel"].input-textbox,
+    input[type="password"].input-textbox {
+      width: 93px;
+      height: 33px;
+    }
+    input[type="text"].input-textbox.green-box,
+    input[type="email"].input-textbox.green-box,
+    input[type="number"].input-textbox.green-box,
+    input[type="tel"].input-textbox.green-box,
+    input[type="password"].input-textbox.green-box {
+      width: 93px;
+      height: 33px;
+    }
+    .Matriculation-No {
+      width: 152px;
+      height: 23px;
+      margin-right: 10px;
+    }
+    .Chassis-No,   .Chassis-No2  {
+      width: 166px;
+      height: 23px;
+      margin-top: 5px;
+      padding: 0;
+    }
+    .top .matri .Matriculation-No {
+      margin-right: 10px;
+    }
+    .top .chassis .Chassis-No {
+      margin-right: 70px;
+    }
+    .new-reg select, .can-reg select, .new-reg2 {
+      /* width: 254px; */
+      width: 240px;
+      height: 33px;
+    }
+    .new-reg-label {
+      height: 31px;
+      /* width: 210px; */
+      width: 195px;
+      padding-top: 4px;
+      line-height: auto;
+    }
+    .commentBox {
+      /* width: 254px; */
+      width: 240px;
+      margin-left: 28px;
+    }
+    .Line.float-left::before {
+      font-size: 25px;
+      margin: 0 5px;
+    }
+    .chassis input[type="text"].input-textbox, 
+    .chassis input[type="text"].input-textbox.green-box,
+    .chassis input[type="number"].input-textbox, 
+    .chassis input[type="number"].input-textbox.green-box,
+    .chassis input[type="tel"].input-textbox, 
+    .chassis input[type="tel"].input-textbox.green-box {
+      width: 147px;
+    }
+      .fa-window-close {
+          right: 53px;
+      }
+      .fa-check-square {
+          right: 55px;
+      }
+      .arrowRight {
+          width: 88%;
+      }
+      .Mike-Sample-7777-Via {
+          margin-top: 4px;
+      }
+      .rtd-label, .newPaper-label {
+          width: 45%;
+      }
+      .completion2 {
+          padding: 19px 0 0 22px;
+      }
+      .comment-label {
+          width: 42%;
+      }
+    .chassis input[type="text"]::-webkit-input-placeholder,
+    .chassis input[type="tel"]::-webkit-input-placeholder {
+          font-size: 16px !important;
+      }
+  }
+  
+  @media(min-width: 1440px) {
+  }
+  
+  .attachment-container {
+      border: 2px solid #f8f8f8;
+    margin-bottom: 14px;
+      padding: 10px 15px 20px 15px;
+  }
+  .attachment-container .ion-android-attach {
+      padding-right:  8px;
+  }
+  #upload_button {
+      display: inline-block;
+      width: 140px;
+    height: 30px;
+  }
+  #upload_button > label .span-upload {
+      background: #fff;
+      color: #00779b;
+      text-align: center;
+      width: 122px;
+      font-family: Roboto;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 0;
+      border: solid 1px #00779b;
+      padding: 5px 27px;
+    cursor: pointer;
+  }
+  .max-label {
+      font-size: 13px;
+      color: #666;
+      font-weight: 500;
+      padding: 3px 0;
+  }
+  
+  

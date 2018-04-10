@@ -1,0 +1,415 @@
+.vehicleOverview {
+    padding: 10px 0 15px 0;
+    /* margin-bottom: 100px; */
+  }
+  .Overview-Vehicle-Cha {
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    color: #22527b;
+  }
+  .overviewContainer {
+    margin-top: 15px;
+  }
+  #overviewTable_wrapper > .row, 
+  #companyOverviewTable_wrapper > .row, 
+  #userOverviewTable_wrapper > .row {
+    margin: 0;
+    padding: 0;
+  }
+  #overviewTable_wrapper .row:first-child, 
+  #companyOverviewTable_wrapper .row:first-child,
+  #userOverviewTable_wrapper .row:first-child {
+    background-color: #e8e8e8;
+    border: 1px solid #e8e8e8;
+  }
+  #businessRuleTable_wrapper .row:first-child {
+    background-color: #efefef;
+    border: solid 1px #e8e8e8;
+    height: 45px;
+  }
+  #overviewTable_wrapper .row:nth-child(2),
+  #businessRuleTable_wrapper .row:nth-child(2) {
+    padding: 0;
+    overflow-x: scroll;
+  } 
+  #overviewTable_wrapper .row:nth-child(2) .col-sm-12,
+  #businessRuleTable_wrapper .row:nth-child(2) .col-sm-12,
+  #companyOverviewTable_wrapper .row:nth-child(2) .col-sm-12,
+  #userOverviewTable_wrapper .row:nth-child(2) .col-sm-12 {
+    padding: 0;
+  }
+  table#overviewTable, 
+  table#configSummaryTable,
+  table#businessRuleTable,
+  table#companyOverviewTable,
+  table#userOverviewTable {
+    background: #fff;
+    margin: 0 !important;
+  }
+  table#userOverviewTable {
+    width: 100% !important;
+  }
+  table#overviewTable thead,
+  table#configSummaryTable thead,
+  table#businessRuleTable thead,
+  table#companyOverviewTable thead, 
+  table#userOverviewTable thead {
+    height: 40px;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #7f7f7f;
+    background-color: #f7f7f7;
+    border: solid 1px #e7e7e7;
+    border-bottom: 0;
+  }
+  table#overviewTable thead tr th, 
+  table#configSummaryTable thead tr th,
+  table#companyOverviewTable thead tr th,
+  table#userOverviewTable thead tr th {
+    border-bottom: 0;
+    padding: 10px;
+    border: 1px solid #e7e7e7;
+  }
+  table#overviewTable tbody, 
+  table#configSummaryTable tbody, 
+  table#businessRuleTable tbody,
+  table#companyOverviewTable tbody, 
+  table#userOverviewTable tbody {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+  }
+  /*table#overviewTable tbody tr:hover {
+    background-color: #f8f8f8;
+  }*/
+  table#configSummaryTable tbody tr td {
+    vertical-align: middle;
+    padding: 0 11px;
+    font-size: 14px;
+    color: #333333;
+    font-weight: 500;
+    text-align: left;
+  }
+  .table-bordered > tbody > tr > td {
+    border: 1px solid #e7e7e7;
+  }
+  table#overviewTable tbody tr td,
+  table#companyOverviewTable tbody tr td,
+  table#userOverviewTable tbody tr td {
+    padding: 11px 10px 10px;
+    border-right: 0;
+  }
+  table#businessRuleTable tbody tr td {
+    border-right: 0;
+    height: 40px !important;
+    overflow: hidden;
+    padding: 0 10px;
+    line-height: 40px;
+  }
+  
+  #overviewTable_wrapper .row > .col-sm-5,
+  #businessRuleTable_wrapper .row > .col-sm-5,
+  #companyOverviewTable_wrapper .row > .col-sm-5,
+  #userOverviewTable_wrapper .row > .col-sm-5,
+  #overviewTable_wrapper .row:first-child > .col-sm-6:first-child,
+  #businessRuleTable_wrapper .row:first-child > .col-sm-6:first-child,
+  #companyOverviewTable_wrapper .row:first-child > .col-sm-6:first-child, 
+  #userOverviewTable_wrapper .row:first-child > .col-sm-6:first-child {
+    width: 0;
+    padding: 0;
+    display: none;
+  }
+  #businessRuleTable_wrapper .row > .col-sm-7 {
+    width: 100%;
+    padding: 24px 0 0 0;
+  }
+  #overviewTable_wrapper .row > .col-sm-7,
+  #companyOverviewTable_wrapper .row > .col-sm-7,
+  #userOverviewTable_wrapper .row > .col-sm-7 {
+    width: 100%;
+    padding: 20px 0 25px;
+  }
+  #overviewTable_paginate,
+  #businessRuleTable_paginate,
+  #companyOverviewTable_paginate, 
+  #userOverviewTable_paginate {
+    text-align: center;
+  }
+  #overviewTable_paginate .pagination > li:first-child > a,
+  #companyOverviewTable_paginate .pagination > li:first-child > a, 
+  #userOverviewTable_paginate .pagination > li:first-child > a {
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px #e7e7e7;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  #overviewTable_paginate .pagination > li:last-child > a,
+  #companyOverviewTable_paginate .pagination > li:last-child > a, 
+  #userOverviewTable_paginate .pagination > li:last-child > a {
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px #e7e7e7;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  #overviewTable_paginate .pagination > li > a,
+  #companyOverviewTable_paginate .pagination > li > a, 
+  #userOverviewTable_paginate .pagination > li > a {
+    font-family: Roboto;
+    font-size: 15px;
+    text-align: left;
+    color: #00779b;
+    border: 1px solid #e7e7e7;
+  }
+  #overviewTable_paginate .pagination > .disabled > a,
+  #companyOverviewTable_paginate .pagination > .disabled > a, 
+  #userOverviewTable_paginate .pagination > .disabled > a {
+    font-family: Roboto;
+    font-size: 15px;
+    text-align: left;
+    color: #bfbfbf;
+  }
+  #overviewTable_paginate .pagination > .active > a,
+  #companyOverviewTable_paginate .pagination > .active > a, 
+  #userOverviewTable_paginate .pagination > .active > a {
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 900;
+    text-align: left;
+    color: #00779b;
+    background: #fff;
+  }
+  #overviewTable_paginate .pagination > li > a:focus,
+  #companyOverviewTable_paginate .pagination > li > a:focus, 
+  #userOverviewTable_paginate .pagination > li > a:focus {
+    outline: 0;
+  }
+  .newVehicleBtn {
+    width: 265px;
+    height: 30px;
+    padding-left: 5px;
+    text-align: center;
+    margin-bottom: 15px;
+    /* margin-right: -15px; */
+  }
+  .newUserBtn {
+    width: 220px;
+    height: 30px;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .newVehicleBtn i:before, .newUserBtn i:before {
+    margin-right: 5px;
+  }
+  #businessRuleTable_wrapper .row:nth-child(2) {
+    overflow: hidden;
+  }
+  #overviewTable_wrapper .row:first-child > .col-sm-6:nth-child(2),
+  #businessRuleTable_wrapper .row:first-child > .col-sm-6:nth-child(2) {
+    width: 100%;
+  }
+  #businessRuleTable_filter label {
+    padding: 0 !important;
+  }
+  #businessRuleTable_filter label .input-sm {
+    width: 250px;
+    height: 30px;
+    border-radius: 0;
+  }
+  #overviewTable_filter label,
+  #businessRuleTable_filter label {
+    margin: 0;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #333333;
+    float: right;
+  }
+  #overviewTable_filter input.form-control.input-sm,
+  #companyOverviewTable_filter input.form-control.input-sm, 
+  #userOverviewTable_filter input.form-control.input-sm {
+    width: 250px;
+    border-radius: 0;
+  }
+  /*#overviewTable_filter {
+    float: left;
+    padding: 10px 0;
+    border: 1px solid red;
+  }
+  #overviewTable_filter input.form-control.input-sm {
+    float: left;
+    width: 250px;
+    height: 30px;
+    border-radius: 0;
+    margin: 0;
+  }*/
+  .CTA > button {
+    border: 0;
+    background: transparent;
+    margin-left: 28px;
+    font-family: FontAwesome;
+    font-size: 20px;
+    text-align: center;
+    color: #7f7f7f;
+  }
+  /*button.edit > i {
+    width: 18px;
+    height: 20px;
+    font-family: FontAwesome;
+    font-size: 20px;
+    text-align: center;
+    color: #7f7f7f; configSummaryTable
+  }*/
+  table#configSummaryTable thead tr th:nth-child(1) {
+    min-width: 250px;
+    max-width: 250px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #7f7f7f;
+  }
+  table#configSummaryTable thead tr th:nth-child(2) {
+    min-width: 80px;
+    max-width: 80px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #7f7f7f;
+    padding-right: 18px;
+  }
+  table#configSummaryTable thead tr th:nth-child(3) {
+    min-width: 200px;
+    max-width: 200px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #7f7f7f;
+  }
+  table#overviewTable thead tr th:first-child,
+  table#overviewTable thead tr th:nth-child(2),
+  table#overviewTable thead tr th:nth-child(3) {
+      min-width: 120px;
+      max-width: 120px;
+  }
+  table#overviewTable thead tr th:nth-child(4),
+  table#overviewTable thead tr th:nth-child(5),
+  table#overviewTable thead tr th:nth-child(6),
+  table#overviewTable thead tr th:nth-child(7) {
+    min-width: 150px;
+    max-width: 150px;
+  }
+  .left-content {
+    width: 50%;
+  }
+  .right-content {
+    width: 55%;
+  }
+  table#businessRuleTable + .ng-isolate-scope {
+    text-align: center;
+    margin: auto;
+    display: block;
+  }
+  table#businessRuleTable + .ng-isolate-scope ul.pagination li:first-child a {
+    border-radius: 3px 0 0 3px;
+  }
+  table#businessRuleTable + .ng-isolate-scope ul.pagination > .disabled > a {
+    color: #bfbfbf;
+  }
+  table#businessRuleTable + .ng-isolate-scope ul.pagination {
+    margin: 10px 0 0 0;
+  }
+  table#businessRuleTable + .ng-isolate-scope ul.pagination li a {
+    color: #00779b;
+    font-size: 15px;
+    font-weight: normal;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    padding: 6px 12px;
+  }
+  table#businessRuleTable + .ng-isolate-scope ul.pagination li.active a {
+    font-weight: 900;
+    background-color: #fff;
+  }
+  .form-inline.form-search {
+    width: 100%;
+    height: 45px;
+    background-color: #efefef;
+    border: 1px solid #e8e8e8;
+    display: table;
+  }
+  .form-inline.form-search .form-group {
+    float: right;
+    padding:5px;
+  }
+  .form-inline.form-search .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333 !important;
+    padding-right: 10px;
+  }
+  .form-inline.form-search .form-group .form-control {
+    width: 250px;
+    border-radius: 0;
+  }
+  table#overviewTable tbody tr td:nth-child(7) {
+      padding: 0;
+  }
+  .attachment-icon {
+      text-align: center;
+  }
+  .attachment-icon .content-icon.ion-ios-download {
+      font-size: 25px;
+  }
+  .attachment-icon .content-icon.ion-ios-download:hover {
+      cursor: pointer;
+  }
+  table#overviewTable tbody tr.bg-tbl-selected td:nth-child(7) .attachment-icon .content-icon.ion-ios-download,
+  table#companyOverviewTable tbody tr.bg-tbl-selected td:nth-child(5) > .user-icon .fa-user-plus,
+  table#companyOverviewTable tbody tr.bg-tbl-selected td:nth-child(5) > .user-icon > label {
+      color: #fff;
+      cursor: pointer;
+  }
+  
+  @media(min-width: 1024px) {
+      #overviewTable_wrapper .row:nth-child(2),
+      #companyOverviewTable_wrapper .row:nth-child(2),
+      #userOverviewTable_wrapper .row:nth-child(2) {
+          overflow-x: hidden;
+      }
+      table#overviewTable thead tr th:first-child{
+          min-width: 95px;
+          max-width: 95px;  
+      }
+      table#overviewTable thead tr th:nth-child(3) {
+          min-width: 105px;
+          max-width: 105px;
+      }
+      table#overviewTable thead tr th:nth-child(4) {
+          min-width: 135px;
+          max-width: 145px;
+      }
+      table#overviewTable thead tr th:nth-child(5) {
+          min-width: 140px;
+          max-width: 140px;
+      }
+      table#overviewTable thead tr th:nth-child(6) {
+          min-width: 150px;
+          max-width: 160px;
+      }
+      table#overviewTable thead tr th:nth-child(2){
+          min-width: 115px;
+          max-width: 115px;
+      }
+      table#overviewTable thead tr th:nth-child(7) {
+          min-width: 90px;
+          max-width: 97px;
+      }
+  }

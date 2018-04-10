@@ -1,0 +1,101 @@
+.newCompany-container {
+	width: 600px;
+	height: auto;
+	margin: 40px auto 0 auto;
+	border: 1px solid #ccc;
+	padding: 20px 30px 30px 34px;
+	background: #fff;
+}
+.newCompany-btn-container {
+	width: 600px;
+	margin: auto;
+    padding: 20px 0 0 0;
+}
+.newCompany-container > .row {
+	padding: 12px 0;
+}
+.newCompany-container > div .field-label {
+	width: 550px;
+	height: 31px;
+	vertical-align: middle;
+}
+.newCompany-container .field-container > input.input-textbox {
+	width: 285px;
+	height: 30px;
+    color: #333;
+    float: left;
+    background: #ffffff;
+    border: solid 1px #cccccc;
+    border-left: 2px solid #00779b;
+    font-family: Roboto;
+    font-size: 16px;
+    text-align: left;
+    font-weight: 500;
+    padding-left: 10px;
+}
+.newCompany-container .field-container > input.green-box {
+	border: 1px solid #018000;
+    border-left: 2px solid #00779b;
+}
+.content-icon-blueN {
+	font-size: 16px;
+	color: #007295;
+	width: 11px;
+	height: 16px;
+	margin: 6px 14px 6px 0;
+}
+.margin-blueN {
+    margin: 5px 14px 0 0;
+}
+.user-icon {
+	color: #00779b;	
+}
+.user-icon .fa-user-plus {
+	font-size: 14px;
+	color: #00779b;
+	margin-right: 5px;
+}
+.user-icon > label {
+	font-family: Roboto;
+	font-size: 14px;
+	font-weight: 500;
+	color: #00779b;
+}
+#companyOverviewTable_wrapper .row:first-child > .col-sm-6:nth-child(2),
+#userOverviewTable_wrapper .row:first-child > .col-sm-6:nth-child(2) {
+	width: 100%;
+	height: 45px;
+}
+#companyOverviewTable_filter label, 
+#userOverviewTable_filter label{
+	margin: 0;
+	padding: 6px 0;
+	font-size: 14px;
+	font-weight: 500;
+	text-align: left;
+	color: #333333;
+	float: right;
+}
+.buss-serv-drp {
+	width: 285px;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-left: 2px solid #00779B;
+    padding: 2px 8px 2px 8px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+    background: #fff url(assets/images/invalid-name.png) no-repeat 95% center;
+    border-radius: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+	box-shadow: none;
+	list-style: none;
+}
+.buss-serv-drp > li span {
+    width: 240px;
+    height: 30px;
+}
