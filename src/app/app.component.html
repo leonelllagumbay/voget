@@ -1,34 +1,25 @@
-<!-- <body id="body" class="showOverflowY">
-    <div id="eGovApp" ng-app="eGovApp">
-        <div id="landscapeContainer">
-            <app-vehicle-change-case-overview></app-vehicle-change-case-overview>
-            
-            <div ui-view="mainview" class="mainviewContainer">
-                <div></div>
-                <div class="container" style="text-align:center;">
-                   
-                </div>
-            </div>
-            
-        </div>
-    </div>
-    <footer>
-        <h1>
-            {{stringTest}}
-        </h1>
-    </footer>
-</body> -->
-
-
-<h1 translate>name_en _dy</h1>
+<!-- <h1 translate>br1_Description</h1>
 
 <div>
-  {{ 'age_en' | translate }}
+  {{ 'br1_Category' | translate }}
 </div>
 
 <button (click)="switchLanguage('en')">en</button>
 
 <button (click)="switchLanguage('fr')">fr</button>
 
-<button (click)="switchLanguage('de')">de</button>
+<button (click)="switchLanguage('de')">de</button> -->
+
+<body id="body" class="showOverflowY" (click)="bodyClicked($event)">
+    <div id="eGovApp" ng-app="eGovApp">
+        <div id="landscapeContainer">
+            <app-nav-bar></app-nav-bar>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <footer>
+    </footer>
+</body>
+
+
 

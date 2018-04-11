@@ -17,4 +17,11 @@ export class AppComponent {
     this.translate.use(language);
   }
 
+  bodyClicked(e) {
+    $('#languagedropdown')['collapse']('hide');
+    $('#usernamedropdown')['collapse']('hide');
+    $('#settingsdropdown')['collapse']('hide');
+    $('#usermanagement')['collapse']('hide');
+  }
+
 }

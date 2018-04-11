@@ -20,7 +20,6 @@
       "prefix": "app",
       "styles": [
         "styles.scss",
-        "../node_modules/ionicons/dist/scss/ionicons.scss",
         "../node_modules/datatables.net-dt/css/jquery.dataTables.css"
       ],
       "scripts": [
