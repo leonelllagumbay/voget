@@ -180,6 +180,8 @@ export class NavBarComponent implements OnInit {
                 this.isManageCompanyShown = true;
             }
         }
+
+        this._egovService.userDBLoaded.next();
     });
   }
 

@@ -10,6 +10,11 @@ export class GlobalService {
   public CaseStatusRTD: any;
   languageSwitched = new Subject();
   titleDefined = new Subject();
+  userDBLoaded = new Subject();
+  locationChangeStarted = new Subject();
+  locationChangeSucceeded = new Subject();
+  locationChanged = new Subject();
+
   constructor() {
 
       this.CaseStatus = new Map();

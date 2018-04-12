@@ -1,2 +1,44 @@
-Change case overview 001... 
-<h1>{{language}}</h1>
+<div class="vehicleOverview side-body">
+    <div class="col-xs-12">
+        <div class="error-container" *ngIf="OverviewError && ErrorCodeMessageError.length > 0 && ErrorCodeMessageError != '0: '">
+            <div class="row">
+                <i class="content-icon-red ion-minus-circled float-left"></i>
+                <span class="error-text">{{ErrorCodeMessageError | translate}}</span>
+            </div>
+        </div>
+    </div>
+    <form name="formOverview" id="formOverview" novalidate="novalidate">
+        <div class="col-xs-12">
+        <div class="CTA float-right">
+            <button type="submit" class="edit" (click)="HasSelected && ClickEditButton()"><i class="fa fa-pencil overview-edit-icon" ></i></button>
+            <button type="submit" class="print" (click)="HasSelected && !IsPrintBusy && ClickPrintButton()"><i class="fa fa-print overview-print-icon"></i></button>
+            <button type="submit" class="trash" (click)="HasSelected && !IsDeleteBusy && ClickDeleteButton()"><i class="fa fa-trash overview-delete-icon"></i></button>
+        </div>
+        </div>
+    </form>
+   
+    <div class="col-xs-12 overviewContainer">
+        <table id="overviewTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ localizationResources.Title_StatusRTD | translate }}</th>
+                    <th>{{ localizationResources.Title_InternalStatus | translate }}</th>
+                    <th>{{ localizationResources.Title_NumberPlate | translate }}</th>
+                    <th>{{ localizationResources.Title_MatriculationNumber1 | translate }}</th>
+                    <th>{{ localizationResources.Title_MatriculationNumber2 | translate }}</th>
+                    <th>{{ localizationResources.Title_Owner | translate }}</th>
+                    <th>{{ localizationResources.Title_Attachments | translate }}</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr *ngIf="IsBusy">
+                    <td><i class="fa fa-spin fa-spinner"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-12">
+        <button type="submit" class="newVehicleBtn button-generic float-right" (click)="ClickNewVehicleChangeCase()" [ngClass]="{'disabledNewCaseBtn' : isDisabled}"><i class="fa fa-car"></i>{{localizationResources.Label_NewVehicleChange}}</button>
+    </div>
+</div>

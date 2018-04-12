@@ -1,3 +1,5 @@
+import { OverviewErrorService } from './../shared/service/overview-error.service';
+import { OverviewService } from './../shared/service/overview.service';
 import { GlobalService } from './../shared/service/global.service';
 import { UserService } from './../shared/service/user.service';
 import { ErrorHandlerService } from './../shared/service/error-handler.service';
@@ -58,6 +60,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CompanyOverviewComponent,
     NavBarComponent
   ],
-  providers: [ErrorHandlerService, UserService, GlobalService]
+  providers: [ErrorHandlerService, UserService, GlobalService, OverviewService,
+              OverviewErrorService
+  ]
 })
 export class EgovModule { }

@@ -141,6 +141,15 @@
   #userOverviewTable_paginate {
     text-align: center;
   }
+
+  #overviewTable_paginate a {
+    border-radius: 3px;
+    background-color: #ffffff;
+    border: solid 1px #e7e7e7;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
   #overviewTable_paginate .pagination > li:first-child > a,
   #companyOverviewTable_paginate .pagination > li:first-child > a, 
   #userOverviewTable_paginate .pagination > li:first-child > a {

@@ -40,7 +40,7 @@
                                 <span class="username-label switch-lang-style">{{userName ? userName : '&nbsp;'}}</span>
         
                                 <ul id="usernamedropdown" class="collapse username-dropdown zindex-5" [ngClass]="{'no-icon': (!isConfigurationIconShown && isManageIconShown) || (isConfigurationIconShown && !isManageIconShown), 'right-3': !isManageIconShown && !isConfigurationIconShown}">
-                                    <li class="li-settings-dropdown" (click)="goToChangePassword()" ng-if="isChangePassMenuShown">
+                                    <li class="li-settings-dropdown" (click)="goToChangePassword()" *ngIf="isChangePassMenuShown">
                                             <span>{{localizationResources.Label_ChangePassword | translate}}</span>
                                     </li>
                                     <li class="li-settings-dropdown" (click)="logout()">
@@ -49,7 +49,7 @@
                                 </ul>
                             </li>
                             
-                            <li data-toggle="collapse" data-target="#settingsdropdown" data-parent="#myGroup" class="mousepointer li-c-right mr-10" ng-if="isConfigurationIconShown">
+                            <li data-toggle="collapse" data-target="#settingsdropdown" data-parent="#myGroup" class="mousepointer li-c-right mr-10" *ngIf="isConfigurationIconShown">
                                 <i class="icon lang-icon settings-icon"></i>
                                 <span class="lang-label switch-lang-style"></span>
         
@@ -63,7 +63,7 @@
                                 </ul>
                             </li>
         
-                            <li data-toggle="collapse" data-target="#usermanagement" data-parent="#myGroup" class="mousepointer li-c-right mr-10" ng-if="isManageIconShown">
+                            <li data-toggle="collapse" data-target="#usermanagement" data-parent="#myGroup" class="mousepointer li-c-right mr-10" *ngIf="isManageIconShown">
                                 <i class="fa fa-users icon-white"></i>
                                 <span class="lang-label switch-lang-style"></span>
                                 
@@ -71,7 +71,7 @@
                                     <li class="li-settings-dropdown" (click)="goToManageUsers()">
                                             <span>{{localizationResources.Label_ManageUser | translate}}</span>
                                     </li>
-                                    <li class="li-settings-dropdown" (click)="goToManageCompanies()" ng-if="isManageCompanyShown">
+                                    <li class="li-settings-dropdown" (click)="goToManageCompanies()" *ngIf="isManageCompanyShown">
                                             <span>{{localizationResources.Label_ManageCompanies | translate}}</span>
                                     </li>
                                 </ul>

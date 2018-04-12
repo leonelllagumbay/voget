@@ -22,6 +22,8 @@ export class AppComponent {
     $('#usernamedropdown')['collapse']('hide');
     $('#settingsdropdown')['collapse']('hide');
     $('#usermanagement')['collapse']('hide');
-  }
 
+    $('.dropdown-auto')['collapse']('hide');
+    $('#usermanagement')['collapse']('hide');
+  }
 }

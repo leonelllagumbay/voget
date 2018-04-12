@@ -6,7 +6,7 @@ import { IEnvironment } from './../app/shared/interface/ienvironment';
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 
-export class Development implements IEnvironment {
+class Development implements IEnvironment {
     GetName(): string {
         return 'Development';
     }
@@ -24,7 +24,6 @@ export class Development implements IEnvironment {
         } else {
             browserLanguage = 'de';
         }
-
         return browserLanguage;
     }
 }
@@ -36,4 +35,6 @@ export const environment = {
     browserLanguage: env.GetDefaultLanguage(),
     name: env.GetName()
 };
+
+window['__env'] =  environment;
 
