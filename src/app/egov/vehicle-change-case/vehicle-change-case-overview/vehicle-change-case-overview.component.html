@@ -39,6 +39,6 @@
         </table>
     </div>
     <div class="col-xs-12">
-        <button type="submit" class="newVehicleBtn button-generic float-right" (click)="ClickNewVehicleChangeCase()" [ngClass]="{'disabledNewCaseBtn' : isDisabled}"><i class="fa fa-car"></i>{{localizationResources.Label_NewVehicleChange}}</button>
+        <button type="submit" class="newVehicleBtn button-generic float-right" (click)="ClickNewVehicleChangeCase()" [ngClass]="{'disabledNewCaseBtn' : isDisabled}"><i class="fa fa-car"></i>{{localizationResources.Label_NewVehicleChange | translate}}</button>
     </div>
 </div>

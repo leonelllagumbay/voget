@@ -22,6 +22,9 @@ const appRoutes: Routes = [{
   redirectTo: '/vehicleChangeCaseOverview',
   pathMatch: 'full'
 }, {
+  path: 'newVehicleChangeCase',
+  component: NewVehicleChangeCaseComponent
+}, {
   path: 'newVehicleChangeCase/:selectedCase',
   component: NewVehicleChangeCaseComponent
 }, {

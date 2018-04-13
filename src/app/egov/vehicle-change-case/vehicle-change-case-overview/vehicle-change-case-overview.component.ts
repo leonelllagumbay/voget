@@ -19,6 +19,7 @@ import { UserDto } from '../../../shared/dto/user-dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-vehicle-change-case-overview',
@@ -59,7 +60,8 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
               private _sanitizer: DomSanitizer,
               @Inject(DOCUMENT) private document: any,
               private _overviewErrorService: OverviewErrorService,
-              private _location: Location) { }
+              private _location: Location,
+              private _translate: TranslateService) { }
 
   // ngAfterViewInit() {
   //   this.viewContentLoaded();
@@ -70,7 +72,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
     this.language = 'en';
     this._egovService.languageSwitched.subscribe(
       (language: string) => {
-        console.log('vvv', language);
         this.language = language;
 
         this.ParseData();
@@ -88,7 +89,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
     this.localizationResources = LabelEnum;
 
     this.blocker = new ErniJsUtilsBlockControl(this.$overviewTbl, false);
-    console.log('$overviewTbl', this.$overviewTbl);
     this.links = [{}];
     this.isDownloadingAttachment = false;
     this.attachmentCount = 0;
@@ -154,7 +154,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
       } else {
         this.IsDeleteBusy = true;
         this._overviewService.Delete(this.SelectedCaseId).subscribe(result => {
-          console.log('delete in action result', result);
           const vehicleList = this.VehicleChangeCaseList.filter(a => a.id === this.SelectedCaseId);
           if (vehicleList !== undefined && vehicleList.length > 0) {
               const idx = this.VehicleChangeCaseList.indexOf(vehicleList[0]);
@@ -234,7 +233,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
   }
 
   downloadAttachment(caseId: number) {
-    console.log('downloading attachment');
     this.links.length = 0; // reset links
     this.isDownloadingAttachment = true;
     $('.show-spinner-' + caseId).show();
@@ -349,9 +347,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
   Refresh() {
     this.IsBusy = true;
     this.OverviewError = false;
-    console.log('here 3 a');
     this._overviewService.Get().subscribe(result => {
-      console.log('here 3 b', result);
       if (result !== undefined && result !== null) {
         result.sort(
           function(a, b){
@@ -377,38 +373,47 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
         this.VehicleChangeCaseList = result;
 
         this.OverviewError = false;
-        console.log('here 3 c parsing data', result);
         this.ParseData();
       }
       this.blocker.remove();
       this.IsBusy = false;
-      console.log('here 3 cc is busy', this.IsBusy);
     });
   }
 
 
   viewContentLoaded() {
-    console.log('view content loaded launched');
     this.selectedCaseId = '';
-    this.RefreshPageTitle();
+    this._translate.get(this.localizationResources.DataTable_Label_Search).subscribe((res: string) => {
+      const searchText = res;
+      this._translate.get(this.localizationResources.DataTable_Label_EmptyTable).subscribe((res2: string) => {
+        const emptyTable = res2;
+        this.initTableData(searchText, emptyTable);
+      });
+    });
+  }
+
+  initTableData(searchText: string, emptyTable: string) {
+
     const setting = <DataTables.Settings>{};
     setting.language = <DataTables.LanguageSettings>{};
-    setting.language.emptyTable = this.localizationResources.DataTable_Label_EmptyTable;
-    setting.language.info = this.localizationResources.DataTable_Label_Info;
-    setting.language.infoEmpty = this.localizationResources.DataTable_Label_InfoEmpty;
-    setting.language.infoFiltered = this.localizationResources.DataTable_Label_InfoFiltered;
-    setting.language.lengthMenu = this.localizationResources.DataTable_Label_LengthMenu;
-    setting.language.loadingRecords = this.localizationResources.DataTable_Label_LoadingRecords;
-    setting.language.processing = this.localizationResources.DataTable_Label_Processing;
-    setting.language.search = 'Search'; // this.localizationResources.DataTable_Label_Search;
-    setting.language.zeroRecords = this.localizationResources.DataTable_Label_ZeroRecords;
+    setting.language.emptyTable = emptyTable;
+    setting.language.search = searchText;
+    // setting.language.info = this.localizationResources.DataTable_Label_Info;
+    // setting.language.infoEmpty = infoEmpty;
+    // setting.language.infoFiltered = this.localizationResources.DataTable_Label_InfoFiltered;
+    // setting.language.lengthMenu = this.localizationResources.DataTable_Label_LengthMenu;
+    // setting.language.loadingRecords = this.localizationResources.DataTable_Label_LoadingRecords;
+    // setting.language.processing = this.localizationResources.DataTable_Label_Processing;
+    // setting.language.zeroRecords = this.localizationResources.DataTable_Label_ZeroRecords;
     setting.language.paginate = <DataTables.LanguagePaginateSettings>{};
-    setting.language.paginate.first = this.localizationResources.Page_First;
+    // setting.language.paginate.first = this.localizationResources.Page_First;
     setting.language.paginate.previous = '<'; // this.localizationResources.Page_Previous;
     setting.language.paginate.next = '>'; // this.localizationResources.Page_Next;
-    setting.language.paginate.last = this.localizationResources.Page_Last;
+    // setting.language.paginate.last = this.localizationResources.Page_Last;
     setting.paging = true;
-    setting.pageLength = 3;
+    setting.pageLength = 12;
+    // setting.language.url = 'http://localhost:4201/assets/i18n/de.json';
+
     setting.order = [];
     setting.drawCallback = () => {
         // (this.$overviewTbl)(this);
@@ -479,19 +484,17 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
         });
 
     };
-    console.log('here 2', $('#overviewTable'));
+
     this.$overviewTbl = $('#overviewTable');
     this.overviewDataTable = this.$overviewTbl.DataTable(setting);
     $('#overviewTable_length').hide();
-    console.log('here 3');
+
     this.Refresh();
-    console.log('here 4');
   }
 
   ParseData() {
     this.overviewDataTable.clear();
     if (this.VehicleChangeCaseList !== undefined) {
-      console.log('here 3 d', this.VehicleChangeCaseList);
         this.VehicleChangeCaseList.forEach(item => {
 
             const displayStatusRTD = this._egovService.getCaseStatusRTDLabel(item.statusRtd);
@@ -517,7 +520,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
         });
     }
     this.overviewDataTable.draw();
-    console.log('here 3 e table drawn');
   }
 
   RefreshPageTitle() {

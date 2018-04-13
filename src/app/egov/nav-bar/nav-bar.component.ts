@@ -1,3 +1,4 @@
+
 import { GlobalService } from './../../shared/service/global.service';
 import { ConstantService } from './../../shared/enum/egov-constant.enum';
 import { UserDto } from './../../shared/dto/user-dto';
@@ -9,6 +10,8 @@ import { ILanguage } from './../../shared/interface/ilanguage';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/filter';
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -57,11 +60,10 @@ export class NavBarComponent implements OnInit {
 
   ngOnInit() {
     this.localizationResources = LabelEnum;
-    this._route.url.subscribe((url) => {
-      const lastUrl = url[url.length - 1];
-      if (lastUrl) {
-        this.selectedPage = lastUrl.path;
-      }
+
+    this._router.events.filter(event => event instanceof NavigationEnd).subscribe(nav => {
+        console.log('nav', nav['url']);
+        this.selectedPage = nav['url'];
     });
 
     this._egovService.titleDefined.subscribe(

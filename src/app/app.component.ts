@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -6,15 +6,25 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   name = 'name_en';
-  constructor(private translate: TranslateService) {
-    translate.setDefaultLang('en');
+  constructor(private _translate: TranslateService) {
+
+  }
+
+  ngOnInit() {
+    if (sessionStorage && sessionStorage.getItem('selectedLanguage')) { // persist language on browsers
+      this._translate.use(sessionStorage.getItem('selectedLanguage'));
+    } else {
+      this._translate.setDefaultLang('en');
+    }
   }
 
   switchLanguage(language: string) {
     console.log('switching language', language);
-    this.translate.use(language);
+    this._translate.use(language);
+    sessionStorage.setItem('selectedLanguage', language);
+    console.log('language now', sessionStorage.getItem('selectedLanguage'));
   }
 
   bodyClicked(e) {

@@ -142,64 +142,140 @@
     text-align: center;
   }
 
-  #overviewTable_paginate a {
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: solid 1px #e7e7e7;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  #overviewTable_info {
+    display: none;
   }
 
-  #overviewTable_paginate .pagination > li:first-child > a,
-  #companyOverviewTable_paginate .pagination > li:first-child > a, 
-  #userOverviewTable_paginate .pagination > li:first-child > a {
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: solid 1px #e7e7e7;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  table.dataTable.no-footer {
+    border-bottom: 1px solid #e7e7e7 !important;
   }
-  #overviewTable_paginate .pagination > li:last-child > a,
-  #companyOverviewTable_paginate .pagination > li:last-child > a, 
-  #userOverviewTable_paginate .pagination > li:last-child > a {
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: solid 1px #e7e7e7;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+
+  table.dataTable thead .sorting {
+    background-image: none !important;
   }
-  #overviewTable_paginate .pagination > li > a,
-  #companyOverviewTable_paginate .pagination > li > a, 
-  #userOverviewTable_paginate .pagination > li > a {
-    font-family: Roboto;
-    font-size: 15px;
-    text-align: left;
-    color: #00779b;
-    border: 1px solid #e7e7e7;
+
+  table.dataTable thead .sorting_desc {
+    background-image: none !important;
   }
-  #overviewTable_paginate .pagination > .disabled > a,
-  #companyOverviewTable_paginate .pagination > .disabled > a, 
-  #userOverviewTable_paginate .pagination > .disabled > a {
-    font-family: Roboto;
-    font-size: 15px;
-    text-align: left;
-    color: #bfbfbf;
+
+  table.dataTable thead .sorting_asc {
+    background-image: none !important;
   }
-  #overviewTable_paginate .pagination > .active > a,
-  #companyOverviewTable_paginate .pagination > .active > a, 
-  #userOverviewTable_paginate .pagination > .active > a {
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 900;
-    text-align: left;
-    color: #00779b;
-    background: #fff;
+
+  .dataTables_wrapper .dataTables_paginate {
+    float: none !important;
+    padding: 20px 0 25px !important;
   }
-  #overviewTable_paginate .pagination > li > a:focus,
-  #companyOverviewTable_paginate .pagination > li > a:focus, 
-  #userOverviewTable_paginate .pagination > li > a:focus {
-    outline: 0;
+
+  #overviewTable_paginate a.disabled {
+    font-family: Roboto !important;
+    text-align: left !important;
+    opacity: .5;
   }
+
+  #overviewTable_paginate a.paginate_button.previous {
+    border-radius: 3px !important;
+    background-color: #ffffff !important;
+    border: solid 1px #e7e7e7 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    color: #00779b !important;
+  }
+
+  #overviewTable_paginate a.paginate_button.current {
+    font-family: Roboto !important;
+    font-weight: 900 !important;
+    text-align: left !important;
+    color: #00779b !important;
+    background: #fff !important;
+  }
+
+  #overviewTable_paginate .paginate_button.current,
+  #overviewTable_paginate .paginate_button.current:hover {
+    color: #00779b !important;
+  }
+
+  #overviewTable_paginate span a.paginate_button {
+    font-family: Roboto !important;
+    text-align: left !important;
+    color: #00779b !important;
+    border: 1px solid #e7e7e7 !important;
+    margin: 0 !important;
+  }
+
+  #overviewTable_paginate a.paginate_button:hover {
+    background: inherit !important;
+  }
+
+  #overviewTable_paginate a:focus {
+    outline: 0 !important;
+  }
+
+  #overviewTable_paginate a {
+    font-size: 13px !important;
+  }
+
+  #overviewTable_paginate a.paginate_button.next {
+    border-radius: 3px !important;
+    background-color: #ffffff !important;
+    border: solid 1px #e7e7e7 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    color: #00779b !important;
+    margin: 0 !important;
+  }
+
+  // #overviewTable_paginate .pagination > li:first-child > a,
+  // #companyOverviewTable_paginate .pagination > li:first-child > a, 
+  // #userOverviewTable_paginate .pagination > li:first-child > a {
+  //   border-radius: 3px;
+  //   background-color: #ffffff;
+  //   border: solid 1px #e7e7e7;
+  //   border-top-right-radius: 0;
+  //   border-bottom-right-radius: 0;
+  // }
+  // #overviewTable_paginate .pagination > li:last-child > a,
+  // #companyOverviewTable_paginate .pagination > li:last-child > a, 
+  // #userOverviewTable_paginate .pagination > li:last-child > a {
+  //   border-radius: 3px;
+  //   background-color: #ffffff;
+  //   border: solid 1px #e7e7e7;
+  //   border-top-left-radius: 0;
+  //   border-bottom-left-radius: 0;
+  // }
+  // #overviewTable_paginate .pagination > li > a,
+  // #companyOverviewTable_paginate .pagination > li > a, 
+  // #userOverviewTable_paginate .pagination > li > a {
+  //   font-family: Roboto;
+  //   font-size: 15px;
+  //   text-align: left;
+  //   color: #00779b;
+  //   border: 1px solid #e7e7e7;
+  // }
+  // #overviewTable_paginate .pagination > .disabled > a,
+  // #companyOverviewTable_paginate .pagination > .disabled > a, 
+  // #userOverviewTable_paginate .pagination > .disabled > a {
+  //   font-family: Roboto;
+  //   font-size: 15px;
+  //   text-align: left;
+  //   color: #bfbfbf;
+  // }
+  // #overviewTable_paginate .pagination > .active > a,
+  // #companyOverviewTable_paginate .pagination > .active > a, 
+  // #userOverviewTable_paginate .pagination > .active > a {
+  //   font-family: Roboto;
+  //   font-size: 15px;
+  //   font-weight: 900;
+  //   text-align: left;
+  //   color: #00779b;
+  //   background: #fff;
+  // }
+  // #overviewTable_paginate .pagination > li > a:focus,
+  // #companyOverviewTable_paginate .pagination > li > a:focus, 
+  // #userOverviewTable_paginate .pagination > li > a:focus {
+  //   outline: 0;
+  // }
+  
   .newVehicleBtn {
     width: 265px;
     height: 30px;
