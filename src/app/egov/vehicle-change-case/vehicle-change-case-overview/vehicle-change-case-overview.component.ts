@@ -14,17 +14,20 @@ import { VehicleChangeCaseDto } from './../../../shared/dto/vehicle-change-case-
 import { ILanguage } from './../../../shared/interface/ilanguage';
 import { LabelEnum } from './../../../shared/enum/label.enum';
 import { GlobalService } from './../../../shared/service/global.service';
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { UserDto } from '../../../shared/dto/user-dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import 'rxjs/add/operator/map';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-vehicle-change-case-overview',
   templateUrl: './vehicle-change-case-overview.component.html',
-  styleUrls: ['./vehicle-change-case-overview.component.scss']
+  styleUrls: ['./vehicle-change-case-overview.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class VehicleChangeCaseOverviewComponent implements OnInit {
   language: string;
@@ -63,10 +66,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
               private _location: Location,
               private _translate: TranslateService) { }
 
-  // ngAfterViewInit() {
-  //   this.viewContentLoaded();
-  // }
-
   ngOnInit() {
 
     this.language = 'en';
@@ -81,7 +80,14 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
               <ErrorCodeDto> this._overviewErrorService.convertOverviewError(this.errBE['code'], this.errBE['text']);
             this.ErrorCodeMessageError = errorObj.fe_message;
         }
-      }
+
+        this._translate.get(this.localizationResources.DataTable_Label_Search).subscribe((res: string) => {
+            const searchText = res;
+              // update search translation using dom traversing
+              const fChild = $('#overviewTable_filter label')[0].firstChild;
+              fChild.textContent = res;
+        });
+       }
     );
 
     this._egovService.titleDefined.next(LabelEnum.Label_OverviewVehicleChangeCases);
@@ -236,6 +242,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
     this.links.length = 0; // reset links
     this.isDownloadingAttachment = true;
     $('.show-spinner-' + caseId).show();
+    this.document.getElementById('isDownloadingAttachment' + caseId).style = 'display: none;';
 
     this._overviewService.GetSavedAttachmentByCaseId(caseId).subscribe(
       (response) => {
@@ -270,13 +277,12 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
                     }
 
                     const pdfURL = this._egovService.getEnv() + '/egov/api/VehicleChangeCaseAttachment/Download/' + response[f]['id'];
-                    const httpOptions = {
-                      headers: new HttpHeaders({
-                        'responseType': 'arraybuffer'
-                      })
+                    const options = {
+                      // responseType: JSON.parse('{"responseType":"arraybuffer"}')
+                      responseType: 'arraybuffer' as 'json'
                     };
 
-                    this._http.get<any>(pdfURL, httpOptions)
+                    const req = this._http.get<any>(pdfURL, options)
                     .subscribe((responseData) => {
                         this.links.length = 0;
                         const file = new Blob([responseData.data], {
@@ -288,6 +294,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
                             url: this._sanitizer.bypassSecurityTrustUrl(url.createObjectURL(file)),
                             filename: filename
                         };
+                        console.log('file link', fileLink);
                         this.links.push(fileLink);
                         // let isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
                         // navigator.userAgent && !navigator.userAgent.match('CriOS');
@@ -313,14 +320,13 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
                             };
                             reader.readAsDataURL(file);
                         } else {
-                            // const anchorEl = angular.element('<a></a>');
-                            const anchorEl = this.document.element('<a></a>');
-                            anchorEl.attr('href', url.createObjectURL(file));
-                            anchorEl.attr('download', filename);
+                            const anchorEl = this.document.createElement('a');
+                            anchorEl.href = url.createObjectURL(file);
+                            anchorEl.download = filename;
 
                             const evt = this.document.createEvent('MouseEvents');
                             evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                            anchorEl[0].dispatchEvent(evt);
+                            anchorEl.dispatchEvent(evt);
                         }
                     }, (err) => {
                       // Ignore error
@@ -332,6 +338,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
                           // console.log("Downloading...");
                           this.isDownloadingAttachment = false;
                           $('.show-spinner-' + caseId).hide();
+                          this.document.getElementById('isDownloadingAttachment' + caseId).style = 'display: inline-block;';
                       }
                     });
                 }
@@ -339,6 +346,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
         } else {
             this.isDownloadingAttachment = false;
             $('.show-spinner-' + caseId).hide();
+            this.document.getElementById('isDownloadingAttachment' + caseId).style = 'display: inline-block;';
         }
       }
     );
@@ -433,6 +441,13 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
             $(e.target).parents('tr').addClass('bg-tbl-selected');
             const $firstCol = $($(e.target).parents('tr')[0].children[0].children[0]);
             this.SelectedCaseId = $firstCol.attr('id');
+
+            // workaround on (click) event problem
+            if (this.SelectedCaseId && $(e.target)[0] && $(e.target)[0].className === 'content-icon ion-ios-download') {
+              console.log('i class and id', $(e.target)[0].className, this.SelectedCaseId);
+              this.downloadAttachment(<any>this.SelectedCaseId);
+            }
+
             this.HasSelected = true;
             this.SelectedStatusCode = $firstCol.data('status');
             if (this.SelectedStatusCode === CaseStatusEnum.Status_Cancelled
@@ -513,8 +528,8 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
                 displayOwner,
                 (item.attachmentsCount && item.attachmentsCount > 0) ?
                   `<div class='attachment-icon'><i style='display: none; margin-top: 10px;' class='fa fa-spin `
-                  + `fa-spinner show-spinner-" + item.id + "'></i><i *ngIf='isDownloadingAttachment' `
-                  + `class='content-icon ion-ios-download' (click)='downloadAttachment(" + item.id + ")'></i></div>`
+                  + `fa-spinner show-spinner-` + item.id + `'></i><i id='isDownloadingAttachment` + item.id + `'`
+                  + `class='content-icon ion-ios-download'></i></div>`
                    : `<div>&nbsp;</div>`
             ]);
         });

@@ -23,7 +23,7 @@ export class OverviewService {
 
   public GetSavedAttachmentByCaseId(caseId: number) {
     const url = `${this._egovService.getEnv()}/egov/api/VehicleChangeCaseAttachment/` + caseId;
-    return this._http.get<AttachmentDto[]>(`${this._egovService.getEnv()}${url}`, {});
+    return this._http.get<AttachmentDto[]>(url, {});
   }
 
   public Get() {
