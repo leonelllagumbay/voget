@@ -1,0 +1,610 @@
+<div class="divContainer" (window:onbeforeunload)="unloadNotification()">
+  <div class="col-xs-12">
+    <div class="error-container" *ngIf="OldVehicleError || NewVehicleSearchError || IsSubmitError">
+      <div class="row">
+        <i class="content-icon-red ion-minus-circled float-left"></i>
+        <span class="error-text">{{ErrorCodeMessageError | translate}}</span>
+      </div>
+      </div>
+    <div class="warning-container" *ngIf="OldVehicleWarning || NewVehicleSearchWarning || IsSubmitWarning">
+      <div class="row">
+        <i class="warning-icon-container ion-alert-circled"></i>
+        <span class="warning-text">{{ErrorCodeMessageWarning | translate}}</span>
+      </div>
+    </div>      
+    <div class="warning-container" *ngIf="showAttachmentWarning">
+      <div class="row">
+        <i class="warning-icon-container ion-alert-circled"></i>
+        <span class="warning-text">{{ localizationResources.Error_Attachment_Warning | translate }}</span>
+      </div>
+    </div>      
+    <div class="info-container" *ngIf="OldVehicleInfo">
+      <div class="row">
+        <i class="info-icon-container fa-info-circle float-left"></i>
+        <span class="info-text">{{ErrorCodeMessageInfo1 | translate}}</span>
+      </div>
+    </div>
+    <div class="info-container" *ngIf="NewVehicleSearchInfo">
+      <div class="row">
+        <i class="info-icon-container fa-info-circle float-left"></i>
+        <span class="info-text">{{ErrorCodeMessageInfo2 | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="">
+    <div class="col-xs-6 col-md-6 col-lg-4 div-outCirculation">
+      <div class="container-left">
+        <div>
+          <div>
+            <form name="form1" id="form1" (submit)="IsOldVehicleValid && !IsSearch1Busy && SearchVehicle1(false)" novalidate="novalidate">
+              <div>
+                <div class="header-default" [ngClass]="{'header-default': !OldVehicleSuccess || OldVehicleError, 'header-complete': OldVehicleSuccess}">
+                  <i class="content-icon-white ion-edit float-left margin-right-5" *ngIf="!OldVehicleSuccess && !OldVehicleError && !OldVehicleWarning && !OldVehicleInfo"></i>
+                  <i class="content-icon content-icon-green ion-checkmark-circled float-left margin-right-5" *ngIf="OldVehicleSuccess && !OldVehicleWarning && !OldVehicleError && !OldVehicleInfo"></i>
+                  <i class="content-icon-red ion-minus-circled float-left margin-right-5" *ngIf="OldVehicleError"></i>
+                  <i class="content-icon-orange ion-alert-circled float-left margin-right-5" *ngIf="OldVehicleWarning"></i>
+                  <i class="info-icon-container fa-info-circle float-left margin-right-5" *ngIf="OldVehicleInfo"></i>
+
+                  <div class="header-label" (click)="Section1Toggle()">{{localizationResources.Label_PutOutOfCirculation | translate}}</div>
+                </div>
+
+                <div *ngIf="IsSection1Expanded" class="section1">
+                  <div class="card-body">
+
+                    <div class="matri">
+                      <div><i class="content-icon-blue fa fa-list-alt float-left"></i></div>
+                      <div class="field-label Matriculation-No">{{localizationResources.Label_MatriculationNumber | translate}}</div>
+                      <div class="field-container">
+                        <div>
+                        <input id="vehicle1matriculation1" name="vehicle1matriculation1" type="text" 
+                               placeholder="000" 
+                               class="input-textbox" 
+                               required
+                               [ngClass]="{'green-box': IsVehicle1Matriculation1Valid}"
+                               [(ngModel)]="OldVehicle.Matriculation1" ng-maxlength="3" maxlength="3" 
+                               data-maxlength="3" ng-minlength="3"
+                               pattern="\d*"
+                               ng-pattern="/\d*/"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1matriculation2.focus();"
+                               (blur)="ValidateVehicle1Matriculation1()" [disabled]="IsSubmitSuccess"
+                               onclick="this.setSelectionRange(0, this.value.length)"
+                               onfocus="this.setSelectionRange(0, this.value.length)"
+                        />
+                        <i class="content-icon ion-alert-circled error-icon" *ngIf="V1M1HasError"></i>
+                        </div>
+                        <div class="Line float-left"></div>
+                        
+                        <div>
+                        <input id="vehicle1matriculation2" name="vehicle1matriculation2" 
+                               type="text" placeholder="000" class="input-textbox" required
+                               [ngClass]="{'green-box': IsVehicle1Matriculation2Valid}"
+                               [(ngModel)]="OldVehicle.Matriculation2" ng-maxlength="3" maxlength="3" 
+                               data-maxlength="3" ng-minlength="3"
+                               pattern="\d*"
+                               ng-pattern="/\d*/"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1matriculation3.focus();"
+                               (blur)="ValidateVehicle1Matriculation2()" [disabled]="IsSubmitSuccess"
+                               onclick="this.setSelectionRange(0, this.value.length)"
+                               onfocus="this.setSelectionRange(0, this.value.length)"
+                               />
+                        <i class="content-icon ion-alert-circled error-icon" *ngIf="V1M2HasError"></i>
+                        </div>
+
+                        <div class="Line float-left"></div>
+
+                        <div>
+                        <input id="vehicle1matriculation3" name="vehicle1matriculation3" type="text" 
+                               placeholder="000" class="input-textbox" required
+                               [ngClass]="{'green-box': IsVehicle1Matriculation3Valid}"
+                               [(ngModel)]="OldVehicle.Matriculation3" ng-maxlength="3" 
+                               maxlength="3" data-maxlength="3" ng-minlength="3"
+                               pattern="\d*"
+                               ng-pattern="/\d*/"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1chassis.focus();"
+                               (blur)="ValidateVehicle1Matriculation3()" [disabled]="IsSubmitSuccess"
+                               onclick="this.setSelectionRange(0, this.value.length)"
+                               onfocus="this.setSelectionRange(0, this.value.length)"
+                        />
+                        <i class="content-icon ion-alert-circled error-icon" *ngIf="V1M3HasError"></i>
+                        </div>
+
+
+                      </div>
+                    </div>
+
+                    <div class="chassis">
+                        <div><i class="content-icon-blue chassis-default float-left"></i></div>
+                        <div class="field-label Chassis-No">{{localizationResources.Label_ChassisNumber | translate}}</div>
+                        <div class="field-container">
+                        <input id="vehicle1chassis" name="vehicle1chassis" 
+                                type="text" 
+                                pattern="\d*"
+                                placeholder="{{localizationResources.Placeholder_LastFourCharacters | translate}}" 
+                                class="input-textbox" required
+                                [ngClass]="{'green-box': IsVehicle1ChassisValid}"
+                                [(ngModel)]="OldVehicle.Chassis" ng-maxlength="4" maxlength="4" data-maxlength="4" 
+                                ng-minlength="4"
+                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') searchVehicle1.focus();"
+                                (blur)="ValidateVehicle1Chassis()" [disabled]="IsSubmitSuccess"
+                                onclick="this.setSelectionRange(0, this.value.length)"
+                                onfocus="this.setSelectionRange(0, this.value.length)"
+                        />
+                        <i class="content-icon ion-alert-circled error-icon" *ngIf="Chassis1HasError"></i>
+                        </div>
+
+                      <div class="overflow">
+                        <button type="submit" id="searchVehicle1" name="searchVehicle1" class="float-right btn-invalid"
+                        [ngClass]="{'btn-invalid': ((!IsOldVehicleValid  && !SearchOldVehicleClicked) || !IsSearch1Allowed) || ((!IsOldVehicleValid  && SearchOldVehicleClicked) || !IsSearch1Allowed), 
+                                'primary-btn': (IsOldVehicleValid && !SearchOldVehicleClicked && !OldVehicleSuccess && IsSearch1Allowed) || (IsOldVehicleValid && SearchOldVehicleClicked && !OldVehicleSuccess && IsSearch1Allowed), 
+                                'sec-btn-default': IsOldVehicleValid && SearchOldVehicleClicked && OldVehicleSuccess && IsSearch1Allowed}" [disabled]="IsSubmitSuccess || !IsSearch1Allowed">                                                          
+                        <div class="icon-nowrap">
+                            <i class="fa fa-spin fa-spinner" *ngIf="IsSearch1Busy && !OldVehicleError && !OldVehicleWarning && !OldVehicleInfo"></i>
+                            <i class="content-icon-red ion-minus-circled margin-right-5" *ngIf="OldVehicleError && !IsSearch1Busy"></i>
+                            <i class="content-icon-orange ion-alert-circled" *ngIf="OldVehicleWarning && !IsSearch1Busy"></i>
+                            <i class="info-icon-container fa-info-circle" *ngIf="OldVehicleInfo && !IsSearch1Busy"></i>
+                            <i class="fa fa-search padding-0-5" *ngIf="!IsSearch1Busy && !OldVehicleError && !OldVehicleWarning && !OldVehicleInfo"></i>
+                            <div class="search-text-container" [attr.data-value]="localizationResources.Button_Search | translate">
+                              {{localizationResources.Button_Search | translate}}
+                            </div>
+                        </div>
+                        </button>
+    
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="border-bottom border-left border-right">
+            <div class="Rectangle-5 overflow" *ngIf="IsSection1Expanded && SearchOldVehicleClicked && OldVehicleSuccess">
+                <div class="status">
+                    <div><i class="content-icon ion-information-circled float-left"></i></div>
+                    <div class="field-label Status">{{localizationResources.Label_Status | translate}}</div>
+                    <div class="field-container Text-status float-right"
+                        [ngClass]="{'green': OldVehicleSuccess}">
+                        {{localizationResources.Data_OutOfCirculationPossible | translate}}
+                    </div>
+                </div>
+
+                <div class="vehicle">
+                    <div><i class="content-icon ion-android-car float-left"></i></div>
+                    <div class="field-label Vehicle">{{localizationResources.Label_Vehicle | translate}}</div>
+                    <div class="Text-content">
+                        {{OldVehicleSearchResult?.vehicle.brand}} {{OldVehicleSearchResult?.vehicle.type}} {{OldVehicleSearchResult?.vehicle.color1}}
+                    </div>
+                </div>
+
+                <div class="nPlate">
+                    <div><i class="content-icon ion-pound float-left"></i></div>
+                    <div class="field-label Number-Plate">{{localizationResources.Label_NumberPlate | translate}}</div>
+                    <div class="Text-content">
+                        {{OldVehicleSearchResult?.numberPlate.canton}} {{OldVehicleSearchResult?.numberPlate.number}}
+                    </div>
+                </div>
+
+                <div class="owner">
+                    <div><i class="content-icon ion-ios-contact-outline float-left"></i></div>
+                    <div class="field-label Owner">{{localizationResources.Label_Owner | translate}}</div>
+                    <div class="Text-content">
+                        <div>{{OldVehicleSearchResult?.vehicleOwner.firstName}} {{OldVehicleSearchResult?.vehicleOwner.name}}</div>
+                        <div>{{OldVehicleSearchResult?.vehicleOwner.address}}</div>
+                        <div>{{OldVehicleSearchResult?.vehicleOwner.zip}} {{OldVehicleSearchResult?.vehicleOwner.place}}</div>
+                    </div>
+                </div>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+<div class="middle-content">
+    <div class="col-xs-6 col-md-6 col-lg-4 div-intoCirculation">
+        <div class="top">                           
+            <form name="form2" id="form2" (submit)="IsNewVehicleValid && !IsSearch2Busy && SearchVehicle2()" novalidate="novalidate">
+              <div>
+                <div class="header-deactive" [ngClass]="{'header-deactive': !OldVehicleSuccess, 'header-default': OldVehicleSuccess, 'header-complete': NewVehicleSearchSuccess}">
+                  <i class="content-icon-white ion-edit float-left margin-right-5" *ngIf="OldVehicleSuccess && !NewVehicleSearchSuccess && !NewVehicleSearchError && !NewVehicleSearchWarning && !NewVehicleSearchInfo"></i>
+                  <i class="content-icon content-icon-green ion-checkmark-circled float-left margin-right-5" *ngIf="NewVehicleSearchSuccess && !NewVehicleSearchWarning && !NewVehicleSearchError && !NewVehicleSearchInfo"></i>
+                  <i class="content-icon-red ion-minus-circled float-left margin-right-5" *ngIf="NewVehicleSearchError"></i>
+                  <i class="content-icon-orange ion-alert-circled float-left margin-right-5" *ngIf="NewVehicleSearchWarning"></i>
+                  <i class="info-icon-container fa-info-circle float-left margin-right-5" *ngIf="NewVehicleSearchInfo"></i>
+                  <div class="header-label" (click)="Section2Toggle()">{{localizationResources.Label_PutIntoCirculation | translate}}</div>
+                </div>
+  
+                <div *ngIf="IsSection2Expanded" class="section2">
+                  <div class="card-body">
+                    <div class="matri">
+                      <div><i class="content-icon-blue fa fa-list-alt float-left"></i></div>
+                      <div class="field-label Matriculation-No">{{localizationResources.Label_MatriculationNumber | translate}}</div>
+                      <div class="field-container">
+                        <div>
+                          <input name="vehicle2matriculation1" type="text" placeholder="000" 
+                                class="input-textbox" required
+                                [ngClass]="{'green-box': IsVehicle2Matriculation1Valid}"
+                                [(ngModel)]="NewVehicle.Matriculation1" ng-maxlength="3" maxlength="3" data-maxlength="3" ng-minlength="3"
+                                pattern="\d*"
+                                ng-pattern="/\d*/"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2matriculation2.focus();"
+                                (blur)="ValidateVehicle2Matriculation1()" [disabled]="IsSubmitSuccess"
+                                onclick="this.setSelectionRange(0, this.value.length)"
+                                onfocus="this.setSelectionRange(0, this.value.length)"
+                          />
+                          <i class="content-icon ion-alert-circled error-icon" *ngIf="V2M1HasError"></i>
+                        </div>
+  
+                        <div class="Line float-left"></div>
+  
+                        <div>
+                          <input name="vehicle2matriculation2" type="text" placeholder="000" 
+                                class="input-textbox" required
+                                [ngClass]="{'green-box': IsVehicle2Matriculation2Valid}"
+                                [(ngModel)]="NewVehicle.Matriculation2" ng-maxlength="3" maxlength="3" data-maxlength="3" ng-minlength="3"
+                                pattern="\d*"
+                                ng-pattern="/\d*/"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2matriculation3.focus();"
+                                (blur)="ValidateVehicle2Matriculation2()" [disabled]="IsSubmitSuccess"
+                                onclick="this.setSelectionRange(0, this.value.length)"
+                                onfocus="this.setSelectionRange(0, this.value.length)"
+                          />
+                          <i class="content-icon ion-alert-circled error-icon" *ngIf="V2M2HasError"></i>
+                        </div>
+                        <div class="Line float-left"></div>
+  
+                        <div>
+                          <input name="vehicle2matriculation3" type="text" placeholder="000" 
+                                class="input-textbox" required
+                                [ngClass]="{'green-box': IsVehicle2Matriculation3Valid}"
+                                [(ngModel)]="NewVehicle.Matriculation3" ng-maxlength="3" maxlength="3" 
+                                data-maxlength="3" ng-minlength="3"
+                                pattern="\d*"
+                                ng-pattern="/\d*/"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2chassis.focus();"
+                                (blur)="ValidateVehicle2Matriculation3()" [disabled]="IsSubmitSuccess"
+                                onclick="this.setSelectionRange(0, this.value.length)"
+                                onfocus="this.setSelectionRange(0, this.value.length)"
+                          />
+                          <i class="content-icon ion-alert-circled error-icon" *ngIf="V2M3HasError"></i>
+                        </div>
+   
+                      </div>
+                    </div>
+                    <div class="chassis">
+                        <div><i class="content-icon-blue chassis-default float-left"></i></div>
+                        <div class="field-label Chassis-No2">{{localizationResources.Label_ChassisNumber | translate}}</div>
+                        <div class="field-container">
+                            <input id="vehicle2chassis" name="vehicle2chassis" 
+                                type="text" 
+                                pattern="\d*" 
+                                placeholder="{{localizationResources.Placeholder_LastFourCharacters | translate}}" class="input-textbox" required
+                                [ngClass]="{'green-box': IsVehicle2ChassisValid}"
+                                [(ngModel)]="NewVehicle.Chassis" ng-maxlength="4" maxlength="4" 
+                                data-maxlength="4" ng-minlength="4"
+                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') searchVehicle2.focus();"
+                                (blur)="ValidateVehicle2Chassis()" [disabled]="IsSubmitSuccess" 
+                                onclick="this.setSelectionRange(0, this.value.length)"
+                                onfocus="this.setSelectionRange(0, this.value.length)"
+                            />
+                            <i class="content-icon ion-alert-circled error-icon" *ngIf="Chassis2HasError"></i>
+                        </div>
+
+                        <div class="overflow">
+                          <button type="submit" id="searchVehicle2" name="searchVehicle2" class="btn-invalid float-right"
+                            [ngClass]="{'btn-invalid': ((!IsNewVehicleValid && !SearchNewVehicleClicked) || !IsSearch2Allowed) || ((!IsNewVehicleValid && SearchNewVehicleClicked) || !IsSearch2Allowed), 
+                              'primary-btn': (OldVehicleSuccess && IsNewVehicleValid && !SearchNewVehicleClicked && !NewVehicleSearchSuccess && IsSearch2Allowed) || (OldVehicleSuccess && IsNewVehicleValid && SearchNewVehicleClicked && !NewVehicleSearchSuccess && IsSearch2Allowed),                              
+                              'sec-btn-default': OldVehicleSuccess && IsNewVehicleValid && SearchNewVehicleClicked && NewVehicleSearchSuccess && IsSearch2Allowed}" 
+                              [disabled]="IsSubmitSuccess || !IsSearch2Allowed">
+                            <div class="icon-nowrap">
+                              <i class="fa fa-spin fa-spinner" *ngIf="IsSearch2Busy && !NewVehicleSearchError && !NewVehicleSearchWarning && !NewVehicleSearchInfo"></i>
+                              <i class="content-icon-red ion-minus-circled margin-right-5" *ngIf="NewVehicleSearchError && !IsSearch2Busy"></i>
+                              <i class="warning-icon-container ion-alert-circled" *ngIf="NewVehicleSearchWarning && !IsSearch2Busy"></i>
+                              <i class="info-icon-container fa-info-circle" *ngIf="NewVehicleSearchInfo && !IsSearch2Busy"></i>
+                              <i class="fa fa-search padding-0-5" *ngIf="!IsSearch2Busy && !NewVehicleSearchError && !NewVehicleSearchWarning && !NewVehicleSearchInfo"></i>
+                              <div class="search-text-container" [attr.data-value]="localizationResources.Button_Search | translate">
+                                {{localizationResources.Button_Search | translate}}
+                              </div>
+                            </div>
+                          </button>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+  
+            <div class="border-bottom border-left border-right">
+              <div class="Rectangle-5-2 overflow" *ngIf="IsSection2Expanded && IsNewVehicleValid && SearchNewVehicleClicked && NewVehicleSearchSuccess">
+                <div class="status">
+                  <div><i class="content-icon ion-information-circled float-left"></i></div>
+                  <div class="field-label Status">{{localizationResources.Label_Status | translate}}</div>
+                  <div class="field-container Text-status float-right"
+                    [ngClass]="{'green': NewVehicleSearchSuccess }">
+                    {{localizationResources.Data_IntoCirculationPossible | translate}}
+                  </div>
+                </div>
+                <div class="vehicle">
+                  <div><i class="content-icon ion-android-car float-left"></i></div>
+                  <div class="field-label Vehicle">{{localizationResources.Label_Vehicle | translate}}</div>
+                  <div class="Text-content">
+                    {{NewVehicleSearchResult?.vehicle.brand}} {{NewVehicleSearchResult?.vehicle.type}} {{NewVehicleSearchResult?.vehicle.color1}}
+                  </div>
+                </div>
+                <div class="elect">
+                  <div><i class="content-icon ion-ios-paper float-left"></i></div>
+                  <div class="field-label Vehicle">{{localizationResources.Label_ElectInsuranceValidTo | translate}}</div>
+                  <div class="Text-content">
+                    {{NewVehicleSearchResult?.eic.validTo | date:'dd.MM.yyyy' }}
+                  </div>
+                </div>
+              </div>
+  
+              <form name="form3" id="form3" (submit)="NewVehicleSearchSuccess && ClickConfirmButton()" novalidate="novalidate">
+                <div class="Rectangle-9 margin-10" *ngIf="IsSection2Expanded && NewVehicleSearchSuccess">
+                  <div class="float-left width-confirm">
+                    <div class="infoCircle" [ngClass]="{'opacity-50': IsConfirmed}"><i class="fa fa-info-circle float-left" aria-hidden="true"></i></div>
+                    <div class="Please-confirm" *ngIf="!IsConfirmed">{{localizationResources.Text_ConfirmMessage | translate}}</div>
+                    <div class="Please-confirm confirmed" *ngIf="IsConfirmed">{{localizationResources.Text_ConfirmedMessage | translate}}</div>
+                  </div>
+                  <div>
+                    <button type="submit" [ngClass]="{'confirm-btn-disabled': IsConfirmed}" class="float-right submit-btn" [disabled]="IsSubmitSuccess || OldVehicleInfo || NewVehicleSearchInfo">
+                      <span *ngIf="!IsConfirmed"><i class="content-icon-white ion-android-checkbox-outline-blank"></i>{{localizationResources.Button_Confirm | translate}}</span>
+                      <span *ngIf="IsConfirmed"><i class="fa fa-check-square-o"></i>{{localizationResources.Button_Confirmed | translate}}</span>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+  
+  
+          </div>
+    </div>
+
+    <div class="col-xs-6 col-xs-offset-6 col-md-6 col-md-offset-6 col-lg-4 col-lg-offset-0 div-completion">
+        <div class="bottom">
+          <div class="header-deactive" [ngClass]="{'header-deactive': !IsConfirmed, 'header-default': IsConfirmed && !IsSubmitted, 'header-complete': IsConfirmed && IsSubmitted}">
+            <i class="content-icon-white ion-edit float-left" *ngIf="IsConfirmed && !IsSubmitted"></i>
+            <i class="content-icon content-icon-green ion-checkmark-circled float-left" *ngIf="IsConfirmed && IsSubmitted"></i>
+
+            <div class="header-label" data-toggle="collapse" data-target="#completion">{{localizationResources.Label_Completion | translate}}</div>
+          </div>
+          <div class="collapse multi-collapse" id="completion">
+            <div class="card-body">
+              <div class="Rectangle-5-3 overflow">
+                <div><i class="content-icon ion-android-list float-left"></i></div>
+                <div class="Case-Summary">{{localizationResources.Label_CaseSummary | translate}}</div>
+
+                <div class="row text-center">
+                  <div class="col-xs-4">
+                    <div class="plainCar"><i class="content-icon ion-android-car"></i></div>
+                    <i class="fa fa-window-close"></i>
+                    <div class="Land-Rover-90LD">{{OldVehicleSearchResult?.vehicle.brand}} {{OldVehicleSearchResult?.vehicle.type}}</div>
+                    <div>{{OldVehicle?.Matriculation1}}.{{OldVehicle?.Matriculation2}}.{{OldVehicle?.Matriculation3}}</div>
+                  </div>
+
+                  <div class="col-xs-4">
+                    <div class="arrowRight">
+                        <!-- <div class="VD-123123">{{OldVehicleSearchResult?.numberPlate.canton}} {{OldVehicleSearchResult?.numberPlate.number}}</div> -->
+                        <i class="icon-flag" aria-hidden="true"></i>
+                        <div class="VD-123123">{{OldVehicleSearchResult?.numberPlate.canton}}<span>.</span>{{OldVehicleSearchResult?.numberPlate.number}}</div>
+                        
+                    </div>
+                    <!-- <div class="arrowRight"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></div> -->
+                    <div class="Mike-Sample-7777-Via">{{OldVehicleSearchResult?.vehicleOwner.firstName}} {{OldVehicleSearchResult?.vehicleOwner.name}}</div>
+                    <div>{{OldVehicleSearchResult?.vehicleOwner.zip}} {{OldVehicleSearchResult?.vehicleOwner.place}}</div>
+                  </div>
+
+                  <div class="col-xs-4">
+                    <div class="coloredCar"><i class="content-icon ion-android-car"></i></div>
+                    <i class="fa fa-check-square"></i>
+                    <div class="Volkswagen-Touran">{{NewVehicleSearchResult?.vehicle.brand}} {{NewVehicleSearchResult?.vehicle.type}}</div>
+                    <div>{{NewVehicle?.Matriculation1}}.{{NewVehicle?.Matriculation2}}.{{NewVehicle?.Matriculation3}}</div>
+                  </div>
+                </div>
+              </div>
+
+            <div class="completion2">
+                <div class="overflow" *ngIf="!(RtdLocationList?.length == 1)">
+                    <div><i class="content-icon-blue fa fa-map-marker float-left"></i></div>
+                    <div class="field-label padding-5 paperTo-label rtd-label">{{localizationResources.Label_RtdLocation | translate}}</div>
+                    <ul class="float-right new-reg2" [ngClass]="{'readOnly': IsSubmitSuccess}">
+                    <li data-toggle="collapse" data-target="#RtdLocation" class="mousepointer">
+                        <span class="new-reg-label">{{SelectedRtd?.name}}</span>
+
+                        <ul id="RtdLocation" class="collapse zindex-5 dropdown-auto">
+                        <li class="li-dropdown" (click)="SelectRtd(rtd)" *ngFor="let rtd of RtdLocationList">
+                            <span>{{rtd.name}}</span>
+                        </li>
+                        </ul>
+                    </li>
+                    </ul>
+                </div>
+
+                <div class="overflow" *ngIf="IsSendNewVehicleConfigShown">
+                    <div><i class="content-icon-blue fa fa-file-text-o float-left"></i></div>
+                    <div class="field-label padding-5 paperTo-label newPaper-label">{{localizationResources.Label_NewRegistrationPaperTo | translate}}</div>
+                    <ul class="float-right new-reg2" [ngClass]="{'readOnly': IsSubmitSuccess}">
+                        <li data-toggle="collapse" data-target="#newRegDropdown" class="mousepointer" > <!-- [attr.disabled]="IsSubmitSuccess" -->
+                        <span class="new-reg-label">{{selectedOptionNewLabel}}</span>
+
+                        <ul id="newRegDropdown" class="collapse zindex-5 dropdown-auto">                      
+                            <li class="li-dropdown" [ngClass]="" (click)="SelectOptionNew('1')">
+                            <span>{{localizationResources.Option_Garage | translate}}</span>
+                            </li>
+                            <li class="li-dropdown" [ngClass]="" (click)="SelectOptionNew('2')">
+                            <span>{{localizationResources.Option_Customer | translate}}</span>
+                            </li>
+                        </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="overflow" *ngIf="IsSendOldVehicleConfigShown">
+                    <div><i class="content-icon-blue fa fa-file-text float-left"></i></div>
+                    <div class="field-label padding-5 paperTo-label cancelPaper-label">{{localizationResources.Label_CancelRegistrationPaperTo | translate}}</div>
+                    <ul class="float-right new-reg2" [ngClass]="{'readOnly': IsSubmitSuccess}">
+                        <li data-toggle="collapse" data-target="#canRegDropdown" class="mousepointer" > <!-- [disabled]="IsSubmitSuccess" -->
+                        <span class="new-reg-label">{{selectedOptionCancelLabel}}</span>
+
+                        <ul id="canRegDropdown" class="collapse zindex-5 dropdown-auto">                      
+                            <li class="li-dropdown" [ngClass]="" (click)="SelectOptionCancel('1')">
+                            <span>{{localizationResources.Option_Garage | translate}}</span>
+                            </li>
+                            <li class="li-dropdown" [ngClass]="" (click)="SelectOptionCancel('2')">
+                            <span>{{localizationResources.Option_Customer | translate}}</span>
+                            </li>
+                        </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="overflow comment-container" *ngIf="IsCommentConfigShown">
+                    <div><i class="content-icon-blue fa fa-comment float-left"></i></div>
+                    <div class="field-label padding-5 comment-label">{{localizationResources.Label_Comment | translate}}</div>
+                    <div class="col-sm-6 form-group commentBox">
+                        <textarea placeholder="{{localizationResources.Label_TypeHere | translate}}" rows="1" id="my-input" class="form-control" [(ngModel)]="Comment" maxlength="115" [disabled]="IsSubmitSuccess"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow attachment-container">
+                    <div><i class="content-icon ion-android-attach float-left"></i></div>
+                    <div class="attachment-label">{{localizationResources.Label_Attachment | translate}}</div>
+
+                <div class="attach">
+                  <div id="upload_button" *ngIf="!IsSubmitted">    
+                    <span class="btn btn-default btn-file" >
+                      <i class="content-icon ion-android-upload"></i>Upload
+                      <input type="file" 
+                      [(ngModel)]="files"
+                        base-sixty-four-input multiple 
+                        accept=".png, .doc, .docx, .xls, .xlsx, .bmp, .jpg, .jpeg, .pdf" 
+                        maxsize="5242880"
+                        onload="onLoad"
+                        on-change="onChange"
+                        do-not-parse-if-oversize
+                        allow-same-file="true"
+                        >
+                    </span>
+                    <br />
+                    <ul class="fileList"></ul>
+                  </div>
+                  <label class="max-label" *ngIf="!IsSubmitted">Max. 5MB</label>
+
+                  <!-- Show saved files as list -->
+                  <div class="row" *ngFor="let savefile of filesSaved"> 
+                    <div class="margin-1" *ngIf="savefile.id"> 
+                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}"
+                         class="content-icon"
+                         (click)="hideSavedFile($index, savefile.id)" 
+                         title="Delete">
+                      </i>
+                      <span class="filename-multiple">
+                        <span>{{ savefile.filename }}</span>
+                        <span></span>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End show saved files as list -->
+
+                  <!-- Show to be saved files as list -->
+                  <div class="row" *ngFor="let file of allFiles">
+                    <div class="margin-1" *ngIf="$index+filesSaved.length<5 && !file.errorMessageBE"> <!-- Only five attachment per change case -->
+                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}" 
+                         class="content-icon" 
+                         (click)="hideFileByIndex($index)" 
+                         title="Delete">
+                      </i>
+                      <span *ngIf="isFileSupported($index)">  
+                        <i *ngIf="isFileSizeOver($index)" class="content-icon ion-alert-circled file-size-is-too-big"></i> 
+                      </span>
+                      <i *ngIf="!isFileSupported($index)" class="content-icon ion-alert-circled file-size-is-too-big"></i>
+                      <span class="filename-multiple">
+                        <span>{{ file.filename }}</span>
+                        <span></span>
+                        <span>{{ (file.filesize/1024/1024 > 5) ? '' : '(' + (file.filesize/1024/1024 | number: 2) + ' MB)' }}</span>
+                        <span *ngIf="isFileSupported($index)">
+                            <span *ngIf="isFileSizeOver($index)" class="file-size-is-too-big">File size is too big</span>
+                            <span *ngIf="!isFileSizeOver($index)"></span>
+                        </span>
+                        <span *ngIf="!isFileSupported($index)" class="file-size-is-too-big">File type is not supported</span>
+                      </span>
+                    </div>
+                  </div>
+                  <!-- End show to be saved files as list -->  
+
+                  <!-- Show failed to upload files -->
+                  <div class="row" *ngFor="let file of allFiles"> 
+                    <div class="margin-1" *ngIf="file.errorMessageBE"> 
+                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}"
+                         class="content-icon"
+                         (click)="hideFileByIndex($index)" 
+                         title="Delete">
+                      </i>
+                      <i class="content-icon ion-alert-circled file-size-is-too-big"></i>
+                      <span class="filename-multiple">
+                        <span>{{ file.filename }}</span>
+                        <span></span>
+                        <span>{{ (file.filesize/1024/1024 > 5) ? '' : '(' + (file.filesize/1024/1024 | number: 2) + ' MB)' }}</span>
+                      </span>
+                      <span class="file-size-is-too-big">{{ file.errorMessageBE }}</span>
+                    </div>
+                  </div>
+                  <!-- End show failed to upload files -->
+
+                </div> 
+			        </div>
+
+            <div class="Rectangle-9 submit-section">
+                <div class="float-left">
+                    <div class="infoCircle" [ngClass]="{'opacity-50': IsSubmitted}"><i class="fa fa-info-circle float-left" aria-hidden="true"></i></div>
+                    <div class="Please-submit" *ngIf="!IsSubmitted">{{localizationResources.Text_SubmitMessage | translate}}</div>
+                    <div class="Please-submit confirmed" *ngIf="IsSubmitted">{{localizationResources.Text_SuccessfullySubmitted | translate}}</div>
+                </div>
+                <div id="submitContainer" name="submitContainer">
+                  <button type="submit" [ngClass]="{'submit-btn-disabled': IsSubmitted}" 
+                          class="float-right submit-btn" 
+                          (click)="!IsBusy && !IsSaveAsDraftBusy && ClickSaveAsDraft(true)" 
+                          [disabled]="IsSubmitSuccess">
+                    <span *ngIf="!IsSubmitted">
+                      <i class="fa fa-spin fa-spinner padding-0-5" *ngIf="IsBusy"></i>
+                      <i class="ion-android-send" *ngIf="!IsBusy"></i>{{localizationResources.Button_Submit | translate}}</span>
+                    <span *ngIf="IsSubmitted"><i class="fa fa-check"></i>{{localizationResources.Button_Submitted | translate}}</span>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div> <!--END middle-content-->
+
+
+  </div>
+  <div class="col-xs-12">
+    <form name="form4" id="form4" novalidate="novalidate">
+          <div class="action-button">
+            <div class="overflow">
+              <div>
+                <button id="btnPrint" name="btnPrint" type="submit" (click)="!IsPrintBusy && ClickPrint()" class="primary-btn float-right col-xs-3 print-btn" [disabled]="!IsSubmitted" [ngClass]="{'btn-invalid': !IsSubmitted, 'primary-btn': IsSubmitted }">
+                  <i class="fa fa-print padding-0-5"></i>{{localizationResources.Button_Print | translate}}
+                </button>
+                <button type="submit" (click)="!IsBusy && !IsSaveAsDraftBusy && ClickSaveAsDraft(false)" *ngIf="!IsSubmitted && !OldVehicleError && !NewVehicleSearchError" class="width-215 btn-invalid float-right draft-btn" [ngClass]="{'btn-invalid': !IsOldVehicleValid, 'draft-btn-default': IsOldVehicleValid}">
+                  <i class="fa fa-spin fa-spinner" *ngIf="isUploadingAttachment"></i>
+                  <i class="fa fa-pencil-square-o padding-0-5" *ngIf="!isUploadingAttachment"></i>
+                  {{localizationResources.Button_SaveAsDraft | translate}}
+                </button>
+                <button id="btnBack" name="btnBack" type="submit" (click)="!isSaveAsDraftRejectedClicked && ClickGoBack()" *ngIf="IsSubmitted || (!IsSubmitted && (OldVehicleError || NewVehicleSearchError))" class="goBack-btn-default draft-btn float-right">
+                  <i class="fa fa-arrow-left padding-0-5"></i>{{localizationResources.Button_BackToOverview | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+    </form>
+</div>
+</div> <!--divContainer END-->

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from './../../../environments/environment';
 import { LabelEnum } from './../enum/label.enum';
 import { Injectable } from '@angular/core';
@@ -14,8 +15,10 @@ export class GlobalService {
   locationChangeStarted = new Subject();
   locationChangeSucceeded = new Subject();
   locationChanged = new Subject();
+  errorDefined = new Subject();
+  confirmText: string;
 
-  constructor() {
+  constructor(private _translate: TranslateService) {
 
       this.CaseStatus = new Map();
       this.CaseStatus.set(10, LabelEnum.Status_New);
@@ -49,6 +52,16 @@ export class GlobalService {
 
   public getDefaultLanguage() {
     return environment.browserLanguage;
+  }
+
+  public setConfirmText(origMsg: string) {
+    this._translate.get(origMsg).subscribe(res => {
+      this.confirmText = res;
+    });
+  }
+
+  public getConfirmText() {
+    return this.confirmText;
   }
 
 }

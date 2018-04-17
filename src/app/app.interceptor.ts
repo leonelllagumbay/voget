@@ -1,3 +1,4 @@
+import { GlobalService } from './shared/service/global.service';
 
 import { Injectable, Inject, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import {
@@ -12,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class EGovInterceptor implements HttpInterceptor {
@@ -19,8 +21,8 @@ export class EGovInterceptor implements HttpInterceptor {
     appRootService: any;
     rootViewContainer: any;
     request_count = 0;
-    constructor(@Inject(ComponentFactoryResolver) componentFactoryResolver
-    ) {
+
+    constructor(@Inject(ComponentFactoryResolver) componentFactoryResolver, private _egovService: GlobalService) {
         this.componentFactoryResolver = componentFactoryResolver;
     }
 
@@ -82,7 +84,7 @@ export class EGovInterceptor implements HttpInterceptor {
         // this.loadSpinnerComponent(loader_message);
         return next.handle(request)
             .do((ev: HttpEvent<any>) => {
-                console.log('ev success', ev);
+                console.log('http success', ev);
                 if (ev instanceof HttpResponse) {
                     this.subtractHttpRequestCount();
                     if (this.getRequestCount() === 0) {
@@ -93,16 +95,14 @@ export class EGovInterceptor implements HttpInterceptor {
             .catch(er => {
                 console.log('er interceptor', er);
                 if (er instanceof HttpErrorResponse) {
-                    this.subtractHttpRequestCount();
-                    if (this.getRequestCount() === 0) {
-                        this.clearSpinnerComponent();
-                    }
 
+                    // Notify listeners for the error
+                    this._egovService.errorDefined.next(er);
 
-                    if (request.method !== 'GET' && er.status !== 200 ) {
-                        // Show error message
-                        // Broadcast http client error message here
-                    }
+                    // this.subtractHttpRequestCount();
+                    // if (this.getRequestCount() === 0) {
+                    //     this.clearSpinnerComponent();
+                    // }
                 }
                 return Observable.throw(er);
             });

@@ -21,7 +21,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import 'rxjs/add/operator/map';
-import * as $ from 'jquery';
+// import * as $ from 'jquery';
 
 @Component({
   selector: 'app-vehicle-change-case-overview',
@@ -539,6 +539,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
 
   RefreshPageTitle() {
     this.pageTitle = this.localizationResources.Label_OverviewVehicleChangeCases;
+    this._egovService.titleDefined.next(this.pageTitle);
   }
 
   FormatMatriculation(matriculation: number) {

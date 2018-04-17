@@ -1,3 +1,4 @@
+import { ValidationResult } from './../../../shared/enum/validation-result.enum';
 import { ErrorCodeDto } from './../../../shared/dto/error-code-dto';
 import { ErrorCodeCaseK } from './../../../shared/enum/vehicle-change-case-code.enum';
 import { VehicleChangeCaseDraftDto } from './../../../shared/dto/vehicle-change-case-draft-dto';
@@ -13,8 +14,8 @@ import { CaseErrorService } from './../../../shared/service/case-error.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErniJsUtilsBlockControl } from './../../../shared/class/utils';
 import { GlobalService } from './../../../shared/service/global.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as $ from 'jquery';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 
 @Component({
   selector: 'app-new-vehicle-change-case',
@@ -22,6 +23,7 @@ import * as $ from 'jquery';
   styleUrls: ['./new-vehicle-change-case.component.scss']
 })
 export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
+
   private $submitContainer = $('#submitContainer');
   private blocker: any;
   private url: string;
@@ -45,8 +47,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   IsEditClicked: boolean;
   selectedCaseId: string;
   caseStatusEnum: any;
-  OldVehicle: OldVehicleDto;
-  NewVehicle: NewVehicleDto;
+  OldVehicle = new OldVehicleDto();
+  NewVehicle = new NewVehicleDto();
   IsSearch1Allowed: boolean;
   IsSearch2Allowed: boolean;
   IsSection1Expanded: boolean;
@@ -100,7 +102,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   SearchedChassis2: string;
   IsVehicle1Expanded: boolean;
   IsVehicle2Expanded: boolean;
-  RtdLocationList: any;
+  RtdLocationList: Array<{}>;
   SelectedRtd: any;
   selectedOptionNew: number;
   selectedOptionNewLabel: string;
@@ -126,12 +128,18 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   VehicleChangeCaseDraftDto = new VehicleChangeCaseDraftDto;
   ShowPrint: boolean;
   IsPrintBusy: boolean;
+  NewVehicleNewVehicle = {};
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    $event.returnValue = true;
+  }
 
   constructor(private _egovService: GlobalService, private _router: Router,
               public caseErrorService: CaseErrorService, public caseService: CaseService,
               private _route: ActivatedRoute) { }
 
   ngOnInit() {
+
     this.url = this._egovService.getEnv();
     this.$submitContainer = $('#submitContainer');
     this.blocker = new ErniJsUtilsBlockControl(this.$submitContainer, false);
@@ -206,6 +214,53 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
     this.IsSearch1Busy = false;
 
     this.viewContentLoaded();
+
+    this.RtdLocationList = [];
+
+    this._egovService.errorDefined.subscribe((er: HttpErrorResponse) => {
+      console.log('error catched here', er);
+      if (er.error) {
+        let code = '';
+        let text = '';
+        let parameters = [];
+        if (er.error && er.error[0] && er.error[0].code ) { // is array
+          code = er.error[0].code;
+          text = er.error[0].text;
+          parameters = er.error[0].parameters;
+        } else {
+          code = er.error.code;
+          if (er.error.text) {
+            text = er.error.text;
+          } else {
+            text = er.error.message;
+          }
+          parameters = er.error.parameters;
+        }
+        this.ErrorValidationResult.errorCode = code;
+        this.ErrorValidationResult.code = code;
+        if (er.error.text) {
+          this.ErrorValidationResult.message = text;
+        } else {
+          this.ErrorValidationResult.message = text;
+        }
+
+        this.ErrorValidationResult.type = 'Error';
+        this.ErrorValidationResult.parameters = parameters;
+
+        this.SearchOldVehicleClicked = true;
+        this.OldVehicleSuccess = false;
+        this.OldVehicleError = true;
+        this.IsSection2Expanded = false;
+
+        this.IsSearch1Busy = false;
+
+        const customError = this.caseErrorService.convertCaseError(this.ErrorValidationResult.code, this.ErrorValidationResult.message);
+        console.log('error custom code', this.ErrorValidationResult.code, customError);
+        this.ErrorCodeMessageError = (<ErrorCodeDto>customError).fe_message;
+      }
+    });
+
+    this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
   }
 
   onLoad(e, reader, file, fileList, fileOjects, fileObj) {
@@ -489,7 +544,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.OldVehicleSearchResult = result;
 
         if (this.OldVehicleSearchResult && this.OldVehicleSearchResult.validationResult) {
-            if (this.OldVehicleSearchResult.validationResult.type === 'Success') {
+            if (this.OldVehicleSearchResult.validationResult.type === ValidationResult.Success) {
                 this.SearchOldVehicleClicked = true;
                 this.SearchedMatriculation1 = mat1;
                 this.SearchedChassis1 = this.OldVehicle.Chassis;
@@ -498,7 +553,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                 this.OldVehicleError = false;
                 this.OldVehicleInfo = false;
                 this.IsSection2Expanded = true;
-            } else if (this.OldVehicleSearchResult.validationResult.type === 'Warning') {
+            } else if (this.OldVehicleSearchResult.validationResult.type === ValidationResult.Warning) {
                 this.SearchOldVehicleClicked = true;
                 this.SearchedMatriculation1 = mat1;
                 this.SearchedChassis1 = this.OldVehicle.Chassis;
@@ -508,7 +563,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                 this.WarningValidationResult = new ValidationResultDto();
                 this.WarningValidationResult = this.OldVehicleSearchResult.validationResult;
                 this.ErrorCodeMessageWarning = this.ErrorMapper(this.WarningValidationResult);
-            } else if (this.OldVehicleSearchResult.validationResult.type === 'Error') {
+            } else if (this.OldVehicleSearchResult.validationResult.type === ValidationResult.Error) {
                 this.SearchedMatriculation1 = mat1;
                 this.SearchedChassis1 = this.OldVehicle.Chassis;
                 this.SearchOldVehicleClicked = true;
@@ -558,7 +613,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
       this.IsSearch2Busy = false;
       this.NewVehicleSearchResult = result;
       if (this.NewVehicleSearchResult && this.NewVehicleSearchResult.validationResult) {
-        if (this.NewVehicleSearchResult.validationResult.type === 'Success') {
+        if (this.NewVehicleSearchResult.validationResult.type === ValidationResult.Success) {
           this.SearchNewVehicleClicked = true;
           this.SearchedMatriculation2 = mat2;
           this.SearchedChassis2 = this.NewVehicle.Chassis;
@@ -569,7 +624,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             if (this.IsEditClicked) {
               this.IsConfirmed = false;
             }
-        } else if (this.NewVehicleSearchResult.validationResult.type === 'Warning') {
+        } else if (this.NewVehicleSearchResult.validationResult.type === ValidationResult.Warning) {
           this.SearchedMatriculation2 = mat2;
           this.SearchedChassis2 = this.NewVehicle.Chassis;
           this.SearchNewVehicleClicked = true;
@@ -578,7 +633,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           this.WarningValidationResult = new ValidationResultDto();
           this.WarningValidationResult = this.NewVehicleSearchResult.validationResult;
           this.ErrorCodeMessageWarning = this.ErrorMapper(this.WarningValidationResult);
-        } else if (this.NewVehicleSearchResult.validationResult.type === 'Error') {
+        } else if (this.NewVehicleSearchResult.validationResult.type === ValidationResult.Error) {
           this.SearchedMatriculation2 = mat2;
           this.SearchedChassis2 = this.NewVehicle.Chassis;
           this.SearchNewVehicleClicked = true;
@@ -691,10 +746,16 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   }
 
   LoadVehicle1() {
-    this.OldVehicle.Matriculation1 = this.SelectedCase.matriculationNr1.toString().slice(0, 3);
-    this.OldVehicle.Matriculation2 = this.SelectedCase.matriculationNr1.toString().slice(3, 6);
-    this.OldVehicle.Matriculation3 = this.SelectedCase.matriculationNr1.toString().slice(6, 9);
-    this.OldVehicle.Chassis = this.SelectedCase.chassisNr1.toString();
+    if (this.SelectedCase && this.SelectedCase.matriculationNr1) {
+      this.OldVehicle.Matriculation1 = this.SelectedCase.matriculationNr1.toString().slice(0, 3);
+      this.OldVehicle.Matriculation2 = this.SelectedCase.matriculationNr1.toString().slice(3, 6);
+      this.OldVehicle.Matriculation3 = this.SelectedCase.matriculationNr1.toString().slice(6, 9);
+    }
+
+    if (this.SelectedCase && this.SelectedCase.chassisNr1) {
+      this.OldVehicle.Chassis = this.SelectedCase.chassisNr1.toString();
+    }
+
     this.IsOldVehicleValid = true;
     this.IsVehicle1ChassisValid = true;
     this.IsVehicle1Matriculation1Valid = true;
@@ -1037,16 +1098,16 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.blocker.remove();
         this.IsBusy = false;
         if (result) {
-          if (result.vehicleOutOfCirculation.validationResult.type === 'Success' &&
-              result.vehicleInToCirculation.validationResult.type === 'Success') {
+          if (result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Success &&
+              result.vehicleInToCirculation.validationResult.type === ValidationResult.Success) {
             this.SelectedCaseId = result.vehicleChangeCase.id;
             this.IsSubmitSuccess = true;
             this.IsSubmitted = true;
             this.ShowPrint = true;
             $('#btnBack').focus();
           } else {
-            if (result.vehicleOutOfCirculation.validationResult.type === 'Warning' ||
-                result.vehicleOutOfCirculation.validationResult.type === 'Error') {
+            if (result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Warning ||
+                result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Error) {
               this.IsSubmitSuccess = false;
               this.IsSubmitError = true;
               this.ErrorValidationResult = new ValidationResultDto();
@@ -1054,8 +1115,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
               this.ErrorCodeMessageError = this.ErrorMapper(this.ErrorValidationResult);
               this.IsBusy = false;
             }
-            if (result.vehicleInToCirculation.validationResult.type === 'Warning' ||
-                result.vehicleInToCirculation.validationResult.type === 'Error') {
+            if (result.vehicleInToCirculation.validationResult.type === ValidationResult.Warning ||
+                result.vehicleInToCirculation.validationResult.type === ValidationResult.Error) {
               this.IsSubmitSuccess = false;
               this.IsSubmitError = true;
               this.ErrorValidationResult = new ValidationResultDto();
@@ -1071,16 +1132,16 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.blocker.remove();
         this.IsBusy = false;
         if (result) {
-          if (result.vehicleOutOfCirculation.validationResult.type === 'Success' &&
-              result.vehicleInToCirculation.validationResult.type === 'Success') {
+          if (result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Success &&
+              result.vehicleInToCirculation.validationResult.type === ValidationResult.Success) {
             this.SelectedCaseId = result.vehicleChangeCase.id;
             this.IsSubmitSuccess = true;
             this.IsSubmitted = true;
             this.ShowPrint = true;
             $('#btnBack').focus();
           } else {
-            if (result.vehicleOutOfCirculation.validationResult.type === 'Warning' ||
-                result.vehicleOutOfCirculation.validationResult.type === 'Error') {
+            if (result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Warning ||
+                result.vehicleOutOfCirculation.validationResult.type === ValidationResult.Error) {
               this.IsSubmitSuccess = false;
               this.IsSubmitError = true;
               this.ErrorValidationResult = new ValidationResultDto();
@@ -1088,8 +1149,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
               this.ErrorCodeMessageError = this.ErrorMapper(this.ErrorValidationResult);
               this.IsBusy = false;
             }
-            if (result.vehicleInToCirculation.validationResult.type === 'Warning' ||
-                result.vehicleInToCirculation.validationResult.type === 'Error') {
+            if (result.vehicleInToCirculation.validationResult.type === ValidationResult.Warning ||
+                result.vehicleInToCirculation.validationResult.type === ValidationResult.Error) {
               this.IsSubmitSuccess = false;
               this.IsSubmitError = true;
               this.ErrorValidationResult = new ValidationResultDto();
@@ -1286,19 +1347,11 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
               const errorObj: ErrorCodeDto = <ErrorCodeDto> this.caseErrorService.convertCaseError(this.errBE['code'], this.errBE['text']);
               this.ErrorCodeMessageError = errorObj.fe_message;
           }
+          this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
          }
       );
     });
   }
-
-//   $scope.$on('$locationChangeStart', function (event, newUrl: string, oldUrl: string) {
-//     if (oldUrl.indexOf('newVehicleChangeCase') >= 0) {
-//         var answer = confirm($rootScope.localizationResources.Message_NavigateAway);
-//         if (!answer) {
-//             event.preventDefault();
-//         }
-//     }
-// });
 
   locationChangeStart(event, newUrl: string, oldUrl: string) {
     if (oldUrl.indexOf('newVehicleChangeCase') >= 0) {
@@ -1310,10 +1363,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    return this.localizationResources.Message_ReloadPage;
-    // window.onbeforeunload() {
-    //   return this.localizationResources.Message_ReloadPage;
-    // }
+    //
   }
 
   SelectOptionNew(option) {
@@ -1359,185 +1409,11 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
 
   RefreshPageTitle() {
     this.pageTitle = this.localizationResources.Label_NewVehicleChange;
+    this._egovService.titleDefined.next(this.pageTitle);
   }
 
   ErrorMapper(validationResult: ValidationResultDto) {
-    let errorMessage = '';
-    let errorCode = '';
-    let brCode = '';
-
-    if (validationResult !== undefined && validationResult != null &&
-        validationResult.errorCode !== undefined && validationResult.errorCode != null) {
-        errorCode = validationResult.errorCode;
-        errorMessage = '';
-        brCode = ' Code: '.concat(validationResult.errorCode);
-    }
-
-    let params = '';
-    if (validationResult !== undefined) {
-        if (validationResult.parameters !== undefined && validationResult.parameters.length > 0) {
-            params = ' \n\n';
-            for (let i = 0; i < validationResult.parameters.length; i++) {
-                const obj1 = validationResult.parameters[i].name;
-                const objTrans1 = this.ObjectMapper(obj1);
-                const val1 = validationResult.parameters[i].value;
-                params = params + objTrans1 + ': ' + val1;
-                if (i % 2 === 0) {
-                    params = params + ' | ';
-                }
-                if (i % 2 !== 0) {
-                    params = params + '\n';
-                }
-            }
-        }
-    }
-
-    switch (errorCode) {
-      case 'BR1':
-        errorMessage = this.localizationResources.ErrorCode_br1.concat(brCode);
-        break;
-      // case and so on ...
-    }
-
-    if (errorCode === 'BR1') { errorMessage = this.localizationResources.ErrorCode_br1.concat(brCode);
-    } else if (errorCode === 'BR100') { errorMessage = this.localizationResources.ErrorCode_br100.concat(brCode);
-    } else if (errorCode === 'BR101') { errorMessage = this.localizationResources.ErrorCode_br101.concat(brCode);
-    } else if (errorCode === 'BR102') { errorMessage = this.localizationResources.ErrorCode_br102.concat(brCode);
-    } else if (errorCode === 'BR103') { errorMessage = this.localizationResources.ErrorCode_br103.concat(brCode);
-    } else if (errorCode === 'BR104') { errorMessage = this.localizationResources.ErrorCode_br104.concat(brCode);
-    } else if (errorCode === 'BR105') { errorMessage = this.localizationResources.ErrorCode_br105.concat(brCode);
-    } else if (errorCode === 'BR106') { errorMessage = this.localizationResources.ErrorCode_br106.concat(brCode);
-    } else if (errorCode === 'BR107') { errorMessage = this.localizationResources.ErrorCode_br107.concat(brCode);
-    } else if (errorCode === 'BR108') { errorMessage = this.localizationResources.ErrorCode_br108.concat(brCode);
-    } else if (errorCode === 'BR109') { errorMessage = this.localizationResources.ErrorCode_br109.concat(brCode);
-    } else if (errorCode === 'BR11') { errorMessage = this.localizationResources.ErrorCode_br11.concat(brCode);
-    } else if (errorCode === 'BR110') { errorMessage = this.localizationResources.ErrorCode_br110.concat(brCode);
-    } else if (errorCode === 'BR116') { errorMessage = this.localizationResources.ErrorCode_br116.concat(brCode);
-    } else if (errorCode === 'BR117') { errorMessage = this.localizationResources.ErrorCode_br117.concat(brCode);
-    } else if (errorCode === 'BR119') { errorMessage = this.localizationResources.ErrorCode_br119.concat(brCode);
-    } else if (errorCode === 'BR120') { errorMessage = this.localizationResources.ErrorCode_br120.concat(brCode);
-    } else if (errorCode === 'BR121') { errorMessage = this.localizationResources.ErrorCode_br121.concat(brCode);
-    } else if (errorCode === 'BR12') { errorMessage = this.localizationResources.ErrorCode_br12.concat(brCode);
-    } else if (errorCode === 'BR123') { errorMessage = this.localizationResources.ErrorCode_br123.concat(brCode);
-    } else if (errorCode === 'BR124') { errorMessage = this.localizationResources.ErrorCode_br124.concat(brCode);
-    } else if (errorCode === 'BR126') { errorMessage = this.localizationResources.ErrorCode_br126.concat(brCode);
-    } else if (errorCode === 'BR13') { errorMessage = this.localizationResources.ErrorCode_br13.concat(brCode);
-    } else if (errorCode === 'BR131') { errorMessage = this.localizationResources.ErrorCode_br131.concat(brCode);
-    } else if (errorCode === 'BR132') { errorMessage = this.localizationResources.ErrorCode_br132.concat(brCode);
-    } else if (errorCode === 'BR135') { errorMessage = this.localizationResources.ErrorCode_br135.concat(brCode);
-    } else if (errorCode === 'BR137') { errorMessage = this.localizationResources.ErrorCode_br137.concat(brCode);
-    } else if (errorCode === 'BR140') { errorMessage = this.localizationResources.ErrorCode_br140.concat(brCode);
-    } else if (errorCode === 'BR141') { errorMessage = this.localizationResources.ErrorCode_br141.concat(brCode);
-    } else if (errorCode === 'BR142') { errorMessage = this.localizationResources.ErrorCode_br142.concat(brCode);
-    } else if (errorCode === 'BR143') { errorMessage = this.localizationResources.ErrorCode_br143.concat(brCode);
-    } else if (errorCode === 'BR144') { errorMessage = this.localizationResources.ErrorCode_br144.concat(brCode);
-    } else if (errorCode === 'BR145') { errorMessage = this.localizationResources.ErrorCode_br145.concat(brCode);
-    } else if (errorCode === 'BR19') { errorMessage = this.localizationResources.ErrorCode_br19.concat(brCode);
-    } else if (errorCode === 'BR20') { errorMessage = this.localizationResources.ErrorCode_br20.concat(brCode);
-    } else if (errorCode === 'BR21') { errorMessage = this.localizationResources.ErrorCode_br21.concat(brCode);
-    } else if (errorCode === 'BR23') { errorMessage = this.localizationResources.ErrorCode_br23.concat(brCode);
-    } else if (errorCode === 'BR24') { errorMessage = this.localizationResources.ErrorCode_br24.concat(brCode);
-    } else if (errorCode === 'BR25') { errorMessage = this.localizationResources.ErrorCode_br25.concat(brCode);
-    } else if (errorCode === 'BR42') { errorMessage = this.localizationResources.ErrorCode_br42.concat(brCode);
-    } else if (errorCode === 'BR43') { errorMessage = this.localizationResources.ErrorCode_br43.concat(brCode).concat(params);
-    } else if (errorCode === 'BR44') { errorMessage = this.localizationResources.ErrorCode_br44.concat(brCode).concat(params);
-    } else if (errorCode === 'BR45') { errorMessage = this.localizationResources.ErrorCode_br45.concat(brCode);
-    } else if (errorCode === 'BR46') { errorMessage = this.localizationResources.ErrorCode_br46.concat(brCode);
-    } else if (errorCode === 'BR47') { errorMessage = this.localizationResources.ErrorCode_br47.concat(brCode);
-    } else if (errorCode === 'BR48') { errorMessage = this.localizationResources.ErrorCode_br48.concat(brCode);
-    } else if (errorCode === 'BR50') { errorMessage = this.localizationResources.ErrorCode_br50.concat(brCode);
-    } else if (errorCode === 'BR51') { errorMessage = this.localizationResources.ErrorCode_br51.concat(brCode);
-    } else if (errorCode === 'BR52') { errorMessage = this.localizationResources.ErrorCode_br52.concat(brCode);
-    } else if (errorCode === 'BR53') { errorMessage = this.localizationResources.ErrorCode_br53.concat(brCode);
-    } else if (errorCode === 'BR54') { errorMessage = this.localizationResources.ErrorCode_br54.concat(brCode);
-    } else if (errorCode === 'BR55') { errorMessage = this.localizationResources.ErrorCode_br55.concat(brCode);
-    } else if (errorCode === 'BR56') { errorMessage = this.localizationResources.ErrorCode_br56.concat(brCode);
-    } else if (errorCode === 'BR57') { errorMessage = this.localizationResources.ErrorCode_br57.concat(brCode);
-    } else if (errorCode === 'BR58') { errorMessage = this.localizationResources.ErrorCode_br58.concat(brCode);
-    } else if (errorCode === 'BR59') { errorMessage = this.localizationResources.ErrorCode_br59.concat(brCode);
-    } else if (errorCode === 'BR6') { errorMessage = this.localizationResources.ErrorCode_br6.concat(brCode);
-    } else if (errorCode === 'BR60') { errorMessage = this.localizationResources.ErrorCode_br60.concat(brCode);
-    } else if (errorCode === 'BR61') { errorMessage = this.localizationResources.ErrorCode_br61.concat(brCode);
-    } else if (errorCode === 'BR62') { errorMessage = this.localizationResources.ErrorCode_br62.concat(brCode);
-    } else if (errorCode === 'BR63') { errorMessage = this.localizationResources.ErrorCode_br63.concat(brCode);
-    } else if (errorCode === 'BR64') { errorMessage = this.localizationResources.ErrorCode_br64.concat(brCode);
-    } else if (errorCode === 'BR65') { errorMessage = this.localizationResources.ErrorCode_br65.concat(brCode);
-    } else if (errorCode === 'BR66') { errorMessage = this.localizationResources.ErrorCode_br66.concat(brCode);
-    } else if (errorCode === 'BR67') { errorMessage = this.localizationResources.ErrorCode_br67.concat(brCode);
-    } else if (errorCode === 'BR68') { errorMessage = this.localizationResources.ErrorCode_br68.concat(brCode);
-    } else if (errorCode === 'BR69') { errorMessage = this.localizationResources.ErrorCode_br69.concat(brCode);
-    } else if (errorCode === 'BR7') { errorMessage = this.localizationResources.ErrorCode_br7.concat(brCode).concat(params);
-    } else if (errorCode === 'BR70') { errorMessage = this.localizationResources.ErrorCode_br70.concat(brCode);
-    } else if (errorCode === 'BR71') { errorMessage = this.localizationResources.ErrorCode_br71.concat(brCode);
-    } else if (errorCode === 'BR72') { errorMessage = this.localizationResources.ErrorCode_br72.concat(brCode);
-    } else if (errorCode === 'BR73') { errorMessage = this.localizationResources.ErrorCode_br73.concat(brCode);
-    } else if (errorCode === 'BR74') { errorMessage = this.localizationResources.ErrorCode_br74.concat(brCode);
-    } else if (errorCode === 'BR75') { errorMessage = this.localizationResources.ErrorCode_br75.concat(brCode);
-    } else if (errorCode === 'BR76') { errorMessage = this.localizationResources.ErrorCode_br76.concat(brCode);
-    } else if (errorCode === 'BR77') { errorMessage = this.localizationResources.ErrorCode_br77.concat(brCode);
-    } else if (errorCode === 'BR78') { errorMessage = this.localizationResources.ErrorCode_br78.concat(brCode);
-    } else if (errorCode === 'BR79') { errorMessage = this.localizationResources.ErrorCode_br79.concat(brCode);
-    } else if (errorCode === 'BR8') { errorMessage = this.localizationResources.ErrorCode_br8.concat(brCode);
-    } else if (errorCode === 'BR80') { errorMessage = this.localizationResources.ErrorCode_br80.concat(brCode);
-    } else if (errorCode === 'BR81') { errorMessage = this.localizationResources.ErrorCode_br81.concat(brCode);
-    } else if (errorCode === 'BR82') { errorMessage = this.localizationResources.ErrorCode_br82.concat(brCode);
-    } else if (errorCode === 'BR83') { errorMessage = this.localizationResources.ErrorCode_br83.concat(brCode);
-    } else if (errorCode === 'BR84') { errorMessage = this.localizationResources.ErrorCode_br84.concat(brCode);
-    } else if (errorCode === 'BR85') { errorMessage = this.localizationResources.ErrorCode_br85.concat(brCode);
-    } else if (errorCode === 'BR86') { errorMessage = this.localizationResources.ErrorCode_br86.concat(brCode);
-    } else if (errorCode === 'BR87') { errorMessage = this.localizationResources.ErrorCode_br87.concat(brCode);
-    } else if (errorCode === 'BR88') { errorMessage = this.localizationResources.ErrorCode_br88.concat(brCode);
-    } else if (errorCode === 'BR89') { errorMessage = this.localizationResources.ErrorCode_br89.concat(brCode);
-    } else if (errorCode === 'BR90') { errorMessage = this.localizationResources.ErrorCode_br90.concat(brCode);
-    } else if (errorCode === 'BR91') { errorMessage = this.localizationResources.ErrorCode_br91.concat(brCode);
-    } else if (errorCode === 'BR92') { errorMessage = this.localizationResources.ErrorCode_br92.concat(brCode);
-    } else if (errorCode === 'BR93') { errorMessage = this.localizationResources.ErrorCode_br93.concat(brCode);
-    } else if (errorCode === 'BR94') { errorMessage = this.localizationResources.ErrorCode_br94.concat(brCode);
-    } else if (errorCode === 'BR95') { errorMessage = this.localizationResources.ErrorCode_br95.concat(brCode);
-    } else if (errorCode === 'BR98') { errorMessage = this.localizationResources.ErrorCode_br98.concat(brCode);
-    } else if (errorCode === 'BR99') { errorMessage = this.localizationResources.ErrorCode_br99.concat(brCode);
-    } else if (errorCode === 'info1') {
-      if (this.OldVehicleInfo) {
-          errorMessage = this.localizationResources.Info_InputChanged_Vehicle1;
-      }
-    } else if (errorCode === 'info2') {
-      if (this.NewVehicleSearchInfo) {
-        errorMessage = this.localizationResources.Info_InputChanged_Vehicle2;
-      }
-    } else if (errorCode === 'same') { errorMessage = this.localizationResources.Warning_SameMatriculation;
-    } else if (errorCode === 'errorsubmit') { errorMessage = this.localizationResources.Error_Submit;
-    } else if (errorCode === 'errorrevalidation') {
-      errorMessage = this.localizationResources.Error_Revalidation;
-    }
-    return errorMessage;
-  }
-
-  ObjectMapper(objectName: string) {
-    let objectTranslation = '';
-    if (objectName === 'eic.OwnerName') {
-        objectTranslation = this.localizationResources.Object_Eic_OwnerName;
-    } else if (objectName === 'owner.Name') {
-        objectTranslation = this.localizationResources.Object_Owner_Name;
-    } else if (objectName === 'eic.OwnerFirstname') {
-        objectTranslation = this.localizationResources.Object_Eic_OwnerFirstname;
-    } else if (objectName === 'owner.Firstname') {
-        objectTranslation = this.localizationResources.Object_Owner_Firstname;
-    } else if (objectName === 'eic.DateOfBirth') {
-        objectTranslation = this.localizationResources.Object_Eic_DateOfBirth;
-    } else if (objectName === 'owner.DateOfBirth') {
-        objectTranslation = this.localizationResources.Object_Owner_DateOfBirth;
-    } else if (objectName === 'numberPlate.InsuranceId') {
-        objectTranslation = this.localizationResources.Object_NumberPlate_InsuranceId;
-    } else if (objectName === ' eic.InsuranceId') {
-        objectTranslation = this.localizationResources.Object_Eic_InsuranceId;
-    } else if (objectName === 'vehicle.VehicleType') {
-        objectTranslation = this.localizationResources.Object_Vehicle_VehicleType;
-    } else if (objectName === 'eic.VehicleType') {
-        objectTranslation = this.localizationResources.Object_Eic_VehicleType;
-    } else {
-      objectTranslation = objectName;
-    }
-    return objectTranslation;
+    return this.caseErrorService.mapError(validationResult, this.OldVehicleInfo, this.NewVehicleSearchInfo);
   }
 
 }

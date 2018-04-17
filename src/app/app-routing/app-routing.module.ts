@@ -1,3 +1,4 @@
+import { CanUserNavigateAwayService } from './../shared/guard/can-user-navigate-away.service';
 import { NewCompanyComponent } from './../egov/company-management/new-company/new-company.component';
 import { NewUserComponent } from './../egov/user-management/new-user/new-user.component';
 import { UserOverviewComponent } from './../egov/user-management/user-overview/user-overview.component';
@@ -23,10 +24,12 @@ const appRoutes: Routes = [{
   pathMatch: 'full'
 }, {
   path: 'newVehicleChangeCase',
-  component: NewVehicleChangeCaseComponent
+  component: NewVehicleChangeCaseComponent,
+  canDeactivate: [CanUserNavigateAwayService]
 }, {
   path: 'newVehicleChangeCase/:selectedCase',
-  component: NewVehicleChangeCaseComponent
+  component: NewVehicleChangeCaseComponent,
+  canDeactivate: [CanUserNavigateAwayService]
 }, {
   path: 'vehicleChangeCaseOverview',
   component: VehicleChangeCaseOverviewComponent
@@ -66,6 +69,7 @@ const appRoutes: Routes = [{
   ],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: [CanUserNavigateAwayService]
 })
 export class AppRoutingModule { }

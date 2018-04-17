@@ -134,7 +134,7 @@ export class CaseService {
         'dataType': 'json'
       })
     };
-    return this._http.put<VehicleChangeCaseSubmitResultDto>(url, httpOptions);
+    return this._http.put<VehicleChangeCaseSubmitResultDto>(url, dto, httpOptions);
   }
 
   public Submit(dto: VehicleChangeCaseDraftDto) {
@@ -158,7 +158,7 @@ export class CaseService {
       })
     };
     // VehicleChangeCaseDto
-    return this._http.put<VehicleChangeCaseDto>(url, httpOptions);
+    return this._http.put<VehicleChangeCaseDto>(url, dto, httpOptions);
   }
 
   public Post(dto: VehicleChangeCaseDraftDto) {

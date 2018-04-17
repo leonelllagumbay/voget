@@ -8,6 +8,7 @@ export enum ErrorCodeCaseK {
     E500 = '500',
     E502 = '502',
     E503 = '503',
+    ErrorCodeDisplay =  ' ErrorCode: ',
     Generic = 'generic',
     V09ResponseDataError = 'V09ResponseDataError',
     V09ResponseDataValidationError = 'V09ResponseDataValidationError',

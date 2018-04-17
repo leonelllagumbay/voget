@@ -1,3 +1,5 @@
+import { CaseService } from './../shared/service/case.service';
+import { CaseErrorService } from './../shared/service/case-error.service';
 import { OverviewErrorService } from './../shared/service/overview-error.service';
 import { OverviewService } from './../shared/service/overview.service';
 import { GlobalService } from './../shared/service/global.service';
@@ -25,6 +27,7 @@ import { ResetPasswordComponent } from './user-management/reset-password/reset-p
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FormsModule } from '@angular/forms';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -34,6 +37,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CommonModule,
     DataTablesModule,
     HttpClientModule,
+    FormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -61,7 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NavBarComponent
   ],
   providers: [ErrorHandlerService, UserService, GlobalService, OverviewService,
-              OverviewErrorService
+              OverviewErrorService, CaseErrorService, CaseService
   ]
 })
 export class EgovModule { }
