@@ -27,7 +27,8 @@ import { ResetPasswordComponent } from './user-management/reset-password/reset-p
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FileUploadComponent } from './vehicle-change-case/file-upload/file-upload.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DataTablesModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -62,7 +64,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FileUploadTestComponent,
     NewCompanyComponent,
     CompanyOverviewComponent,
-    NavBarComponent
+    NavBarComponent,
+    FileUploadComponent
   ],
   providers: [ErrorHandlerService, UserService, GlobalService, OverviewService,
               OverviewErrorService, CaseErrorService, CaseService

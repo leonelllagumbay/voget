@@ -21,6 +21,10 @@ export class CanUserNavigateAwayService implements CanDeactivate<{}> {
     currentState: RouterStateSnapshot,
     nextState: RouterStateSnapshot
   ): Observable<boolean>|Promise<boolean>|boolean {
+    console.log('is submitterd', this._egovService.isSubmitted);
+    if (this._egovService.isSubmitted) { // Bypass can deactivate
+      return true;
+    }
     return confirm(this._egovService.getConfirmText());
   }
 }

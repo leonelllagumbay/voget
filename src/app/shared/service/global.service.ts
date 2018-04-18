@@ -17,6 +17,7 @@ export class GlobalService {
   locationChanged = new Subject();
   errorDefined = new Subject();
   confirmText: string;
+  public isSubmitted: boolean;
 
   constructor(private _translate: TranslateService) {
 

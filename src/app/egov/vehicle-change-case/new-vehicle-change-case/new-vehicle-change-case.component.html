@@ -480,7 +480,7 @@
                 <div class="attach">
                   <div id="upload_button" *ngIf="!IsSubmitted">    
                     <span class="btn btn-default btn-file" >
-                      <i class="content-icon ion-android-upload"></i>Upload
+                      <i class="content-icon ion-android-upload"></i>{{localizationResources.Label_Upload | translate}}
                       <input type="file" 
                       [(ngModel)]="files"
                         base-sixty-four-input multiple 
@@ -608,3 +608,5 @@
     </form>
 </div>
 </div> <!--divContainer END-->
+
+<!-- <app-file-upload></app-file-upload> -->

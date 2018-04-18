@@ -455,6 +455,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             this.IsSaveAsDraftBusy = false;
             this.selectedCaseId = '';
             // $state.go('vehicleChangeCaseOverview');
+            this._egovService.isSubmitted = true;
             this._router.navigate(['vehicleChangeCaseOverview']);
         }
     }
@@ -829,6 +830,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           } else {
             this.selectedCaseId = '';
             // $state.go('vehicleChangeCaseOverview');
+            this._egovService.isSubmitted = true;
             this._router.navigate(['vehicleChangeCaseOverview']);
           }
         });
@@ -1295,6 +1297,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
       this.isSaveAsDraftRejectedClicked = false;
       this.selectedCaseId = '';
       // $state.go('vehicleChangeCaseOverview');
+      this._egovService.isSubmitted = true;
       this._router.navigate(['vehicleChangeCaseOverview']);
     } else {
       if (this.OldVehicleError || this.NewVehicleSearchError) {
@@ -1304,6 +1307,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.isSaveAsDraftRejectedClicked = false;
         this.selectedCaseId = '';
         // $state.go('vehicleChangeCaseOverview');
+        this._egovService.isSubmitted = true;
         this._router.navigate(['vehicleChangeCaseOverview']);
       }
     }
