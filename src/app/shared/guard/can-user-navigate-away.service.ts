@@ -5,14 +5,11 @@ import { LabelEnum } from './../enum/label.enum';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router/src/interfaces';
-import { ILanguage } from '../interface/ilanguage';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router/src/router_state';
 
 @Injectable()
 export class CanUserNavigateAwayService implements CanDeactivate<{}> {
-  localizationResources: ILanguage;
-  constructor(private _translate: TranslateService, private _egovService: GlobalService) {
-    this.localizationResources = LabelEnum;
+  constructor(private _egovService: GlobalService) {
   }
 
   canDeactivate(

@@ -1,3 +1,4 @@
+import { CanUserNavigateAwayConfService } from './../shared/guard/can-user-navigate-away-conf.service';
 import { CanUserNavigateAwayService } from './../shared/guard/can-user-navigate-away.service';
 import { NewCompanyComponent } from './../egov/company-management/new-company/new-company.component';
 import { NewUserComponent } from './../egov/user-management/new-user/new-user.component';
@@ -35,7 +36,8 @@ const appRoutes: Routes = [{
   component: VehicleChangeCaseOverviewComponent
 }, {
   path: 'configurationSummary',
-  component: ConfigurationSummaryComponent
+  component: ConfigurationSummaryComponent,
+  canDeactivate: [CanUserNavigateAwayConfService]
 }, {
   path: 'businessRules',
   component: BusinessRulesComponent
@@ -70,6 +72,6 @@ const appRoutes: Routes = [{
   exports: [
     RouterModule
   ],
-  providers: [CanUserNavigateAwayService]
+  providers: [CanUserNavigateAwayService, CanUserNavigateAwayConfService]
 })
 export class AppRoutingModule { }

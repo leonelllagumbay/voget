@@ -1,3 +1,6 @@
+import { IGeneralError } from './../../../shared/interface/igeneralerror';
+import { TranslateService } from '@ngx-translate/core';
+import { AttachmentDto } from './../../../shared/dto/attachment-dto';
 import { ValidationResult } from './../../../shared/enum/validation-result.enum';
 import { ErrorCodeDto } from './../../../shared/dto/error-code-dto';
 import { ErrorCodeCaseK } from './../../../shared/enum/vehicle-change-case-code.enum';
@@ -95,8 +98,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   LastStep: string;
   OldVehicleSearchResult: any;
   SearchedChassis1: string;
-  ErrorCodeMessageWarning: string;
-  ErrorCodeMessageError: string;
+  ErrorCodeMessageWarning: IGeneralError;
+  ErrorCodeMessageError: IGeneralError;
   IsSearch2Busy: boolean;
   NewVehicleSearchResult: any;
   SearchedChassis2: string;
@@ -122,12 +125,13 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   SelectedCaseId: string;
   InfoValidationResult1: ValidationResultDto;
   InfoValidationResult2: ValidationResultDto;
-  ErrorCodeMessageInfo1: string;
-  ErrorCodeMessageInfo2: string;
+  ErrorCodeMessageInfo1: IGeneralError;
+  ErrorCodeMessageInfo2: IGeneralError;
   VehicleChangeCaseSubmitResult: VehicleChangeCaseSubmitResultDto;
   VehicleChangeCaseDraftDto = new VehicleChangeCaseDraftDto;
   ShowPrint: boolean;
   IsPrintBusy: boolean;
+  preLoadedFiles: AttachmentDto[];
   NewVehicleNewVehicle = {};
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -136,9 +140,11 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
 
   constructor(private _egovService: GlobalService, private _router: Router,
               public caseErrorService: CaseErrorService, public caseService: CaseService,
-              private _route: ActivatedRoute) { }
+              private _route: ActivatedRoute, private _translate: TranslateService) { }
 
   ngOnInit() {
+
+    this.preLoadedFiles = [];
 
     this.url = this._egovService.getEnv();
     this.$submitContainer = $('#submitContainer');
@@ -256,78 +262,16 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
 
         const customError = this.caseErrorService.convertCaseError(this.ErrorValidationResult.code, this.ErrorValidationResult.message);
         console.log('error custom code', this.ErrorValidationResult.code, customError);
-        this.ErrorCodeMessageError = (<ErrorCodeDto>customError).fe_message;
+        this.ErrorCodeMessageError.errorMessage = (<ErrorCodeDto>customError).fe_message;
       }
     });
 
     this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
   }
 
-  onLoad(e, reader, file, fileList, fileOjects, fileObj) {
-    let arrayImages = [];
-    let arrayAllFiles = [];
-
-    // alert('this is handler for file reader onload event!');
-    // console.log(fileObj.base64.length);
-    arrayImages = arrayImages.concat('data:' + fileObj.filetype + ';base64,' + fileObj.base64);
-    fileObj.errorMessageBE = ''; // set this when backend error occurs
-    fileObj.uploadedFileId = ''; // set when it is already uploaded
-    arrayAllFiles = arrayAllFiles.concat(fileObj);
-
-    this.allFiles = arrayAllFiles;
-    if (this.allFiles) {
-      if ((this.allFiles.length + this.filesSaved.length) > 5) {
-          this.allFiles.length = 5 - this.filesSaved.length; // limit files to 5 items
-      }
-    }
-
-    console.log('on load x', fileList, this.allFiles);
-  }
-
-  onChange(e, fileList) {
-    // console.log('fileListz', fileList, $scope.allFiles);
-    let fileCount = 0;
-    if (this.allFiles) {
-        fileCount = this.allFiles.length + fileList.length;
-    } else {
-        fileCount = fileList.length;
-    }
-    if ((fileCount + this.filesSaved.length) > 5) {
-        alert('The maximum amount of 5 attachments was reached.');
-    }
-  }
-
-  isFileSizeOver(fileIndex) {
-    const file = this.allFiles[fileIndex];
-    if (file) {
-        const fileSize = file['filesize'] / 1024 / 1024;
-        if (fileSize > 5) { // GT 5 MB
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return true;
-    }
-  }
-
-  isFileSupported(fileIndex) {
-    const file = this.allFiles[fileIndex];
-    const fileExtensionPattern = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi; // regex flags -- Global, Multiline, Insensitive
-    let extension = '';
-    let requiredExt = false;
-    if (file) {
-        extension = file['filename'].match(fileExtensionPattern)[0].toLowerCase();
-        requiredExt =  (extension === '.pdf' || extension === '.doc' ||
-                        extension === '.docx' || extension === '.xls' ||
-                        extension === '.xlsx' || extension === '.jpg' ||
-                        extension === '.jpeg' || extension === '.bmp' || extension === '.png');
-    }
-    if (requiredExt) {
-        return true;
-    } else {
-        return false;
-    }
+  onFileChanged(eventData: {allFiles: {}, listOfFilesToRemove: {}}) {
+    this.allFiles = eventData.allFiles;
+    this.listOfFilesToRemove = eventData.listOfFilesToRemove;
   }
 
   uploadAttachments(cId: number) {
@@ -368,9 +312,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.hasUploadError = false;
         this.showAttachmentWarning = false;
         for (let i = 0; i < this.allFiles.length; i++) {
-            const file = this.allFiles[i];
-
-            if (file.uploadedFileId || file.uploadedFileId === 0) {
+            const file: AttachmentDto = this.allFiles[i];
+            if (file.fileId && file.fileId > 0) { // Assuming that fileID starts at 1
                 // File is already uploaded
                 this.fileCounter -= 1;
                 if (this.fileCounter === 0) {
@@ -380,14 +323,13 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                     continue;
                 }
             }
-
             let requiredExt = false;
             let extension = '';
             let fileSize = 0;
             if (file) {
-                fileSize = file['filesize'] / 1024 / 1024;
+                fileSize = file.size / 1024 / 1024;
                 const fileExtensionPattern = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi; // regex flags -- Global, Multiline, Insensitive
-                extension = file['filename'].match(fileExtensionPattern)[0].toLowerCase();
+                extension = file.name.match(fileExtensionPattern)[0].toLowerCase();
                 requiredExt =  (extension === '.pdf' || extension === '.doc' || extension === '.docx' ||
                                 extension === '.xls' || extension === '.xlsx' || extension === '.jpg' ||
                                 extension === '.jpeg' || extension === '.bmp' || extension === '.png');
@@ -396,10 +338,9 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                 // upload files
                 const data = {
                     vehicleChangeCaseId: caseId,
-                    name: file['filename'],
-                    data: file['base64']
+                    name: file.name,
+                    data: file.data
                 };
-
                 this.caseService.UploadChangeCaseAttachment(data)
                   .subscribe((result: {status: number, responseJSON: any, vehicleChangeCaseId: string, id: string}) => {
                     console.log('file upload result', result);
@@ -407,15 +348,15 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                     if (result && result.status && !(result.status === 200 || result.status === 201 )) {
                         if (result.responseJSON && result.responseJSON[0]) {
                             // $scope.allFiles[i]['errorMessageBE'] =  result.responseJSON[0].text;
-                            this.allFiles[i]['errorMessageBE'] =  '   ';
+                            this.allFiles[i].errorMessageBE = '   ';
                         } else {
-                            this.allFiles[i]['errorMessageBE'] = '    ';
+                            this.allFiles[i].errorMessageBE = '    ';
                         }
                         this.hasUploadError = true;
                     }
 
                     if (result && result.id && result.vehicleChangeCaseId) {
-                        this.allFiles[i]['uploadedFileId'] =  result.id;
+                        this.allFiles[i].fileId =  result.id;
                     }
 
                     if (this.fileCounter === 0) {
@@ -466,11 +407,15 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         for (let f = 0; f < response.length; f++) {
             // console.log('response', response[f]['id'], response[f]['name']);
             if (response[f]['id'] && response[f]['name']) {
-                const fileInfo = {
-                    id: response[f]['id'],
-                    filename: response[f]['name']
-                };
-                this.filesSaved.push(fileInfo);
+                this.preLoadedFiles.push({
+                  vehicleChangeCaseId: -1,
+                  fileId: response[f]['id'],
+                  name: response[f]['name'],
+                  type: '',
+                  size: -1,
+                  data: '',
+                  errorMessageBE: ''
+                });
             }
         }
     });
@@ -1349,21 +1294,12 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           this.RefreshPageTitle();
           if (this.errBE !== undefined && this.errBE['code'] !== undefined && this.errBE['code'] !== '') {
               const errorObj: ErrorCodeDto = <ErrorCodeDto> this.caseErrorService.convertCaseError(this.errBE['code'], this.errBE['text']);
-              this.ErrorCodeMessageError = errorObj.fe_message;
+              this.ErrorCodeMessageError.errorMessage = errorObj.fe_message;
           }
           this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
          }
       );
     });
-  }
-
-  locationChangeStart(event, newUrl: string, oldUrl: string) {
-    if (oldUrl.indexOf('newVehicleChangeCase') >= 0) {
-        const answer = confirm(this.localizationResources.Message_NavigateAway);
-        if (!answer) {
-            event.preventDefault();
-        }
-    }
   }
 
   ngOnDestroy() {
@@ -1394,8 +1330,11 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
 
   RefreshTranslations() {
     this.ErrorCodeMessageInfo1 = this.ErrorMapper(this.InfoValidationResult1);
+
     this.ErrorCodeMessageInfo2 = this.ErrorMapper(this.InfoValidationResult2);
+
     this.ErrorCodeMessageWarning = this.ErrorMapper(this.WarningValidationResult);
+
     this.ErrorCodeMessageError = this.ErrorMapper(this.ErrorValidationResult);
 
     if (this.selectedOptionNew === 2) {
@@ -1416,7 +1355,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
     this._egovService.titleDefined.next(this.pageTitle);
   }
 
-  ErrorMapper(validationResult: ValidationResultDto) {
+  ErrorMapper(validationResult: ValidationResultDto): IGeneralError {
     return this.caseErrorService.mapError(validationResult, this.OldVehicleInfo, this.NewVehicleSearchInfo);
   }
 

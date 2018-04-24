@@ -1,3 +1,81 @@
-<p>
-  configuration-summary works!
-</p>
+
+<form name="formConfig" id="formConfig" novalidate="novalidate">
+  <div class="side-body" (window:onbeforeunload)="unloadNotification()">
+  
+      <div class="col-xs-12">
+        <div class="error-container" *ngIf="hasError">
+          <div class="row">
+            <i class="content-icon-red ion-minus-circled float-left"></i>
+            <span class="error-text">{{ErrorCodeMessageError | translate}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <div class="col-sm-12 padding-20-20">
+          <div class="info-container" *ngIf="isSaveClicked">
+            <div class="row">
+            <i class="info-icon-container fa-info-circle float-left"></i>
+            <span class="info-text">{{infoMessage | translate}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xs-12">
+        <table id="configSummaryTable" class="table table-bordered dataTable">
+            <thead>
+                <tr>
+                    <th>{{localizationResources.Title_Setting | translate}}</th>
+                    <th>{{localizationResources.Title_Action | translate}}</th>
+                    <th>{{localizationResources.Title_DefaultValue | translate}}</th>
+                </tr>
+            </thead>
+            <tbody >
+                <!-- <tr ng-if="IsBusy">
+                        <td><i class="fa fa-spin fa-spinner"></i></td>
+                </tr>  -->
+                <tr *ngFor="let item of VehicleChangeCaseConfigurationList; let i = index">
+                  <td><span id='item.id' class='vehicleChangeCaseConfigurationItem'>{{ConvertKeyTouiField(item.key) | translate}}</span></td>
+                  <td>
+                    <label class='witch'>
+                      <input type='checkbox' name="sample{{i}}" [(ngModel)]="item.isActivated" class='chkIsActivated' (click)='compareOriginal()' [disabled]="isDisabled"> 
+                      <span class='round'>
+                      </span>
+                    </label>
+                  </td>
+                  <td>
+                    <div class="overflow" *ngIf="item.key === 'SendNewVehicle' || item.key === 'SendOldVehicle' ">
+                      <div class="new-reg2 margin-0">
+                        <div data-toggle="collapse" [attr.data-target]="'#RegDropdown' + item.key" class="mousepointer" [ngClass]="{'dropdown-disabled': isDisabled}">
+                          <span class="new-reg-label">{{ConvertDefaultValueToText(item.key, item.defaultValue) | translate}}</span>
+                          <ul id="RegDropdown{{item.key}}" class="collapse zindex-5 dropdown-auto newRegDropdown-style">
+                            <li class="li-dropdown" [ngClass]="" (click)="UpdateDropdown(2, item)">
+                                <span>{{localizationResources.Option_Customer | translate}}</span>
+                            </li>
+                            <li class="li-dropdown" [ngClass]="" (click)="UpdateDropdown(1, item)">
+                                <span>{{localizationResources.Option_Garage | translate}}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+  
+      </div>
+      <div class="col-xs-12 config">
+          <button id="btnSave" name="btnSave" type="submit" (click)="!IsBusy && ClickSave()" class="button-generic float-right" [disabled]="isDisabled || isSaveClicked || isInitialLoad">
+                  <i class="ion-android-done padding-0-5"></i>{{localizationResources.Button_Save | translate}}
+          </button>
+          
+          <button id="btnBack" name="btnBack" type="submit" (click)="ClickGoBack()" class="backTo float-right">
+                  <i class="fa fa-arrow-left padding-0-5"></i>{{localizationResources.Button_GoBack | translate}} 
+          </button>
+  
+      </div>
+      
+  </div>
+  </form>
+  

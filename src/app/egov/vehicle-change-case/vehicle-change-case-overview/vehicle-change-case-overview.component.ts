@@ -73,7 +73,6 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
       (language: string) => {
         this.language = language;
 
-        this.ParseData();
         this.RefreshPageTitle();
         if (this.errBE !== undefined && this.errBE['code'] !== undefined && this.errBE['code'] !== '') {
             const errorObj: ErrorCodeDto =
@@ -84,8 +83,11 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
         this._translate.get(this.localizationResources.DataTable_Label_Search).subscribe((res: string) => {
             const searchText = res;
               // update search translation using dom traversing
-              const fChild = $('#overviewTable_filter label')[0].firstChild;
-              fChild.textContent = res;
+              if ($('#overviewTable_filter label')[0]) {
+                const fChild = $('#overviewTable_filter label')[0].firstChild;
+                fChild.textContent = res;
+              }
+              this.ParseData();
         });
        }
     );
@@ -154,22 +156,24 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
          || this.SelectedStatusCode === CaseStatusEnum.Status_Rejected
     ) {
 
-      const answer = confirm(this.localizationResources.Message_DeleteCase);
-      if (!answer) {
-        event.preventDefault();
-      } else {
-        this.IsDeleteBusy = true;
-        this._overviewService.Delete(this.SelectedCaseId).subscribe(result => {
-          const vehicleList = this.VehicleChangeCaseList.filter(a => a.id === this.SelectedCaseId);
-          if (vehicleList !== undefined && vehicleList.length > 0) {
-              const idx = this.VehicleChangeCaseList.indexOf(vehicleList[0]);
-              this.VehicleChangeCaseList.splice(idx, 1);
-              this.ParseData();
-          }
-          this.OverviewError = false;
-          this.IsDeleteBusy = false;
-        });
-      }
+      this._translate.get(this.localizationResources.Message_DeleteCase).subscribe(str => {
+        const answer = confirm(str);
+        if (!answer) {
+          event.preventDefault();
+        } else {
+          this.IsDeleteBusy = true;
+          this._overviewService.Delete(this.SelectedCaseId).subscribe(result => {
+            const vehicleList = this.VehicleChangeCaseList.filter(a => a.id.toString() === this.SelectedCaseId.toString());
+            if (vehicleList !== undefined && vehicleList.length > 0) {
+                const idx = this.VehicleChangeCaseList.indexOf(vehicleList[0]);
+                this.VehicleChangeCaseList.splice(idx, 1);
+                this.ParseData();
+            }
+            this.OverviewError = false;
+            this.IsDeleteBusy = false;
+          });
+        }
+      });
     }
   }
 
@@ -278,23 +282,26 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
 
                     const pdfURL = this._egovService.getEnv() + '/egov/api/VehicleChangeCaseAttachment/Download/' + response[f]['id'];
                     const options = {
-                      // responseType: JSON.parse('{"responseType":"arraybuffer"}')
-                      responseType: 'arraybuffer' as 'json'
+                      responseType: 'blob' as 'json'
                     };
 
                     const req = this._http.get<any>(pdfURL, options)
                     .subscribe((responseData) => {
                         this.links.length = 0;
-                        const file = new Blob([responseData.data], {
-                            type: type // must have a type
-                        }),
-                        url = window.URL || window['webkitURL'];
+                        // const file = new Blob([responseData.data], {
+                        //     type: type // must have a type
+                        // }),
+
+                        const file = responseData;
+
+                        const url = window.URL || window['webkitURL'];
                         // console.log('url', $sce.trustAsResourceUrl(url.createObjectURL(file)));
+                        console.log('type', type, file);
                         const fileLink = {
-                            url: this._sanitizer.bypassSecurityTrustUrl(url.createObjectURL(file)),
+                            url: url.createObjectURL(file),
                             filename: filename
                         };
-                        console.log('file link', fileLink);
+                        console.log('file link', responseData);
                         this.links.push(fileLink);
                         // let isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
                         // navigator.userAgent && !navigator.userAgent.match('CriOS');
@@ -419,7 +426,7 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
     setting.language.paginate.next = '>'; // this.localizationResources.Page_Next;
     // setting.language.paginate.last = this.localizationResources.Page_Last;
     setting.paging = true;
-    setting.pageLength = 12;
+    setting.pageLength = 10;
     // setting.language.url = 'http://localhost:4201/assets/i18n/de.json';
 
     setting.order = [];
@@ -508,33 +515,43 @@ export class VehicleChangeCaseOverviewComponent implements OnInit {
   }
 
   ParseData() {
-    this.overviewDataTable.clear();
+    if (this.overviewDataTable) {
+        this.overviewDataTable.clear();
+    }
     if (this.VehicleChangeCaseList !== undefined) {
         this.VehicleChangeCaseList.forEach(item => {
+            let displayStatusRTD = this._egovService.getCaseStatusRTDLabel(item.statusRtd);
+            let displayStatus = this._egovService.getCaseStatusLabel(item.status);
+            this._translate.get(displayStatusRTD).subscribe(res => {
+                displayStatusRTD = res;
+                this._translate.get(displayStatus).subscribe(dstatus => {
+                    displayStatus = dstatus;
+                    const displayMatriculation1 = this.FormatMatriculation(item.matriculationNr1);
+                    const displayMatriculation2 = this.FormatMatriculation(item.matriculationNr2);
+                    const displayNumberPlate = this.FormatNumberPlate(item.plateCanton, item.plateNumber);
+                    const displayOwner = this.FormatOwner(item.ownerFirstName, item.ownerLastName);
 
-            const displayStatusRTD = this._egovService.getCaseStatusRTDLabel(item.statusRtd);
-            const displayStatus = this._egovService.getCaseStatusLabel(item.status);
-            const displayMatriculation1 = this.FormatMatriculation(item.matriculationNr1);
-            const displayMatriculation2 = this.FormatMatriculation(item.matriculationNr2);
-            const displayNumberPlate = this.FormatNumberPlate(item.plateCanton, item.plateNumber);
-            const displayOwner = this.FormatOwner(item.ownerFirstName, item.ownerLastName);
-
-            this.overviewDataTable.row.add([
-                `<span id='` + item.id + `' data-status='` + item.status + `' class='caseTableItem' >` + displayStatusRTD + `</span>`,
-                displayStatus,
-                displayNumberPlate,
-                displayMatriculation1,
-                displayMatriculation2,
-                displayOwner,
-                (item.attachmentsCount && item.attachmentsCount > 0) ?
-                  `<div class='attachment-icon'><i style='display: none; margin-top: 10px;' class='fa fa-spin `
-                  + `fa-spinner show-spinner-` + item.id + `'></i><i id='isDownloadingAttachment` + item.id + `'`
-                  + `class='content-icon ion-ios-download'></i></div>`
-                   : `<div>&nbsp;</div>`
-            ]);
+                    this.overviewDataTable.row.add([
+                        `<span id='` + item.id + `' data-status='` + item.status + `' class='caseTableItem' >` 
+                            + displayStatusRTD + `</span>`,
+                        displayStatus,
+                        displayNumberPlate,
+                        displayMatriculation1,
+                        displayMatriculation2,
+                        displayOwner,
+                        (item.attachmentsCount && item.attachmentsCount > 0) ?
+                          `<div class='attachment-icon'><i style='display: none; margin-top: 10px;' class='fa fa-spin `
+                          + `fa-spinner show-spinner-` + item.id + `'></i><i id='isDownloadingAttachment` + item.id + `'`
+                          + `class='content-icon ion-ios-download'></i></div>`
+                           : `<div>&nbsp;</div>`
+                    ]);
+                });
+            });
         });
     }
-    this.overviewDataTable.draw();
+    if (this.overviewDataTable) {
+        this.overviewDataTable.draw();
+    }
   }
 
   RefreshPageTitle() {

@@ -1,3 +1,4 @@
+import { FileUploadService } from './vehicle-change-case/file-upload/file-upload.service';
 import { CaseService } from './../shared/service/case.service';
 import { CaseErrorService } from './../shared/service/case-error.service';
 import { OverviewErrorService } from './../shared/service/overview-error.service';
@@ -68,7 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FileUploadComponent
   ],
   providers: [ErrorHandlerService, UserService, GlobalService, OverviewService,
-              OverviewErrorService, CaseErrorService, CaseService
+              OverviewErrorService, CaseErrorService, CaseService, FileUploadService
   ]
 })
 export class EgovModule { }

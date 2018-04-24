@@ -62,8 +62,8 @@ export class NavBarComponent implements OnInit {
     this.localizationResources = LabelEnum;
 
     this._router.events.filter(event => event instanceof NavigationEnd).subscribe(nav => {
-        console.log('nav', nav['url']);
         this.selectedPage = nav['url'];
+        $('.navbar-nav').removeClass('slide-in');
     });
 
     this._egovService.titleDefined.subscribe(
@@ -74,16 +74,18 @@ export class NavBarComponent implements OnInit {
 
     const userRole = UserRole;
 
-    this.selectedLanguage = this.localizationResources.languageCode;
-    if (sessionStorage) {
-      if (sessionStorage.getItem('selectedLanguage')) {
-          this.selectedLanguage = sessionStorage.getItem('selectedLanguage');
-          this.selectedLanguageName = this.localizationResources.languageName;
-          // $rootScope.$broadcast($rootScope.switchLanguageEvent, $scope.selectedLanguage);
-          this._egovService.languageSwitched.next(this.selectedLanguage);
-      }
-      sessionStorage.setItem('selectedLanguage', this.selectedLanguage);
-    }
+    this.translate.get(this.localizationResources.languageCode).subscribe(val => {
+        this.selectedLanguage = val;
+        if (sessionStorage) {
+            if (sessionStorage.getItem('selectedLanguage')) {
+                this.selectedLanguage = sessionStorage.getItem('selectedLanguage');
+                this.selectedLanguageName = this.localizationResources.languageName;
+                // $rootScope.$broadcast($rootScope.switchLanguageEvent, $scope.selectedLanguage);
+                this._egovService.languageSwitched.next(this.selectedLanguage);
+            }
+            sessionStorage.setItem('selectedLanguage', this.selectedLanguage);
+          }
+    });
 
     $('.navsidemenu').on('click', () => {
       $('.navbar-nav').toggleClass('slide-in');

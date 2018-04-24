@@ -3,13 +3,13 @@
     <div class="error-container" *ngIf="OldVehicleError || NewVehicleSearchError || IsSubmitError">
       <div class="row">
         <i class="content-icon-red ion-minus-circled float-left"></i>
-        <span class="error-text">{{ErrorCodeMessageError | translate}}</span>
+        <span class="error-text">{{ErrorCodeMessageError.errorMessage | translate}} Code: {{ErrorCodeMessageError.errorCode}}<br *ngIf="ErrorCodeMessageError.parameters"><br *ngIf="ErrorCodeMessageError.parameters"><ng-container *ngFor="let param of ErrorCodeMessageError.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
       </div>
     <div class="warning-container" *ngIf="OldVehicleWarning || NewVehicleSearchWarning || IsSubmitWarning">
       <div class="row">
         <i class="warning-icon-container ion-alert-circled"></i>
-        <span class="warning-text">{{ErrorCodeMessageWarning | translate}}</span>
+        <span class="warning-text">{{ErrorCodeMessageWarning.errorMessage | translate}} Code: {{ErrorCodeMessageWarning.errorCode}}<br *ngIf="ErrorCodeMessageWarning.parameters"><br *ngIf="ErrorCodeMessageWarning.parameters"><ng-container *ngFor="let param of ErrorCodeMessageWarning.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>      
     <div class="warning-container" *ngIf="showAttachmentWarning">
@@ -21,13 +21,13 @@
     <div class="info-container" *ngIf="OldVehicleInfo">
       <div class="row">
         <i class="info-icon-container fa-info-circle float-left"></i>
-        <span class="info-text">{{ErrorCodeMessageInfo1 | translate}}</span>
+        <span class="info-text">{{ErrorCodeMessageInfo1.errorMessage | translate}} Code: {{ErrorCodeMessageInfo1.errorCode}}<br *ngIf="ErrorCodeMessageInfo1.parameters"><br *ngIf="ErrorCodeMessageInfo1.parameters"><ng-container *ngFor="let param of ErrorCodeMessageInfo1.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>
     <div class="info-container" *ngIf="NewVehicleSearchInfo">
       <div class="row">
         <i class="info-icon-container fa-info-circle float-left"></i>
-        <span class="info-text">{{ErrorCodeMessageInfo2 | translate}}</span>
+        <span class="info-text">{{ErrorCodeMessageInfo2.errorMessage | translate}} Code: {{ErrorCodeMessageInfo2.errorCode}}<br *ngIf="ErrorCodeMessageInfo2.parameters"><br *ngIf="ErrorCodeMessageInfo2.parameters"><ng-container *ngFor="let param of ErrorCodeMessageInfo2.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>
   </div>
@@ -66,7 +66,7 @@
                                data-maxlength="3" ng-minlength="3"
                                pattern="\d*"
                                ng-pattern="/\d*/"
-                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1matriculation2.focus();"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle1matriculation2.focus()}, 130);}"
                                (blur)="ValidateVehicle1Matriculation1()" [disabled]="IsSubmitSuccess"
                                onclick="this.setSelectionRange(0, this.value.length)"
                                onfocus="this.setSelectionRange(0, this.value.length)"
@@ -83,7 +83,7 @@
                                data-maxlength="3" ng-minlength="3"
                                pattern="\d*"
                                ng-pattern="/\d*/"
-                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1matriculation3.focus();"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle1matriculation3.focus()}, 130);}"
                                (blur)="ValidateVehicle1Matriculation2()" [disabled]="IsSubmitSuccess"
                                onclick="this.setSelectionRange(0, this.value.length)"
                                onfocus="this.setSelectionRange(0, this.value.length)"
@@ -101,7 +101,7 @@
                                maxlength="3" data-maxlength="3" ng-minlength="3"
                                pattern="\d*"
                                ng-pattern="/\d*/"
-                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle1chassis.focus();"
+                               onkeyup="if (/[^0-9]/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle1chassis.focus()}, 130);}"
                                (blur)="ValidateVehicle1Matriculation3()" [disabled]="IsSubmitSuccess"
                                onclick="this.setSelectionRange(0, this.value.length)"
                                onfocus="this.setSelectionRange(0, this.value.length)"
@@ -125,7 +125,7 @@
                                 [ngClass]="{'green-box': IsVehicle1ChassisValid}"
                                 [(ngModel)]="OldVehicle.Chassis" ng-maxlength="4" maxlength="4" data-maxlength="4" 
                                 ng-minlength="4"
-                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') searchVehicle1.focus();"
+                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') {setTimeout(function() {searchVehicle1.focus()}, 130);}"
                                 (blur)="ValidateVehicle1Chassis()" [disabled]="IsSubmitSuccess"
                                 onclick="this.setSelectionRange(0, this.value.length)"
                                 onfocus="this.setSelectionRange(0, this.value.length)"
@@ -174,7 +174,7 @@
                     <div><i class="content-icon ion-android-car float-left"></i></div>
                     <div class="field-label Vehicle">{{localizationResources.Label_Vehicle | translate}}</div>
                     <div class="Text-content">
-                        {{OldVehicleSearchResult?.vehicle.brand}} {{OldVehicleSearchResult?.vehicle.type}} {{OldVehicleSearchResult?.vehicle.color1}}
+                        {{OldVehicleSearchResult?.vehicle?.brand}} {{OldVehicleSearchResult?.vehicle?.type}} {{OldVehicleSearchResult?.vehicle.color1}}
                     </div>
                 </div>
 
@@ -182,7 +182,7 @@
                     <div><i class="content-icon ion-pound float-left"></i></div>
                     <div class="field-label Number-Plate">{{localizationResources.Label_NumberPlate | translate}}</div>
                     <div class="Text-content">
-                        {{OldVehicleSearchResult?.numberPlate.canton}} {{OldVehicleSearchResult?.numberPlate.number}}
+                        {{OldVehicleSearchResult?.numberPlate?.canton}} {{OldVehicleSearchResult?.numberPlate?.number}}
                     </div>
                 </div>
 
@@ -190,9 +190,9 @@
                     <div><i class="content-icon ion-ios-contact-outline float-left"></i></div>
                     <div class="field-label Owner">{{localizationResources.Label_Owner | translate}}</div>
                     <div class="Text-content">
-                        <div>{{OldVehicleSearchResult?.vehicleOwner.firstName}} {{OldVehicleSearchResult?.vehicleOwner.name}}</div>
-                        <div>{{OldVehicleSearchResult?.vehicleOwner.address}}</div>
-                        <div>{{OldVehicleSearchResult?.vehicleOwner.zip}} {{OldVehicleSearchResult?.vehicleOwner.place}}</div>
+                        <div>{{OldVehicleSearchResult?.vehicleOwner?.firstName}} {{OldVehicleSearchResult?.vehicleOwner?.name}}</div>
+                        <div>{{OldVehicleSearchResult?.vehicleOwner?.address}}</div>
+                        <div>{{OldVehicleSearchResult?.vehicleOwner?.zip}} {{OldVehicleSearchResult?.vehicleOwner?.place}}</div>
                     </div>
                 </div>
 
@@ -232,7 +232,7 @@
                                 [(ngModel)]="NewVehicle.Matriculation1" ng-maxlength="3" maxlength="3" data-maxlength="3" ng-minlength="3"
                                 pattern="\d*"
                                 ng-pattern="/\d*/"
-                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2matriculation2.focus();"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle2matriculation2.focus()}, 130);}"
                                 (blur)="ValidateVehicle2Matriculation1()" [disabled]="IsSubmitSuccess"
                                 onclick="this.setSelectionRange(0, this.value.length)"
                                 onfocus="this.setSelectionRange(0, this.value.length)"
@@ -249,7 +249,7 @@
                                 [(ngModel)]="NewVehicle.Matriculation2" ng-maxlength="3" maxlength="3" data-maxlength="3" ng-minlength="3"
                                 pattern="\d*"
                                 ng-pattern="/\d*/"
-                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2matriculation3.focus();"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle2matriculation3.focus()}, 130);}"
                                 (blur)="ValidateVehicle2Matriculation2()" [disabled]="IsSubmitSuccess"
                                 onclick="this.setSelectionRange(0, this.value.length)"
                                 onfocus="this.setSelectionRange(0, this.value.length)"
@@ -266,7 +266,7 @@
                                 data-maxlength="3" ng-minlength="3"
                                 pattern="\d*"
                                 ng-pattern="/\d*/"
-                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') vehicle2chassis.focus();"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/[^0-9]/g, ''); if (this.value.length == 3 && event.key !== 'Tab') {setTimeout(function() {vehicle2chassis.focus()}, 130);}"
                                 (blur)="ValidateVehicle2Matriculation3()" [disabled]="IsSubmitSuccess"
                                 onclick="this.setSelectionRange(0, this.value.length)"
                                 onfocus="this.setSelectionRange(0, this.value.length)"
@@ -287,7 +287,7 @@
                                 [ngClass]="{'green-box': IsVehicle2ChassisValid}"
                                 [(ngModel)]="NewVehicle.Chassis" ng-maxlength="4" maxlength="4" 
                                 data-maxlength="4" ng-minlength="4"
-                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') searchVehicle2.focus();"
+                                onkeyup="if (/[^a-zA-Z0-9]/gi.test(this.value)) this.value = this.value.replace(/[^a-zA-Z0-9]/gi, ''); if (this.value.length == 4 && event.key !== 'Tab') {setTimeout(function() {searchVehicle2.focus()}, 130);}"
                                 (blur)="ValidateVehicle2Chassis()" [disabled]="IsSubmitSuccess" 
                                 onclick="this.setSelectionRange(0, this.value.length)"
                                 onfocus="this.setSelectionRange(0, this.value.length)"
@@ -384,7 +384,7 @@
                   <div class="col-xs-4">
                     <div class="plainCar"><i class="content-icon ion-android-car"></i></div>
                     <i class="fa fa-window-close"></i>
-                    <div class="Land-Rover-90LD">{{OldVehicleSearchResult?.vehicle.brand}} {{OldVehicleSearchResult?.vehicle.type}}</div>
+                    <div class="Land-Rover-90LD">{{OldVehicleSearchResult?.vehicle?.brand}} {{OldVehicleSearchResult?.vehicle?.type}}</div>
                     <div>{{OldVehicle?.Matriculation1}}.{{OldVehicle?.Matriculation2}}.{{OldVehicle?.Matriculation3}}</div>
                   </div>
 
@@ -392,18 +392,18 @@
                     <div class="arrowRight">
                         <!-- <div class="VD-123123">{{OldVehicleSearchResult?.numberPlate.canton}} {{OldVehicleSearchResult?.numberPlate.number}}</div> -->
                         <i class="icon-flag" aria-hidden="true"></i>
-                        <div class="VD-123123">{{OldVehicleSearchResult?.numberPlate.canton}}<span>.</span>{{OldVehicleSearchResult?.numberPlate.number}}</div>
+                        <div class="VD-123123">{{OldVehicleSearchResult?.numberPlate?.canton}}<span>.</span>{{OldVehicleSearchResult?.numberPlate?.number}}</div>
                         
                     </div>
                     <!-- <div class="arrowRight"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></div> -->
-                    <div class="Mike-Sample-7777-Via">{{OldVehicleSearchResult?.vehicleOwner.firstName}} {{OldVehicleSearchResult?.vehicleOwner.name}}</div>
-                    <div>{{OldVehicleSearchResult?.vehicleOwner.zip}} {{OldVehicleSearchResult?.vehicleOwner.place}}</div>
+                    <div class="Mike-Sample-7777-Via">{{OldVehicleSearchResult?.vehicleOwner?.firstName}} {{OldVehicleSearchResult?.vehicleOwner?.name}}</div>
+                    <div>{{OldVehicleSearchResult?.vehicleOwner?.zip}} {{OldVehicleSearchResult?.vehicleOwner?.place}}</div>
                   </div>
 
                   <div class="col-xs-4">
                     <div class="coloredCar"><i class="content-icon ion-android-car"></i></div>
                     <i class="fa fa-check-square"></i>
-                    <div class="Volkswagen-Touran">{{NewVehicleSearchResult?.vehicle.brand}} {{NewVehicleSearchResult?.vehicle.type}}</div>
+                    <div class="Volkswagen-Touran">{{NewVehicleSearchResult?.vehicle?.brand}} {{NewVehicleSearchResult?.vehicle?.type}}</div>
                     <div>{{NewVehicle?.Matriculation1}}.{{NewVehicle?.Matriculation2}}.{{NewVehicle?.Matriculation3}}</div>
                   </div>
                 </div>
@@ -431,7 +431,7 @@
                     <div class="field-label padding-5 paperTo-label newPaper-label">{{localizationResources.Label_NewRegistrationPaperTo | translate}}</div>
                     <ul class="float-right new-reg2" [ngClass]="{'readOnly': IsSubmitSuccess}">
                         <li data-toggle="collapse" data-target="#newRegDropdown" class="mousepointer" > <!-- [attr.disabled]="IsSubmitSuccess" -->
-                        <span class="new-reg-label">{{selectedOptionNewLabel}}</span>
+                        <span class="new-reg-label">{{selectedOptionNewLabel | translate}}</span>
 
                         <ul id="newRegDropdown" class="collapse zindex-5 dropdown-auto">                      
                             <li class="li-dropdown" [ngClass]="" (click)="SelectOptionNew('1')">
@@ -450,7 +450,7 @@
                     <div class="field-label padding-5 paperTo-label cancelPaper-label">{{localizationResources.Label_CancelRegistrationPaperTo | translate}}</div>
                     <ul class="float-right new-reg2" [ngClass]="{'readOnly': IsSubmitSuccess}">
                         <li data-toggle="collapse" data-target="#canRegDropdown" class="mousepointer" > <!-- [disabled]="IsSubmitSuccess" -->
-                        <span class="new-reg-label">{{selectedOptionCancelLabel}}</span>
+                        <span class="new-reg-label">{{selectedOptionCancelLabel | translate}}</span>
 
                         <ul id="canRegDropdown" class="collapse zindex-5 dropdown-auto">                      
                             <li class="li-dropdown" [ngClass]="" (click)="SelectOptionCancel('1')">
@@ -473,93 +473,22 @@
                 </div>
             </div>
 
+
             <div class="overflow attachment-container">
-                    <div><i class="content-icon ion-android-attach float-left"></i></div>
-                    <div class="attachment-label">{{localizationResources.Label_Attachment | translate}}</div>
+              <div><i class="content-icon ion-android-attach float-left"></i></div>
+              <div class="attachment-label">{{localizationResources.Label_Attachment | translate}}</div>
 
-                <div class="attach">
-                  <div id="upload_button" *ngIf="!IsSubmitted">    
-                    <span class="btn btn-default btn-file" >
-                      <i class="content-icon ion-android-upload"></i>{{localizationResources.Label_Upload | translate}}
-                      <input type="file" 
-                      [(ngModel)]="files"
-                        base-sixty-four-input multiple 
-                        accept=".png, .doc, .docx, .xls, .xlsx, .bmp, .jpg, .jpeg, .pdf" 
-                        maxsize="5242880"
-                        onload="onLoad"
-                        on-change="onChange"
-                        do-not-parse-if-oversize
-                        allow-same-file="true"
-                        >
-                    </span>
-                    <br />
-                    <ul class="fileList"></ul>
-                  </div>
-                  <label class="max-label" *ngIf="!IsSubmitted">Max. 5MB</label>
-
-                  <!-- Show saved files as list -->
-                  <div class="row" *ngFor="let savefile of filesSaved"> 
-                    <div class="margin-1" *ngIf="savefile.id"> 
-                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}"
-                         class="content-icon"
-                         (click)="hideSavedFile($index, savefile.id)" 
-                         title="Delete">
-                      </i>
-                      <span class="filename-multiple">
-                        <span>{{ savefile.filename }}</span>
-                        <span></span>
-                      </span>
-                    </div>
-                  </div>
-                  <!-- End show saved files as list -->
-
-                  <!-- Show to be saved files as list -->
-                  <div class="row" *ngFor="let file of allFiles">
-                    <div class="margin-1" *ngIf="$index+filesSaved.length<5 && !file.errorMessageBE"> <!-- Only five attachment per change case -->
-                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}" 
-                         class="content-icon" 
-                         (click)="hideFileByIndex($index)" 
-                         title="Delete">
-                      </i>
-                      <span *ngIf="isFileSupported($index)">  
-                        <i *ngIf="isFileSizeOver($index)" class="content-icon ion-alert-circled file-size-is-too-big"></i> 
-                      </span>
-                      <i *ngIf="!isFileSupported($index)" class="content-icon ion-alert-circled file-size-is-too-big"></i>
-                      <span class="filename-multiple">
-                        <span>{{ file.filename }}</span>
-                        <span></span>
-                        <span>{{ (file.filesize/1024/1024 > 5) ? '' : '(' + (file.filesize/1024/1024 | number: 2) + ' MB)' }}</span>
-                        <span *ngIf="isFileSupported($index)">
-                            <span *ngIf="isFileSizeOver($index)" class="file-size-is-too-big">File size is too big</span>
-                            <span *ngIf="!isFileSizeOver($index)"></span>
-                        </span>
-                        <span *ngIf="!isFileSupported($index)" class="file-size-is-too-big">File type is not supported</span>
-                      </span>
-                    </div>
-                  </div>
-                  <!-- End show to be saved files as list -->  
-
-                  <!-- Show failed to upload files -->
-                  <div class="row" *ngFor="let file of allFiles"> 
-                    <div class="margin-1" *ngIf="file.errorMessageBE"> 
-                      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}"
-                         class="content-icon"
-                         (click)="hideFileByIndex($index)" 
-                         title="Delete">
-                      </i>
-                      <i class="content-icon ion-alert-circled file-size-is-too-big"></i>
-                      <span class="filename-multiple">
-                        <span>{{ file.filename }}</span>
-                        <span></span>
-                        <span>{{ (file.filesize/1024/1024 > 5) ? '' : '(' + (file.filesize/1024/1024 | number: 2) + ' MB)' }}</span>
-                      </span>
-                      <span class="file-size-is-too-big">{{ file.errorMessageBE }}</span>
-                    </div>
-                  </div>
-                  <!-- End show failed to upload files -->
-
-                </div> 
-			        </div>
+              <app-file-upload 
+                [isMultiple]="true" 
+                [IsSubmitted]="IsSubmitted" 
+                [maxFileSizeLabel]="'Max. 5MB'"
+                [buttonType]="'secondary'"
+                (filesChanged)="onFileChanged($event)"
+                [preLoadedFiles]="preLoadedFiles"
+                >
+              </app-file-upload>
+                
+			      </div>
 
             <div class="Rectangle-9 submit-section">
                 <div class="float-left">
@@ -608,5 +537,3 @@
     </form>
 </div>
 </div> <!--divContainer END-->
-
-<!-- <app-file-upload></app-file-upload> -->

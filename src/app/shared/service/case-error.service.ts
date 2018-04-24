@@ -1,3 +1,4 @@
+import { IGeneralError } from './../interface/igeneralerror';
 import { BusinessRuleEnum } from './../enum/business-rule.enum';
 import { ValidationResultDto } from './../dto/validation-result-dto';
 import { LabelEnum } from './../enum/label.enum';
@@ -214,16 +215,16 @@ export class CaseErrorService {
     return objectTranslation;
   }
 
-  public mapError(validationResult: ValidationResultDto, OldVehicleInfo, NewVehicleSearchInfo): string {
+  public mapError(validationResult: ValidationResultDto, OldVehicleInfo, NewVehicleSearchInfo): IGeneralError {
+
     let errorMessage = '';
     let errorCode = '';
-    let brCode = '';
+    const parameters: Array<{label: string, value: string}> = [];
 
     if (validationResult !== undefined && validationResult != null &&
         validationResult.errorCode !== undefined && validationResult.errorCode != null) {
         errorCode = validationResult.errorCode;
         errorMessage = '';
-        brCode = ' Code: '.concat(validationResult.errorCode);
     }
 
     let params = '';
@@ -234,125 +235,131 @@ export class CaseErrorService {
                 const obj1 = validationResult.parameters[i].name;
                 const objTrans1 = this.ObjectMapper(obj1);
                 const val1 = validationResult.parameters[i].value;
-                params = params + objTrans1 + ': ' + val1;
-                if (i % 2 === 0) {
-                    params = params + ' | ';
-                }
-                if (i % 2 !== 0) {
-                    params = params + '\n';
-                }
+                // params = params + objTrans1 + ': ' + val1;
+                // if (i % 2 === 0) {
+                //     params = params + ' | ';
+                // }
+                // if (i % 2 !== 0) {
+                //     params = params + '\n';
+                // }
+                // new implementation
+
+                parameters.push({
+                    label: objTrans1,
+                    value: val1
+                });
             }
         }
     }
 
     switch (errorCode) {
         case BusinessRuleEnum.BR1:
-            errorMessage = this.localizationResources.ErrorCode_br1.concat(brCode);
+            errorMessage = this.localizationResources.ErrorCode_br1;
             break;
         case BusinessRuleEnum.BR100:
-            errorMessage = this.localizationResources.ErrorCode_br100.concat(brCode);
+            errorMessage = this.localizationResources.ErrorCode_br100;
             break;
         case BusinessRuleEnum.BR101:
-            errorMessage = this.localizationResources.ErrorCode_br101.concat(brCode);
+            errorMessage = this.localizationResources.ErrorCode_br101;
             break;
         case BusinessRuleEnum.BR102:
-            errorMessage = this.localizationResources.ErrorCode_br102.concat(brCode);
+            errorMessage = this.localizationResources.ErrorCode_br102;
             break;
     }
 
-    if (errorCode === 'BR103') { errorMessage = this.localizationResources.ErrorCode_br103.concat(brCode);
-    } else if (errorCode === 'BR104') { errorMessage = this.localizationResources.ErrorCode_br104.concat(brCode);
-    } else if (errorCode === 'BR105') { errorMessage = this.localizationResources.ErrorCode_br105.concat(brCode);
-    } else if (errorCode === 'BR106') { errorMessage = this.localizationResources.ErrorCode_br106.concat(brCode);
-    } else if (errorCode === 'BR107') { errorMessage = this.localizationResources.ErrorCode_br107.concat(brCode);
-    } else if (errorCode === 'BR108') { errorMessage = this.localizationResources.ErrorCode_br108.concat(brCode);
-    } else if (errorCode === 'BR109') { errorMessage = this.localizationResources.ErrorCode_br109.concat(brCode);
-    } else if (errorCode === 'BR11') { errorMessage = this.localizationResources.ErrorCode_br11.concat(brCode);
-    } else if (errorCode === 'BR110') { errorMessage = this.localizationResources.ErrorCode_br110.concat(brCode);
-    } else if (errorCode === 'BR116') { errorMessage = this.localizationResources.ErrorCode_br116.concat(brCode);
-    } else if (errorCode === 'BR117') { errorMessage = this.localizationResources.ErrorCode_br117.concat(brCode);
-    } else if (errorCode === 'BR119') { errorMessage = this.localizationResources.ErrorCode_br119.concat(brCode);
-    } else if (errorCode === 'BR120') { errorMessage = this.localizationResources.ErrorCode_br120.concat(brCode);
-    } else if (errorCode === 'BR121') { errorMessage = this.localizationResources.ErrorCode_br121.concat(brCode);
-    } else if (errorCode === 'BR12') { errorMessage = this.localizationResources.ErrorCode_br12.concat(brCode);
-    } else if (errorCode === 'BR123') { errorMessage = this.localizationResources.ErrorCode_br123.concat(brCode);
-    } else if (errorCode === 'BR124') { errorMessage = this.localizationResources.ErrorCode_br124.concat(brCode);
-    } else if (errorCode === 'BR126') { errorMessage = this.localizationResources.ErrorCode_br126.concat(brCode);
-    } else if (errorCode === 'BR13') { errorMessage = this.localizationResources.ErrorCode_br13.concat(brCode);
-    } else if (errorCode === 'BR131') { errorMessage = this.localizationResources.ErrorCode_br131.concat(brCode);
-    } else if (errorCode === 'BR132') { errorMessage = this.localizationResources.ErrorCode_br132.concat(brCode);
-    } else if (errorCode === 'BR135') { errorMessage = this.localizationResources.ErrorCode_br135.concat(brCode);
-    } else if (errorCode === 'BR137') { errorMessage = this.localizationResources.ErrorCode_br137.concat(brCode);
-    } else if (errorCode === 'BR140') { errorMessage = this.localizationResources.ErrorCode_br140.concat(brCode);
-    } else if (errorCode === 'BR141') { errorMessage = this.localizationResources.ErrorCode_br141.concat(brCode);
-    } else if (errorCode === 'BR142') { errorMessage = this.localizationResources.ErrorCode_br142.concat(brCode);
-    } else if (errorCode === 'BR143') { errorMessage = this.localizationResources.ErrorCode_br143.concat(brCode);
-    } else if (errorCode === 'BR144') { errorMessage = this.localizationResources.ErrorCode_br144.concat(brCode);
-    } else if (errorCode === 'BR145') { errorMessage = this.localizationResources.ErrorCode_br145.concat(brCode);
-    } else if (errorCode === 'BR19') { errorMessage = this.localizationResources.ErrorCode_br19.concat(brCode);
-    } else if (errorCode === 'BR20') { errorMessage = this.localizationResources.ErrorCode_br20.concat(brCode);
-    } else if (errorCode === 'BR21') { errorMessage = this.localizationResources.ErrorCode_br21.concat(brCode);
-    } else if (errorCode === 'BR23') { errorMessage = this.localizationResources.ErrorCode_br23.concat(brCode);
-    } else if (errorCode === 'BR24') { errorMessage = this.localizationResources.ErrorCode_br24.concat(brCode);
-    } else if (errorCode === 'BR25') { errorMessage = this.localizationResources.ErrorCode_br25.concat(brCode);
-    } else if (errorCode === 'BR42') { errorMessage = this.localizationResources.ErrorCode_br42.concat(brCode);
-    } else if (errorCode === 'BR43') { errorMessage = this.localizationResources.ErrorCode_br43.concat(brCode).concat(params);
-    } else if (errorCode === 'BR44') { errorMessage = this.localizationResources.ErrorCode_br44.concat(brCode).concat(params);
-    } else if (errorCode === 'BR45') { errorMessage = this.localizationResources.ErrorCode_br45.concat(brCode);
-    } else if (errorCode === 'BR46') { errorMessage = this.localizationResources.ErrorCode_br46.concat(brCode);
-    } else if (errorCode === 'BR47') { errorMessage = this.localizationResources.ErrorCode_br47.concat(brCode);
-    } else if (errorCode === 'BR48') { errorMessage = this.localizationResources.ErrorCode_br48.concat(brCode);
-    } else if (errorCode === 'BR50') { errorMessage = this.localizationResources.ErrorCode_br50.concat(brCode);
-    } else if (errorCode === 'BR51') { errorMessage = this.localizationResources.ErrorCode_br51.concat(brCode);
-    } else if (errorCode === 'BR52') { errorMessage = this.localizationResources.ErrorCode_br52.concat(brCode);
-    } else if (errorCode === 'BR53') { errorMessage = this.localizationResources.ErrorCode_br53.concat(brCode);
-    } else if (errorCode === 'BR54') { errorMessage = this.localizationResources.ErrorCode_br54.concat(brCode);
-    } else if (errorCode === 'BR55') { errorMessage = this.localizationResources.ErrorCode_br55.concat(brCode);
-    } else if (errorCode === 'BR56') { errorMessage = this.localizationResources.ErrorCode_br56.concat(brCode);
-    } else if (errorCode === 'BR57') { errorMessage = this.localizationResources.ErrorCode_br57.concat(brCode);
-    } else if (errorCode === 'BR58') { errorMessage = this.localizationResources.ErrorCode_br58.concat(brCode);
-    } else if (errorCode === 'BR59') { errorMessage = this.localizationResources.ErrorCode_br59.concat(brCode);
-    } else if (errorCode === 'BR6') { errorMessage = this.localizationResources.ErrorCode_br6.concat(brCode);
-    } else if (errorCode === 'BR60') { errorMessage = this.localizationResources.ErrorCode_br60.concat(brCode);
-    } else if (errorCode === 'BR61') { errorMessage = this.localizationResources.ErrorCode_br61.concat(brCode);
-    } else if (errorCode === 'BR62') { errorMessage = this.localizationResources.ErrorCode_br62.concat(brCode);
-    } else if (errorCode === 'BR63') { errorMessage = this.localizationResources.ErrorCode_br63.concat(brCode);
-    } else if (errorCode === 'BR64') { errorMessage = this.localizationResources.ErrorCode_br64.concat(brCode);
-    } else if (errorCode === 'BR65') { errorMessage = this.localizationResources.ErrorCode_br65.concat(brCode);
-    } else if (errorCode === 'BR66') { errorMessage = this.localizationResources.ErrorCode_br66.concat(brCode);
-    } else if (errorCode === 'BR67') { errorMessage = this.localizationResources.ErrorCode_br67.concat(brCode);
-    } else if (errorCode === 'BR68') { errorMessage = this.localizationResources.ErrorCode_br68.concat(brCode);
-    } else if (errorCode === 'BR69') { errorMessage = this.localizationResources.ErrorCode_br69.concat(brCode);
-    } else if (errorCode === 'BR7') { errorMessage = this.localizationResources.ErrorCode_br7.concat(brCode).concat(params);
-    } else if (errorCode === 'BR70') { errorMessage = this.localizationResources.ErrorCode_br70.concat(brCode);
-    } else if (errorCode === 'BR71') { errorMessage = this.localizationResources.ErrorCode_br71.concat(brCode);
-    } else if (errorCode === 'BR72') { errorMessage = this.localizationResources.ErrorCode_br72.concat(brCode);
-    } else if (errorCode === 'BR73') { errorMessage = this.localizationResources.ErrorCode_br73.concat(brCode);
-    } else if (errorCode === 'BR74') { errorMessage = this.localizationResources.ErrorCode_br74.concat(brCode);
-    } else if (errorCode === 'BR75') { errorMessage = this.localizationResources.ErrorCode_br75.concat(brCode);
-    } else if (errorCode === 'BR76') { errorMessage = this.localizationResources.ErrorCode_br76.concat(brCode);
-    } else if (errorCode === 'BR77') { errorMessage = this.localizationResources.ErrorCode_br77.concat(brCode);
-    } else if (errorCode === 'BR78') { errorMessage = this.localizationResources.ErrorCode_br78.concat(brCode);
-    } else if (errorCode === 'BR79') { errorMessage = this.localizationResources.ErrorCode_br79.concat(brCode);
-    } else if (errorCode === 'BR8') { errorMessage = this.localizationResources.ErrorCode_br8.concat(brCode);
-    } else if (errorCode === 'BR80') { errorMessage = this.localizationResources.ErrorCode_br80.concat(brCode);
-    } else if (errorCode === 'BR81') { errorMessage = this.localizationResources.ErrorCode_br81.concat(brCode);
-    } else if (errorCode === 'BR82') { errorMessage = this.localizationResources.ErrorCode_br82.concat(brCode);
-    } else if (errorCode === 'BR83') { errorMessage = this.localizationResources.ErrorCode_br83.concat(brCode);
-    } else if (errorCode === 'BR84') { errorMessage = this.localizationResources.ErrorCode_br84.concat(brCode);
-    } else if (errorCode === 'BR85') { errorMessage = this.localizationResources.ErrorCode_br85.concat(brCode);
-    } else if (errorCode === 'BR86') { errorMessage = this.localizationResources.ErrorCode_br86.concat(brCode);
-    } else if (errorCode === 'BR87') { errorMessage = this.localizationResources.ErrorCode_br87.concat(brCode);
-    } else if (errorCode === 'BR88') { errorMessage = this.localizationResources.ErrorCode_br88.concat(brCode);
-    } else if (errorCode === 'BR89') { errorMessage = this.localizationResources.ErrorCode_br89.concat(brCode);
-    } else if (errorCode === 'BR90') { errorMessage = this.localizationResources.ErrorCode_br90.concat(brCode);
-    } else if (errorCode === 'BR91') { errorMessage = this.localizationResources.ErrorCode_br91.concat(brCode);
-    } else if (errorCode === 'BR92') { errorMessage = this.localizationResources.ErrorCode_br92.concat(brCode);
-    } else if (errorCode === 'BR93') { errorMessage = this.localizationResources.ErrorCode_br93.concat(brCode);
-    } else if (errorCode === 'BR94') { errorMessage = this.localizationResources.ErrorCode_br94.concat(brCode);
-    } else if (errorCode === 'BR95') { errorMessage = this.localizationResources.ErrorCode_br95.concat(brCode);
-    } else if (errorCode === 'BR98') { errorMessage = this.localizationResources.ErrorCode_br98.concat(brCode);
-    } else if (errorCode === 'BR99') { errorMessage = this.localizationResources.ErrorCode_br99.concat(brCode);
+    if (errorCode === 'BR103') { errorMessage = this.localizationResources.ErrorCode_br103;
+    } else if (errorCode === 'BR104') { errorMessage = this.localizationResources.ErrorCode_br104;
+    } else if (errorCode === 'BR105') { errorMessage = this.localizationResources.ErrorCode_br105;
+    } else if (errorCode === 'BR106') { errorMessage = this.localizationResources.ErrorCode_br106;
+    } else if (errorCode === 'BR107') { errorMessage = this.localizationResources.ErrorCode_br107;
+    } else if (errorCode === 'BR108') { errorMessage = this.localizationResources.ErrorCode_br108;
+    } else if (errorCode === 'BR109') { errorMessage = this.localizationResources.ErrorCode_br109;
+    } else if (errorCode === 'BR11') { errorMessage = this.localizationResources.ErrorCode_br11;
+    } else if (errorCode === 'BR110') { errorMessage = this.localizationResources.ErrorCode_br110;
+    } else if (errorCode === 'BR116') { errorMessage = this.localizationResources.ErrorCode_br116;
+    } else if (errorCode === 'BR117') { errorMessage = this.localizationResources.ErrorCode_br117;
+    } else if (errorCode === 'BR119') { errorMessage = this.localizationResources.ErrorCode_br119;
+    } else if (errorCode === 'BR120') { errorMessage = this.localizationResources.ErrorCode_br120;
+    } else if (errorCode === 'BR121') { errorMessage = this.localizationResources.ErrorCode_br121;
+    } else if (errorCode === 'BR12') { errorMessage = this.localizationResources.ErrorCode_br12;
+    } else if (errorCode === 'BR123') { errorMessage = this.localizationResources.ErrorCode_br123;
+    } else if (errorCode === 'BR124') { errorMessage = this.localizationResources.ErrorCode_br124;
+    } else if (errorCode === 'BR126') { errorMessage = this.localizationResources.ErrorCode_br126;
+    } else if (errorCode === 'BR13') { errorMessage = this.localizationResources.ErrorCode_br13;
+    } else if (errorCode === 'BR131') { errorMessage = this.localizationResources.ErrorCode_br131;
+    } else if (errorCode === 'BR132') { errorMessage = this.localizationResources.ErrorCode_br132;
+    } else if (errorCode === 'BR135') { errorMessage = this.localizationResources.ErrorCode_br135;
+    } else if (errorCode === 'BR137') { errorMessage = this.localizationResources.ErrorCode_br137;
+    } else if (errorCode === 'BR140') { errorMessage = this.localizationResources.ErrorCode_br140;
+    } else if (errorCode === 'BR141') { errorMessage = this.localizationResources.ErrorCode_br141;
+    } else if (errorCode === 'BR142') { errorMessage = this.localizationResources.ErrorCode_br142;
+    } else if (errorCode === 'BR143') { errorMessage = this.localizationResources.ErrorCode_br143;
+    } else if (errorCode === 'BR144') { errorMessage = this.localizationResources.ErrorCode_br144;
+    } else if (errorCode === 'BR145') { errorMessage = this.localizationResources.ErrorCode_br145;
+    } else if (errorCode === 'BR19') { errorMessage = this.localizationResources.ErrorCode_br19;
+    } else if (errorCode === 'BR20') { errorMessage = this.localizationResources.ErrorCode_br20;
+    } else if (errorCode === 'BR21') { errorMessage = this.localizationResources.ErrorCode_br21;
+    } else if (errorCode === 'BR23') { errorMessage = this.localizationResources.ErrorCode_br23;
+    } else if (errorCode === 'BR24') { errorMessage = this.localizationResources.ErrorCode_br24;
+    } else if (errorCode === 'BR25') { errorMessage = this.localizationResources.ErrorCode_br25;
+    } else if (errorCode === 'BR42') { errorMessage = this.localizationResources.ErrorCode_br42;
+    } else if (errorCode === 'BR43') { errorMessage = this.localizationResources.ErrorCode_br43;
+    } else if (errorCode === 'BR44') { errorMessage = this.localizationResources.ErrorCode_br44;
+    } else if (errorCode === 'BR45') { errorMessage = this.localizationResources.ErrorCode_br45;
+    } else if (errorCode === 'BR46') { errorMessage = this.localizationResources.ErrorCode_br46;
+    } else if (errorCode === 'BR47') { errorMessage = this.localizationResources.ErrorCode_br47;
+    } else if (errorCode === 'BR48') { errorMessage = this.localizationResources.ErrorCode_br48;
+    } else if (errorCode === 'BR50') { errorMessage = this.localizationResources.ErrorCode_br50;
+    } else if (errorCode === 'BR51') { errorMessage = this.localizationResources.ErrorCode_br51;
+    } else if (errorCode === 'BR52') { errorMessage = this.localizationResources.ErrorCode_br52;
+    } else if (errorCode === 'BR53') { errorMessage = this.localizationResources.ErrorCode_br53;
+    } else if (errorCode === 'BR54') { errorMessage = this.localizationResources.ErrorCode_br54;
+    } else if (errorCode === 'BR55') { errorMessage = this.localizationResources.ErrorCode_br55;
+    } else if (errorCode === 'BR56') { errorMessage = this.localizationResources.ErrorCode_br56;
+    } else if (errorCode === 'BR57') { errorMessage = this.localizationResources.ErrorCode_br57;
+    } else if (errorCode === 'BR58') { errorMessage = this.localizationResources.ErrorCode_br58;
+    } else if (errorCode === 'BR59') { errorMessage = this.localizationResources.ErrorCode_br59;
+    } else if (errorCode === 'BR6') { errorMessage = this.localizationResources.ErrorCode_br6;
+    } else if (errorCode === 'BR60') { errorMessage = this.localizationResources.ErrorCode_br60;
+    } else if (errorCode === 'BR61') { errorMessage = this.localizationResources.ErrorCode_br61;
+    } else if (errorCode === 'BR62') { errorMessage = this.localizationResources.ErrorCode_br62;
+    } else if (errorCode === 'BR63') { errorMessage = this.localizationResources.ErrorCode_br63;
+    } else if (errorCode === 'BR64') { errorMessage = this.localizationResources.ErrorCode_br64;
+    } else if (errorCode === 'BR65') { errorMessage = this.localizationResources.ErrorCode_br65;
+    } else if (errorCode === 'BR66') { errorMessage = this.localizationResources.ErrorCode_br66;
+    } else if (errorCode === 'BR67') { errorMessage = this.localizationResources.ErrorCode_br67;
+    } else if (errorCode === 'BR68') { errorMessage = this.localizationResources.ErrorCode_br68;
+    } else if (errorCode === 'BR69') { errorMessage = this.localizationResources.ErrorCode_br69;
+    } else if (errorCode === 'BR7') { errorMessage = this.localizationResources.ErrorCode_br7;
+    } else if (errorCode === 'BR70') { errorMessage = this.localizationResources.ErrorCode_br70;
+    } else if (errorCode === 'BR71') { errorMessage = this.localizationResources.ErrorCode_br71;
+    } else if (errorCode === 'BR72') { errorMessage = this.localizationResources.ErrorCode_br72;
+    } else if (errorCode === 'BR73') { errorMessage = this.localizationResources.ErrorCode_br73;
+    } else if (errorCode === 'BR74') { errorMessage = this.localizationResources.ErrorCode_br74;
+    } else if (errorCode === 'BR75') { errorMessage = this.localizationResources.ErrorCode_br75;
+    } else if (errorCode === 'BR76') { errorMessage = this.localizationResources.ErrorCode_br76;
+    } else if (errorCode === 'BR77') { errorMessage = this.localizationResources.ErrorCode_br77;
+    } else if (errorCode === 'BR78') { errorMessage = this.localizationResources.ErrorCode_br78;
+    } else if (errorCode === 'BR79') { errorMessage = this.localizationResources.ErrorCode_br79;
+    } else if (errorCode === 'BR8') { errorMessage = this.localizationResources.ErrorCode_br8;
+    } else if (errorCode === 'BR80') { errorMessage = this.localizationResources.ErrorCode_br80;
+    } else if (errorCode === 'BR81') { errorMessage = this.localizationResources.ErrorCode_br81;
+    } else if (errorCode === 'BR82') { errorMessage = this.localizationResources.ErrorCode_br82;
+    } else if (errorCode === 'BR83') { errorMessage = this.localizationResources.ErrorCode_br83;
+    } else if (errorCode === 'BR84') { errorMessage = this.localizationResources.ErrorCode_br84;
+    } else if (errorCode === 'BR85') { errorMessage = this.localizationResources.ErrorCode_br85;
+    } else if (errorCode === 'BR86') { errorMessage = this.localizationResources.ErrorCode_br86;
+    } else if (errorCode === 'BR87') { errorMessage = this.localizationResources.ErrorCode_br87;
+    } else if (errorCode === 'BR88') { errorMessage = this.localizationResources.ErrorCode_br88;
+    } else if (errorCode === 'BR89') { errorMessage = this.localizationResources.ErrorCode_br89;
+    } else if (errorCode === 'BR90') { errorMessage = this.localizationResources.ErrorCode_br90;
+    } else if (errorCode === 'BR91') { errorMessage = this.localizationResources.ErrorCode_br91;
+    } else if (errorCode === 'BR92') { errorMessage = this.localizationResources.ErrorCode_br92;
+    } else if (errorCode === 'BR93') { errorMessage = this.localizationResources.ErrorCode_br93;
+    } else if (errorCode === 'BR94') { errorMessage = this.localizationResources.ErrorCode_br94;
+    } else if (errorCode === 'BR95') { errorMessage = this.localizationResources.ErrorCode_br95;
+    } else if (errorCode === 'BR98') { errorMessage = this.localizationResources.ErrorCode_br98;
+    } else if (errorCode === 'BR99') { errorMessage = this.localizationResources.ErrorCode_br99;
     } else if (errorCode === 'info1') {
       if (OldVehicleInfo) {
           errorMessage = this.localizationResources.Info_InputChanged_Vehicle1;
@@ -367,7 +374,11 @@ export class CaseErrorService {
       errorMessage = this.localizationResources.Error_Revalidation;
     }
 
-    return errorMessage;
+    return {
+        errorMessage: errorMessage,
+        errorCode: errorCode,
+        parameters: parameters
+    };
   }
 
 }

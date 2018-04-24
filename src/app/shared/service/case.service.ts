@@ -119,6 +119,19 @@ export class CaseService {
     return this._http.get<VehicleChangeCaseConfigurationDto[]>(url);
   }
 
+  public EditVehicleChangeCaseConfiguration(VehicleChangeCaseConfigurationList: Array<VehicleChangeCaseConfigurationDto>) {
+    const url = this._egovService.getEnv() + '/egov/api/VehicleChangeCaseConfiguration';
+    const arrayDto = new Array<VehicleChangeCaseConfigurationDto>();
+    const dto = new VehicleChangeCaseConfigurationDto();
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json; charset=utf-8',
+        'dataType': 'json'
+      })
+    };
+    return this._http.put<VehicleChangeCaseSubmitResultDto>(url, VehicleChangeCaseConfigurationList, httpOptions);
+  }
+
   public GetVehicleChangeCase(caseId: number) {
     const url = this._egovService.getEnv() + '/egov/api/VehicleChangeCase/' + caseId;
     // VehicleChangeCaseDto

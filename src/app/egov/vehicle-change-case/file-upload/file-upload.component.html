@@ -1,17 +1,54 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" placeholder="Bob" formControlName="name">
+<div class="attach">
+  <div [attr.id]="(buttonType === 'primary') ? 'upload_button_old' : 'upload_button'" 
+    *ngIf="!(IsSubmitted || (!isMultiple && allFiles.length > 0))">    
+    <span *ngIf="!IsSubmitted" class="btn btn-default btn-file" [ngClass]="{'background-default': buttonType === 'primary', 'color-white': buttonType === 'primary'}">
+      <i class="content-icon ion-android-upload" [ngClass]="{'color-white': buttonType === 'primary'}"></i>{{localizationResources.Label_Upload | translate}}
+      <input type="file" [multiple]="isMultiple"
+        accept=".png, .doc, .docx, .xls, .xlsx, .bmp, .jpg, .jpeg, .pdf" 
+        maxsize="5242880"
+        (change)="onFileChange($event)"
+        (click)="onFileClick()"
+        #fileInput
+        >
+    </span>
+    <br />
+    <ul class="fileList"></ul>
   </div>
-  <div class="form-group">
-    <label for="avatar">Avatar</label>
-    <input type="file" 
-      id="avatar" 
-      (change)="onFileChange($event)" 
-      #fileInput
-      multiple
-      >
-    <button type="button" class="btn btn-sm btn-default" (click)="clearFile()">clear file</button>
+  <label class="max-label" *ngIf="!(IsSubmitted || (!isMultiple && allFiles.length > 0))">{{ maxFileSizeLabel }}</label>
+
+  <!-- Show to be saved files as list -->
+  <div class="row" *ngFor="let file of allFiles; let i = index">
+    <div class="margin-1" [ngClass]="{'file-name-ellipsis': maxWidth || buttonType === 'primary' }" [style.width.px]="maxWidth" *ngIf="allFiles.length <= 5"> <!-- Only five attachment per change case !file.errorMessageBE -->
+      <i [ngClass]="{'ion-trash-b': !IsSubmitted, 'mousepointer': !IsSubmitted}" 
+         class="content-icon" 
+         (click)="hideFileByIndex(i)" 
+         title="Delete">
+      </i>
+      <span *ngIf="file.errorMessageBE; else noBEerror">
+          <i class="content-icon ion-alert-circled file-size-is-too-big" title="{{ file.errorMessageBE }}"></i>
+      </span>
+      <ng-template #noBEerror>
+          <span *ngIf="isFileSupported(i)">  
+            <i *ngIf="isFileSizeOver(i)" class="content-icon ion-alert-circled file-size-is-too-big" title="File size is too big"></i> 
+          </span>
+          <i *ngIf="!isFileSupported(i)" class="content-icon ion-alert-circled file-size-is-too-big" title="File type is not supported"></i>
+      </ng-template>
+      
+      <span class="filename-multiple" title="{{ file.name }}">
+          <span>{{ file.name }} </span>
+          <span *ngIf="file.size > -1">{{ (file.size / 1024 / 1024 > 5) ? '' : '(' + (file.size / 1024 / 1024 | number:'1.2-2') + ' MB)' }}</span>
+          
+          <span *ngIf="file.errorMessageBE; else noBEerrorMsg" class="file-size-is-too-big">{{ file.errorMessageBE }}</span>
+          <ng-template #noBEerrorMsg>
+            <span *ngIf="isFileSupported(i)">
+              <span *ngIf="isFileSizeOver(i)" class="file-size-is-too-big" title="File size is too big">File size is too big</span>
+              <span *ngIf="isFileSizeOver(i)"></span>
+            </span>
+            <span *ngIf="!isFileSupported(i)" class="file-size-is-too-big" title="File type is not supported">File type is not supported</span>
+          </ng-template>
+      </span>
+    </div>
   </div>
-  <button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i></button>
-</form>
+  <!-- End show to be saved files as list -->
+
+</div> 

@@ -10,6 +10,10 @@ export class AttachmentDto {
     }
 
     public vehicleChangeCaseId: number;
+    public fileId: number;
     public name: string;
     public data: string;
+    public type: string;
+    public size: number;
+    public errorMessageBE: string;
 }
