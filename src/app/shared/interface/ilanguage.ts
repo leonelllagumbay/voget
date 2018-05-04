@@ -369,12 +369,19 @@ export interface ILanguage {
     ErrorCode_br132: string;
     ErrorCode_br135: string;
     ErrorCode_br137: string;
+    ErrorCode_br139: string; // new
     ErrorCode_br140: string;
     ErrorCode_br141: string;
     ErrorCode_br142: string;
     ErrorCode_br143: string;
     ErrorCode_br144: string;
     ErrorCode_br145: string;
+    ErrorCode_br146: string; // new
+    ErrorCode_br147: string; // new
+    ErrorCode_br148: string; // new
+    ErrorCode_br149: string; // new
+    ErrorCode_br150: string; // new
+    ErrorCode_br151: string; // new
     ErrorCode_br19: string;
     ErrorCode_br20: string;
     ErrorCode_br21: string;

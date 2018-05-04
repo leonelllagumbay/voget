@@ -3,13 +3,13 @@
     <div class="error-container" *ngIf="OldVehicleError || NewVehicleSearchError || IsSubmitError">
       <div class="row">
         <i class="content-icon-red ion-minus-circled float-left"></i>
-        <span class="error-text">{{ErrorCodeMessageError.errorMessage | translate}} Code: {{ErrorCodeMessageError.errorCode}}<br *ngIf="ErrorCodeMessageError.parameters"><br *ngIf="ErrorCodeMessageError.parameters"><ng-container *ngFor="let param of ErrorCodeMessageError.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
+        <span class="error-text">{{ErrorCodeMessageError.errorMessage | translate}} <span *ngIf="ErrorCodeMessageError.errorCode">Code: {{ErrorCodeMessageError.errorCode}}</span><br *ngIf="ErrorCodeMessageError.parameters && ErrorCodeMessageError.parameters.length"><br *ngIf="ErrorCodeMessageError.parameters && ErrorCodeMessageError.parameters.length"><ng-container *ngFor="let param of ErrorCodeMessageError.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
       </div>
     <div class="warning-container" *ngIf="OldVehicleWarning || NewVehicleSearchWarning || IsSubmitWarning">
       <div class="row">
         <i class="warning-icon-container ion-alert-circled"></i>
-        <span class="warning-text">{{ErrorCodeMessageWarning.errorMessage | translate}} Code: {{ErrorCodeMessageWarning.errorCode}}<br *ngIf="ErrorCodeMessageWarning.parameters"><br *ngIf="ErrorCodeMessageWarning.parameters"><ng-container *ngFor="let param of ErrorCodeMessageWarning.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
+        <span class="warning-text">{{ErrorCodeMessageWarning.errorMessage | translate}} <span *ngIf="ErrorCodeMessageWarning.errorCode">Code: {{ErrorCodeMessageWarning.errorCode}}</span><br *ngIf="ErrorCodeMessageWarning.parameters && ErrorCodeMessageWarning.parameters.length"><br *ngIf="ErrorCodeMessageWarning.parameters && ErrorCodeMessageWarning.parameters.length"><ng-container *ngFor="let param of ErrorCodeMessageWarning.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>      
     <div class="warning-container" *ngIf="showAttachmentWarning">
@@ -21,13 +21,13 @@
     <div class="info-container" *ngIf="OldVehicleInfo">
       <div class="row">
         <i class="info-icon-container fa-info-circle float-left"></i>
-        <span class="info-text">{{ErrorCodeMessageInfo1.errorMessage | translate}} Code: {{ErrorCodeMessageInfo1.errorCode}}<br *ngIf="ErrorCodeMessageInfo1.parameters"><br *ngIf="ErrorCodeMessageInfo1.parameters"><ng-container *ngFor="let param of ErrorCodeMessageInfo1.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
+        <span class="info-text">{{ErrorCodeMessageInfo1.errorMessage | translate}} <span *ngIf="ErrorCodeMessageInfo1.errorCode">Code: {{ErrorCodeMessageInfo1.errorCode}}</span><br *ngIf="ErrorCodeMessageInfo1.parameters && ErrorCodeMessageInfo1.parameters.length"><br *ngIf="ErrorCodeMessageInfo1.parameters && ErrorCodeMessageInfo1.parameters.length"><ng-container *ngFor="let param of ErrorCodeMessageInfo1.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>
     <div class="info-container" *ngIf="NewVehicleSearchInfo">
       <div class="row">
         <i class="info-icon-container fa-info-circle float-left"></i>
-        <span class="info-text">{{ErrorCodeMessageInfo2.errorMessage | translate}} Code: {{ErrorCodeMessageInfo2.errorCode}}<br *ngIf="ErrorCodeMessageInfo2.parameters"><br *ngIf="ErrorCodeMessageInfo2.parameters"><ng-container *ngFor="let param of ErrorCodeMessageInfo2.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
+        <span class="info-text">{{ErrorCodeMessageInfo2.errorMessage | translate}} <span *ngIf="ErrorCodeMessageInfo2.errorCode">Code: {{ErrorCodeMessageInfo2.errorCode}}</span><br *ngIf="ErrorCodeMessageInfo2.parameters && ErrorCodeMessageInfo2.parameters.length"><br *ngIf="ErrorCodeMessageInfo2.parameters && ErrorCodeMessageInfo2.parameters.length"><ng-container *ngFor="let param of ErrorCodeMessageInfo2.parameters; let i = index">{{param.label | translate}}: {{param.value}}<ng-container *ngIf="i % 2 === 0"> | </ng-container><ng-container *ngIf="i % 2 !== 0"><br></ng-container></ng-container></span>
       </div>
     </div>
   </div>
@@ -528,7 +528,10 @@
                   <i class="fa fa-pencil-square-o padding-0-5" *ngIf="!isUploadingAttachment"></i>
                   {{localizationResources.Button_SaveAsDraft | translate}}
                 </button>
-                <button id="btnBack" name="btnBack" type="submit" (click)="!isSaveAsDraftRejectedClicked && ClickGoBack()" *ngIf="IsSubmitted || (!IsSubmitted && (OldVehicleError || NewVehicleSearchError))" class="goBack-btn-default draft-btn float-right">
+                <button id="btnBack" name="btnBack" type="submit" 
+                    (click)="!isSaveAsDraftRejectedClicked && ClickGoBack()" 
+                    *ngIf="IsSubmitted || (!IsSubmitted && (OldVehicleError || NewVehicleSearchError))" 
+                    class="goBack-btn-default draft-btn float-right">
                   <i class="fa fa-arrow-left padding-0-5"></i>{{localizationResources.Button_BackToOverview | translate}}
                 </button>
               </div>

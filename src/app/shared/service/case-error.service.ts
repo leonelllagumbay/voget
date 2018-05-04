@@ -215,34 +215,23 @@ export class CaseErrorService {
     return objectTranslation;
   }
 
-  public mapError(validationResult: ValidationResultDto, OldVehicleInfo, NewVehicleSearchInfo): IGeneralError {
+  public mapError(validationResult: ValidationResultDto, OldVehicleInfo: boolean, NewVehicleSearchInfo: boolean): IGeneralError {
 
     let errorMessage = '';
     let errorCode = '';
     const parameters: Array<{label: string, value: string}> = [];
 
-    if (validationResult !== undefined && validationResult != null &&
-        validationResult.errorCode !== undefined && validationResult.errorCode != null) {
+    if (validationResult && validationResult.errorCode) {
         errorCode = validationResult.errorCode;
         errorMessage = '';
     }
 
-    let params = '';
     if (validationResult !== undefined) {
         if (validationResult.parameters !== undefined && validationResult.parameters.length > 0) {
-            params = ' \n\n';
             for (let i = 0; i < validationResult.parameters.length; i++) {
                 const obj1 = validationResult.parameters[i].name;
                 const objTrans1 = this.ObjectMapper(obj1);
                 const val1 = validationResult.parameters[i].value;
-                // params = params + objTrans1 + ': ' + val1;
-                // if (i % 2 === 0) {
-                //     params = params + ' | ';
-                // }
-                // if (i % 2 !== 0) {
-                //     params = params + '\n';
-                // }
-                // new implementation
 
                 parameters.push({
                     label: objTrans1,
@@ -253,125 +242,131 @@ export class CaseErrorService {
     }
 
     switch (errorCode) {
-        case BusinessRuleEnum.BR1:
-            errorMessage = this.localizationResources.ErrorCode_br1;
+        case 'BR1': errorMessage = this.localizationResources.ErrorCode_br1; break;
+        case 'BR100': errorMessage = this.localizationResources.ErrorCode_br100; break;
+        case 'BR101': errorMessage = this.localizationResources.ErrorCode_br101; break;
+        case 'BR102': errorMessage = this.localizationResources.ErrorCode_br102; break;
+        case 'BR103': errorMessage = this.localizationResources.ErrorCode_br103; break;
+        case 'BR104': errorMessage = this.localizationResources.ErrorCode_br104; break;
+        case 'BR105': errorMessage = this.localizationResources.ErrorCode_br105; break;
+        case 'BR106': errorMessage = this.localizationResources.ErrorCode_br106; break;
+        case 'BR107': errorMessage = this.localizationResources.ErrorCode_br107; break;
+        case 'BR108': errorMessage = this.localizationResources.ErrorCode_br108; break;
+        case 'BR109': errorMessage = this.localizationResources.ErrorCode_br109; break;
+        case 'BR11': errorMessage = this.localizationResources.ErrorCode_br11; break;
+        case 'BR110': errorMessage = this.localizationResources.ErrorCode_br110; break;
+        case 'BR116': errorMessage = this.localizationResources.ErrorCode_br116; break;
+        case 'BR117': errorMessage = this.localizationResources.ErrorCode_br117; break;
+        case 'BR119': errorMessage = this.localizationResources.ErrorCode_br119; break;
+        case 'BR12': errorMessage = this.localizationResources.ErrorCode_br12; break;
+        case 'BR120': errorMessage = this.localizationResources.ErrorCode_br120; break;
+        case 'BR121': errorMessage = this.localizationResources.ErrorCode_br121; break;
+        case 'BR123': errorMessage = this.localizationResources.ErrorCode_br123; break;
+        case 'BR124': errorMessage = this.localizationResources.ErrorCode_br124; break;
+        case 'BR126': errorMessage = this.localizationResources.ErrorCode_br126; break;
+        case 'BR13': errorMessage = this.localizationResources.ErrorCode_br13; break;
+        case 'BR131': errorMessage = this.localizationResources.ErrorCode_br131; break;
+        case 'BR132': errorMessage = this.localizationResources.ErrorCode_br132; break;
+        case 'BR135': errorMessage = this.localizationResources.ErrorCode_br135; break;
+        case 'BR137': errorMessage = this.localizationResources.ErrorCode_br137; break;
+        case 'BR139': errorMessage = this.localizationResources.ErrorCode_br139; break;
+        case 'BR140': errorMessage = this.localizationResources.ErrorCode_br140; break;
+        case 'BR141': errorMessage = this.localizationResources.ErrorCode_br141; break;
+        case 'BR142': errorMessage = this.localizationResources.ErrorCode_br142; break;
+        case 'BR143': errorMessage = this.localizationResources.ErrorCode_br143; break;
+        case 'BR144': errorMessage = this.localizationResources.ErrorCode_br144; break;
+        case 'BR145': errorMessage = this.localizationResources.ErrorCode_br145; break;
+        case 'BR146': errorMessage = this.localizationResources.ErrorCode_br146; break;
+        case 'BR147': errorMessage = this.localizationResources.ErrorCode_br147; break;
+        case 'BR148': errorMessage = this.localizationResources.ErrorCode_br148; break;
+        case 'BR149': errorMessage = this.localizationResources.ErrorCode_br149; break;
+        case 'BR150': errorMessage = this.localizationResources.ErrorCode_br150; break;
+        case 'BR151': errorMessage = this.localizationResources.ErrorCode_br151; break;
+        case 'BR19': errorMessage = this.localizationResources.ErrorCode_br19; break;
+        case 'BR20': errorMessage = this.localizationResources.ErrorCode_br20; break;
+        case 'BR21': errorMessage = this.localizationResources.ErrorCode_br21; break;
+        case 'BR23': errorMessage = this.localizationResources.ErrorCode_br23; break;
+        case 'BR24': errorMessage = this.localizationResources.ErrorCode_br24; break;
+        case 'BR25': errorMessage = this.localizationResources.ErrorCode_br25; break;
+        case 'BR42': errorMessage = this.localizationResources.ErrorCode_br42; break;
+        case 'BR43': errorMessage = this.localizationResources.ErrorCode_br43; break;
+        case 'BR44': errorMessage = this.localizationResources.ErrorCode_br44; break;
+        case 'BR45': errorMessage = this.localizationResources.ErrorCode_br45; break;
+        case 'BR46': errorMessage = this.localizationResources.ErrorCode_br46; break;
+        case 'BR47': errorMessage = this.localizationResources.ErrorCode_br47; break;
+        case 'BR48': errorMessage = this.localizationResources.ErrorCode_br48; break;
+        case 'BR50': errorMessage = this.localizationResources.ErrorCode_br50; break;
+        case 'BR51': errorMessage = this.localizationResources.ErrorCode_br51; break;
+        case 'BR52': errorMessage = this.localizationResources.ErrorCode_br52; break;
+        case 'BR53': errorMessage = this.localizationResources.ErrorCode_br53; break;
+        case 'BR54': errorMessage = this.localizationResources.ErrorCode_br54; break;
+        case 'BR55': errorMessage = this.localizationResources.ErrorCode_br55; break;
+        case 'BR56': errorMessage = this.localizationResources.ErrorCode_br56; break;
+        case 'BR57': errorMessage = this.localizationResources.ErrorCode_br57; break;
+        case 'BR58': errorMessage = this.localizationResources.ErrorCode_br58; break;
+        case 'BR59': errorMessage = this.localizationResources.ErrorCode_br59; break;
+        case 'BR6': errorMessage = this.localizationResources.ErrorCode_br6; break;
+        case 'BR60': errorMessage = this.localizationResources.ErrorCode_br60; break;
+        case 'BR61': errorMessage = this.localizationResources.ErrorCode_br61; break;
+        case 'BR62': errorMessage = this.localizationResources.ErrorCode_br62; break;
+        case 'BR63': errorMessage = this.localizationResources.ErrorCode_br63; break;
+        case 'BR64': errorMessage = this.localizationResources.ErrorCode_br64; break;
+        case 'BR65': errorMessage = this.localizationResources.ErrorCode_br65; break;
+        case 'BR66': errorMessage = this.localizationResources.ErrorCode_br66; break;
+        case 'BR67': errorMessage = this.localizationResources.ErrorCode_br67; break;
+        case 'BR68': errorMessage = this.localizationResources.ErrorCode_br68; break;
+        case 'BR69': errorMessage = this.localizationResources.ErrorCode_br69; break;
+        case 'BR7': errorMessage = this.localizationResources.ErrorCode_br7; break;
+        case 'BR70': errorMessage = this.localizationResources.ErrorCode_br70; break;
+        case 'BR71': errorMessage = this.localizationResources.ErrorCode_br71; break;
+        case 'BR72': errorMessage = this.localizationResources.ErrorCode_br72; break;
+        case 'BR73': errorMessage = this.localizationResources.ErrorCode_br73; break;
+        case 'BR74': errorMessage = this.localizationResources.ErrorCode_br74; break;
+        case 'BR75': errorMessage = this.localizationResources.ErrorCode_br75; break;
+        case 'BR76': errorMessage = this.localizationResources.ErrorCode_br76; break;
+        case 'BR77': errorMessage = this.localizationResources.ErrorCode_br77; break;
+        case 'BR78': errorMessage = this.localizationResources.ErrorCode_br78; break;
+        case 'BR79': errorMessage = this.localizationResources.ErrorCode_br79; break;
+        case 'BR8': errorMessage = this.localizationResources.ErrorCode_br8; break;
+        case 'BR80': errorMessage = this.localizationResources.ErrorCode_br80; break;
+        case 'BR81': errorMessage = this.localizationResources.ErrorCode_br81; break;
+        case 'BR82': errorMessage = this.localizationResources.ErrorCode_br82; break;
+        case 'BR83': errorMessage = this.localizationResources.ErrorCode_br83; break;
+        case 'BR84': errorMessage = this.localizationResources.ErrorCode_br84; break;
+        case 'BR85': errorMessage = this.localizationResources.ErrorCode_br85; break;
+        case 'BR86': errorMessage = this.localizationResources.ErrorCode_br86; break;
+        case 'BR87': errorMessage = this.localizationResources.ErrorCode_br87; break;
+        case 'BR88': errorMessage = this.localizationResources.ErrorCode_br88; break;
+        case 'BR89': errorMessage = this.localizationResources.ErrorCode_br89; break;
+        case 'BR90': errorMessage = this.localizationResources.ErrorCode_br90; break;
+        case 'BR91': errorMessage = this.localizationResources.ErrorCode_br91; break;
+        case 'BR92': errorMessage = this.localizationResources.ErrorCode_br92; break;
+        case 'BR93': errorMessage = this.localizationResources.ErrorCode_br93; break;
+        case 'BR94': errorMessage = this.localizationResources.ErrorCode_br94; break;
+        case 'BR95': errorMessage = this.localizationResources.ErrorCode_br95; break;
+        case 'BR98': errorMessage = this.localizationResources.ErrorCode_br98; break;
+        case 'BR99': errorMessage = this.localizationResources.ErrorCode_br99; break;
+        case 'info1':
+            if (OldVehicleInfo) {
+                errorMessage = this.localizationResources.Info_InputChanged_Vehicle1;
+            }
             break;
-        case BusinessRuleEnum.BR100:
-            errorMessage = this.localizationResources.ErrorCode_br100;
+        case 'info2':
+            if (NewVehicleSearchInfo) {
+                errorMessage = this.localizationResources.Info_InputChanged_Vehicle2; 
+            }
             break;
-        case BusinessRuleEnum.BR101:
-            errorMessage = this.localizationResources.ErrorCode_br101;
-            break;
-        case BusinessRuleEnum.BR102:
-            errorMessage = this.localizationResources.ErrorCode_br102;
-            break;
+        case 'same': errorMessage = this.localizationResources.Warning_SameMatriculation; break;
+        case 'errorsubmit': errorMessage = this.localizationResources.Error_Submit; break;
+        case 'errorrevalidation': errorMessage = this.localizationResources.Error_Revalidation; break;
+        default:
+            errorMessage = '';
     }
 
-    if (errorCode === 'BR103') { errorMessage = this.localizationResources.ErrorCode_br103;
-    } else if (errorCode === 'BR104') { errorMessage = this.localizationResources.ErrorCode_br104;
-    } else if (errorCode === 'BR105') { errorMessage = this.localizationResources.ErrorCode_br105;
-    } else if (errorCode === 'BR106') { errorMessage = this.localizationResources.ErrorCode_br106;
-    } else if (errorCode === 'BR107') { errorMessage = this.localizationResources.ErrorCode_br107;
-    } else if (errorCode === 'BR108') { errorMessage = this.localizationResources.ErrorCode_br108;
-    } else if (errorCode === 'BR109') { errorMessage = this.localizationResources.ErrorCode_br109;
-    } else if (errorCode === 'BR11') { errorMessage = this.localizationResources.ErrorCode_br11;
-    } else if (errorCode === 'BR110') { errorMessage = this.localizationResources.ErrorCode_br110;
-    } else if (errorCode === 'BR116') { errorMessage = this.localizationResources.ErrorCode_br116;
-    } else if (errorCode === 'BR117') { errorMessage = this.localizationResources.ErrorCode_br117;
-    } else if (errorCode === 'BR119') { errorMessage = this.localizationResources.ErrorCode_br119;
-    } else if (errorCode === 'BR120') { errorMessage = this.localizationResources.ErrorCode_br120;
-    } else if (errorCode === 'BR121') { errorMessage = this.localizationResources.ErrorCode_br121;
-    } else if (errorCode === 'BR12') { errorMessage = this.localizationResources.ErrorCode_br12;
-    } else if (errorCode === 'BR123') { errorMessage = this.localizationResources.ErrorCode_br123;
-    } else if (errorCode === 'BR124') { errorMessage = this.localizationResources.ErrorCode_br124;
-    } else if (errorCode === 'BR126') { errorMessage = this.localizationResources.ErrorCode_br126;
-    } else if (errorCode === 'BR13') { errorMessage = this.localizationResources.ErrorCode_br13;
-    } else if (errorCode === 'BR131') { errorMessage = this.localizationResources.ErrorCode_br131;
-    } else if (errorCode === 'BR132') { errorMessage = this.localizationResources.ErrorCode_br132;
-    } else if (errorCode === 'BR135') { errorMessage = this.localizationResources.ErrorCode_br135;
-    } else if (errorCode === 'BR137') { errorMessage = this.localizationResources.ErrorCode_br137;
-    } else if (errorCode === 'BR140') { errorMessage = this.localizationResources.ErrorCode_br140;
-    } else if (errorCode === 'BR141') { errorMessage = this.localizationResources.ErrorCode_br141;
-    } else if (errorCode === 'BR142') { errorMessage = this.localizationResources.ErrorCode_br142;
-    } else if (errorCode === 'BR143') { errorMessage = this.localizationResources.ErrorCode_br143;
-    } else if (errorCode === 'BR144') { errorMessage = this.localizationResources.ErrorCode_br144;
-    } else if (errorCode === 'BR145') { errorMessage = this.localizationResources.ErrorCode_br145;
-    } else if (errorCode === 'BR19') { errorMessage = this.localizationResources.ErrorCode_br19;
-    } else if (errorCode === 'BR20') { errorMessage = this.localizationResources.ErrorCode_br20;
-    } else if (errorCode === 'BR21') { errorMessage = this.localizationResources.ErrorCode_br21;
-    } else if (errorCode === 'BR23') { errorMessage = this.localizationResources.ErrorCode_br23;
-    } else if (errorCode === 'BR24') { errorMessage = this.localizationResources.ErrorCode_br24;
-    } else if (errorCode === 'BR25') { errorMessage = this.localizationResources.ErrorCode_br25;
-    } else if (errorCode === 'BR42') { errorMessage = this.localizationResources.ErrorCode_br42;
-    } else if (errorCode === 'BR43') { errorMessage = this.localizationResources.ErrorCode_br43;
-    } else if (errorCode === 'BR44') { errorMessage = this.localizationResources.ErrorCode_br44;
-    } else if (errorCode === 'BR45') { errorMessage = this.localizationResources.ErrorCode_br45;
-    } else if (errorCode === 'BR46') { errorMessage = this.localizationResources.ErrorCode_br46;
-    } else if (errorCode === 'BR47') { errorMessage = this.localizationResources.ErrorCode_br47;
-    } else if (errorCode === 'BR48') { errorMessage = this.localizationResources.ErrorCode_br48;
-    } else if (errorCode === 'BR50') { errorMessage = this.localizationResources.ErrorCode_br50;
-    } else if (errorCode === 'BR51') { errorMessage = this.localizationResources.ErrorCode_br51;
-    } else if (errorCode === 'BR52') { errorMessage = this.localizationResources.ErrorCode_br52;
-    } else if (errorCode === 'BR53') { errorMessage = this.localizationResources.ErrorCode_br53;
-    } else if (errorCode === 'BR54') { errorMessage = this.localizationResources.ErrorCode_br54;
-    } else if (errorCode === 'BR55') { errorMessage = this.localizationResources.ErrorCode_br55;
-    } else if (errorCode === 'BR56') { errorMessage = this.localizationResources.ErrorCode_br56;
-    } else if (errorCode === 'BR57') { errorMessage = this.localizationResources.ErrorCode_br57;
-    } else if (errorCode === 'BR58') { errorMessage = this.localizationResources.ErrorCode_br58;
-    } else if (errorCode === 'BR59') { errorMessage = this.localizationResources.ErrorCode_br59;
-    } else if (errorCode === 'BR6') { errorMessage = this.localizationResources.ErrorCode_br6;
-    } else if (errorCode === 'BR60') { errorMessage = this.localizationResources.ErrorCode_br60;
-    } else if (errorCode === 'BR61') { errorMessage = this.localizationResources.ErrorCode_br61;
-    } else if (errorCode === 'BR62') { errorMessage = this.localizationResources.ErrorCode_br62;
-    } else if (errorCode === 'BR63') { errorMessage = this.localizationResources.ErrorCode_br63;
-    } else if (errorCode === 'BR64') { errorMessage = this.localizationResources.ErrorCode_br64;
-    } else if (errorCode === 'BR65') { errorMessage = this.localizationResources.ErrorCode_br65;
-    } else if (errorCode === 'BR66') { errorMessage = this.localizationResources.ErrorCode_br66;
-    } else if (errorCode === 'BR67') { errorMessage = this.localizationResources.ErrorCode_br67;
-    } else if (errorCode === 'BR68') { errorMessage = this.localizationResources.ErrorCode_br68;
-    } else if (errorCode === 'BR69') { errorMessage = this.localizationResources.ErrorCode_br69;
-    } else if (errorCode === 'BR7') { errorMessage = this.localizationResources.ErrorCode_br7;
-    } else if (errorCode === 'BR70') { errorMessage = this.localizationResources.ErrorCode_br70;
-    } else if (errorCode === 'BR71') { errorMessage = this.localizationResources.ErrorCode_br71;
-    } else if (errorCode === 'BR72') { errorMessage = this.localizationResources.ErrorCode_br72;
-    } else if (errorCode === 'BR73') { errorMessage = this.localizationResources.ErrorCode_br73;
-    } else if (errorCode === 'BR74') { errorMessage = this.localizationResources.ErrorCode_br74;
-    } else if (errorCode === 'BR75') { errorMessage = this.localizationResources.ErrorCode_br75;
-    } else if (errorCode === 'BR76') { errorMessage = this.localizationResources.ErrorCode_br76;
-    } else if (errorCode === 'BR77') { errorMessage = this.localizationResources.ErrorCode_br77;
-    } else if (errorCode === 'BR78') { errorMessage = this.localizationResources.ErrorCode_br78;
-    } else if (errorCode === 'BR79') { errorMessage = this.localizationResources.ErrorCode_br79;
-    } else if (errorCode === 'BR8') { errorMessage = this.localizationResources.ErrorCode_br8;
-    } else if (errorCode === 'BR80') { errorMessage = this.localizationResources.ErrorCode_br80;
-    } else if (errorCode === 'BR81') { errorMessage = this.localizationResources.ErrorCode_br81;
-    } else if (errorCode === 'BR82') { errorMessage = this.localizationResources.ErrorCode_br82;
-    } else if (errorCode === 'BR83') { errorMessage = this.localizationResources.ErrorCode_br83;
-    } else if (errorCode === 'BR84') { errorMessage = this.localizationResources.ErrorCode_br84;
-    } else if (errorCode === 'BR85') { errorMessage = this.localizationResources.ErrorCode_br85;
-    } else if (errorCode === 'BR86') { errorMessage = this.localizationResources.ErrorCode_br86;
-    } else if (errorCode === 'BR87') { errorMessage = this.localizationResources.ErrorCode_br87;
-    } else if (errorCode === 'BR88') { errorMessage = this.localizationResources.ErrorCode_br88;
-    } else if (errorCode === 'BR89') { errorMessage = this.localizationResources.ErrorCode_br89;
-    } else if (errorCode === 'BR90') { errorMessage = this.localizationResources.ErrorCode_br90;
-    } else if (errorCode === 'BR91') { errorMessage = this.localizationResources.ErrorCode_br91;
-    } else if (errorCode === 'BR92') { errorMessage = this.localizationResources.ErrorCode_br92;
-    } else if (errorCode === 'BR93') { errorMessage = this.localizationResources.ErrorCode_br93;
-    } else if (errorCode === 'BR94') { errorMessage = this.localizationResources.ErrorCode_br94;
-    } else if (errorCode === 'BR95') { errorMessage = this.localizationResources.ErrorCode_br95;
-    } else if (errorCode === 'BR98') { errorMessage = this.localizationResources.ErrorCode_br98;
-    } else if (errorCode === 'BR99') { errorMessage = this.localizationResources.ErrorCode_br99;
-    } else if (errorCode === 'info1') {
-      if (OldVehicleInfo) {
-          errorMessage = this.localizationResources.Info_InputChanged_Vehicle1;
-      }
-    } else if (errorCode === 'info2') {
-      if (NewVehicleSearchInfo) {
-        errorMessage = this.localizationResources.Info_InputChanged_Vehicle2;
-      }
-    } else if (errorCode === 'same') { errorMessage = this.localizationResources.Warning_SameMatriculation;
-    } else if (errorCode === 'errorsubmit') { errorMessage = this.localizationResources.Error_Submit;
-    } else if (errorCode === 'errorrevalidation') {
-      errorMessage = this.localizationResources.Error_Revalidation;
+    if (validationResult && validationResult.errorCode && validationResult.errorCode.toLocaleUpperCase().indexOf('BR') >= 0) {
+        errorCode = validationResult.errorCode;
+    } else {
+        errorCode = '';
     }
 
     return {

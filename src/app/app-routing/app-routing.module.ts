@@ -23,7 +23,13 @@ const appRoutes: Routes = [{
   path: '',
   redirectTo: '/vehicleChangeCaseOverview',
   pathMatch: 'full'
-}, {
+},
+// {
+//   path: '**',
+//   pathMatch: 'full',
+//   redirectTo: '/vehicleChangeCaseOverview'
+// },
+{
   path: 'newVehicleChangeCase',
   component: NewVehicleChangeCaseComponent,
   canDeactivate: [CanUserNavigateAwayService]

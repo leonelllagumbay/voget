@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+
     if (sessionStorage && sessionStorage.getItem('selectedLanguage')) { // persist language on browsers
       this._translate.use(sessionStorage.getItem('selectedLanguage'));
     } else {
@@ -32,7 +33,6 @@ export class AppComponent implements OnInit {
     $('#usernamedropdown')['collapse']('hide');
     $('#settingsdropdown')['collapse']('hide');
     $('#usermanagement')['collapse']('hide');
-
     $('.dropdown-auto')['collapse']('hide');
     $('#usermanagement')['collapse']('hide');
   }

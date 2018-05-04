@@ -19,6 +19,7 @@ import { ErniJsUtilsBlockControl } from './../../../shared/class/utils';
 import { GlobalService } from './../../../shared/service/global.service';
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
+// import * as _ from 'lodash';
 
 @Component({
   selector: 'app-new-vehicle-change-case',
@@ -132,6 +133,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   ShowPrint: boolean;
   IsPrintBusy: boolean;
   preLoadedFiles: AttachmentDto[];
+  ErrorMessageEmpty: boolean;
   NewVehicleNewVehicle = {};
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -143,6 +145,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
               private _route: ActivatedRoute, private _translate: TranslateService) { }
 
   ngOnInit() {
+
+    this._egovService.isSubmitted = false; // warn users of unsaved changes
 
     this.preLoadedFiles = [];
 
@@ -223,6 +227,19 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
 
     this.RtdLocationList = [];
 
+    const errorDefault = {
+      errorCode: '',
+      errorMessage: '',
+      parameters: []
+    };
+
+    this.ErrorCodeMessageError = errorDefault;
+
+    this.ErrorCodeMessageWarning = errorDefault;
+
+    this.ErrorCodeMessageInfo1 = errorDefault;
+    this.ErrorCodeMessageInfo2 = errorDefault;
+
     this._egovService.errorDefined.subscribe((er: HttpErrorResponse) => {
       console.log('error catched here', er);
       if (er.error) {
@@ -253,20 +270,48 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         this.ErrorValidationResult.type = 'Error';
         this.ErrorValidationResult.parameters = parameters;
 
-        this.SearchOldVehicleClicked = true;
-        this.OldVehicleSuccess = false;
-        this.OldVehicleError = true;
-        this.IsSection2Expanded = false;
-
-        this.IsSearch1Busy = false;
+        this.ErrorMessageEmpty = false;
 
         const customError = this.caseErrorService.convertCaseError(this.ErrorValidationResult.code, this.ErrorValidationResult.message);
-        console.log('error custom code', this.ErrorValidationResult.code, customError);
-        this.ErrorCodeMessageError.errorMessage = (<ErrorCodeDto>customError).fe_message;
+        console.log('code ', (<ErrorCodeDto>customError).fe_code);
+        if ((<ErrorCodeDto>customError).fe_code) {
+          this.ErrorCodeMessageError.errorMessage = (<ErrorCodeDto>customError).fe_message;
+        } else {
+          this.ErrorMessageEmpty = true; // suppress the error message only when error msg is empty
+          this.OldVehicleError = false;
+          this.NewVehicleSearchError = false;
+          this.IsSubmitError = false;
+          this.IsSearch1Busy = false;
+          this.IsBusy = false;
+        }
       }
     });
 
     this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
+  }
+
+  updateState() {
+    if (!this.ErrorMessageEmpty) {
+      if (this.LastStep === 'A') {
+          this.OldVehicleSuccess = false;
+          this.OldVehicleError = true;
+          this.IsSection2Expanded = false;
+          this.IsSearch1Busy = false;
+      } else if (this.LastStep === 'B') {
+          this.NewVehicleSearchSuccess = false;
+          this.NewVehicleSearchError = true;
+          this.IsSearch2Busy = false;
+      } else if (this.LastStep === 'C') {
+          this.IsSubmitSuccess = false;
+          this.IsSubmitError = true;
+          this.IsBusy = false;
+      } else {
+          this.OldVehicleSuccess = false;
+          this.OldVehicleError = true;
+          this.IsSection2Expanded = false;
+          this.IsSearch1Busy = false;
+      }
+    }
   }
 
   onFileChanged(eventData: {allFiles: {}, listOfFilesToRemove: {}}) {
@@ -290,6 +335,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                     // console.log('case id is ', caseId);
                     this.uploadOtherAttachments(caseId);
                 }
+            }, (er) => {
+              this.updateState();
             });
         }
     } else {
@@ -362,6 +409,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                     if (this.fileCounter === 0) {
                       this.updateFlagsWhenNotUpdating();
                     }
+                }, (er) => {
+                  this.updateState();
                 });
 
             } else {
@@ -418,6 +467,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
                 });
             }
         }
+    }, (er) => {
+      this.updateState();
     });
   }
 
@@ -525,6 +576,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         if (this.IsEditClicked && isAutomated) {
             this.LoadVehicle2(isAutomated);
         }
+    }, (er) => {
+      this.updateState();
     });
   }
 
@@ -590,6 +643,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           this.ErrorCodeMessageError = this.ErrorMapper(this.ErrorValidationResult);
         }
       }
+    }, (er) => {
+      this.updateState();
     });
   }
 
@@ -605,6 +660,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
     this.caseService.GetRtdLocation().subscribe(result => {
       this.RtdLocationList = result;
       this.SelectedRtd = result[0];
+    }, (er) => {
+      this.updateState();
     });
   }
 
@@ -648,6 +705,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           }
         });
       }
+    }, (er) => {
+      this.updateState();
     });
   }
 
@@ -778,7 +837,9 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             this._egovService.isSubmitted = true;
             this._router.navigate(['vehicleChangeCaseOverview']);
           }
-        });
+        }, (er) => {
+          this.updateState();
+      });
     }
   }
 
@@ -1073,6 +1134,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             }
           }
         }
+      }, (er) => {
+        this.updateState();
       });
     } else {
       this.caseService.Submit(this.VehicleChangeCaseDraftDto).subscribe(result => {
@@ -1107,6 +1170,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             }
           }
         }
+      }, (er) => {
+        this.updateState();
       });
     }
   }
@@ -1202,6 +1267,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
             // console.log('Result from Put', result);
           this.uploadAttachments(parseFloat(this.SelectedCaseId));
           this.isSaveAsDraftRejectedClicked = false;
+        }, (er) => {
+          this.updateState();
         });
       } else {
         this.caseService.Post(this.VehicleChangeCaseDraftDto).subscribe((result: {id: string}) => {
@@ -1209,6 +1276,8 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
           this.SelectedCaseId = result.id;
           this.uploadAttachments(parseFloat(this.SelectedCaseId));
           this.isSaveAsDraftRejectedClicked = false;
+        }, (er) => {
+          this.updateState();
         });
       }
     }
@@ -1235,7 +1304,7 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   }
 
   ClickGoBack() {
-    if (this.errBE !== undefined && this.errBE['code'] !== undefined &&
+    if (this.errBE && this.errBE['code'] &&
         (this.errBE['code'] === ErrorCodeCaseK.VehicleOutOfCirculationAlreadyInAnotherSubmittedCase ||
         this.errBE['code'] === ErrorCodeCaseK.VehicleIntoCirculationAlreadyInAnotherSubmittedCase ||
         this.errBE['code'] === ErrorCodeCaseK.VehicleChangeCaseNotFound)) {
@@ -1245,16 +1314,19 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
       this._egovService.isSubmitted = true;
       this._router.navigate(['vehicleChangeCaseOverview']);
     } else {
-      if (this.OldVehicleError || this.NewVehicleSearchError) {
-        this.isSaveAsDraftRejectedClicked = true;
-        this.ClickSaveAsDraft(false);
-      } else {
-        this.isSaveAsDraftRejectedClicked = false;
-        this.selectedCaseId = '';
-        // $state.go('vehicleChangeCaseOverview');
-        this._egovService.isSubmitted = true;
-        this._router.navigate(['vehicleChangeCaseOverview']);
-      }
+      this.isSaveAsDraftRejectedClicked = false;
+      this._egovService.isSubmitted = true;
+      this._router.navigate(['vehicleChangeCaseOverview']);
+      // if (this.OldVehicleError || this.NewVehicleSearchError) {
+      //   this.isSaveAsDraftRejectedClicked = false;
+      //   this.selectedCaseId = '';
+      //   // $state.go('vehicleChangeCaseOverview');
+      //   this._egovService.isSubmitted = true;
+      //   this._router.navigate(['vehicleChangeCaseOverview']);
+      // } else {
+      //   this.isSaveAsDraftRejectedClicked = true;
+      //   this.ClickSaveAsDraft(false);
+      // }
     }
   }
 
@@ -1278,10 +1350,11 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
       this.GetVehicleChangeConfiguration();
       this.GetRtdLocation();
       this.IsSubmitSuccess = false;
+      console.log('info info', info);
 
       if (info['selectedCase']) {
         this.SelectedCaseId = info['selectedCase'];
-        this.getSavedFiles(parseFloat(this.SelectedCaseId));
+        this.getSavedFiles(parseInt(this.SelectedCaseId, 10));
       } else {
         this.SelectedCaseId = '';
       }
@@ -1292,10 +1365,6 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
         (language: string) => {
           this.RefreshTranslations();
           this.RefreshPageTitle();
-          if (this.errBE !== undefined && this.errBE['code'] !== undefined && this.errBE['code'] !== '') {
-              const errorObj: ErrorCodeDto = <ErrorCodeDto> this.caseErrorService.convertCaseError(this.errBE['code'], this.errBE['text']);
-              this.ErrorCodeMessageError.errorMessage = errorObj.fe_message;
-          }
           this._egovService.setConfirmText(this.localizationResources.Message_NavigateAway);
          }
       );
@@ -1329,14 +1398,6 @@ export class NewVehicleChangeCaseComponent implements OnInit, OnDestroy {
   }
 
   RefreshTranslations() {
-    this.ErrorCodeMessageInfo1 = this.ErrorMapper(this.InfoValidationResult1);
-
-    this.ErrorCodeMessageInfo2 = this.ErrorMapper(this.InfoValidationResult2);
-
-    this.ErrorCodeMessageWarning = this.ErrorMapper(this.WarningValidationResult);
-
-    this.ErrorCodeMessageError = this.ErrorMapper(this.ErrorValidationResult);
-
     if (this.selectedOptionNew === 2) {
       this.selectedOptionNewLabel = this.localizationResources.Option_Customer;
     } else if (this.selectedOptionNew === 1) {
